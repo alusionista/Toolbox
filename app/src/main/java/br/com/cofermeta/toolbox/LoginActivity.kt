@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import br.com.cofermeta.toolbox.ui.LoginScreen
 import br.com.cofermeta.toolbox.ui.theme.ToolboxTheme
 
-
 class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
