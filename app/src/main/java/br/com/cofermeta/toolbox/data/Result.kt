@@ -1,4 +1,4 @@
-package br.com.cofermeta.toolkit.data
+package br.com.cofermeta.toolbox.data
 
 /**
  * A generic class that holds a value with its loading status.

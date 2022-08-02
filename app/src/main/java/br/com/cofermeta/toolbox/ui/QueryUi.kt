@@ -1,4 +1,4 @@
-package br.com.cofermeta.toolkit.ui
+package br.com.cofermeta.toolbox.ui
 
 import android.content.Context
 import androidx.compose.foundation.layout.*
@@ -20,7 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import br.com.cofermeta.toolkit.network.login.JsessionDataClass
+import br.com.cofermeta.toolbox.network.login.JsessionDataClass
 
 @Composable
 fun QueryScreen(context: Context?, jsession: JsessionDataClass) {

@@ -1,7 +1,7 @@
-package br.com.cofermeta.toolkit.network.login
+package br.com.cofermeta.toolbox.network.login
 
 import android.util.Log
-import br.com.cofermeta.toolkit.network.Connection
+import br.com.cofermeta.toolbox.network.Connection
 import com.google.gson.JsonParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope

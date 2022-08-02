@@ -1,4 +1,4 @@
-package br.com.cofermeta.toolkit.ui.theme
+package br.com.cofermeta.toolbox.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
@@ -30,7 +30,7 @@ private val LightColorPalette = lightColors(
 )
 
 @Composable
-fun ToolkitTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+fun ToolboxTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {

@@ -1,4 +1,4 @@
-package br.com.cofermeta.toolkit.data.model
+package br.com.cofermeta.toolbox.data.model
 
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository

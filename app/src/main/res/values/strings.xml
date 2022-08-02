@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Toolkit</string>
+    <string name="app_name">Toolbox</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_query">QueryActivity</string>
     <!-- Strings related to login -->

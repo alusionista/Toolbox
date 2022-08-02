@@ -1,4 +1,4 @@
-package br.com.cofermeta.toolkit
+package br.com.cofermeta.toolbox
 
 import android.annotation.SuppressLint
 import android.content.Intent

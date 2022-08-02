@@ -1,6 +1,6 @@
-package br.com.cofermeta.toolkit.data
+package br.com.cofermeta.toolbox.data
 
-import br.com.cofermeta.toolkit.data.model.LoggedInUser
+import br.com.cofermeta.toolbox.data.model.LoggedInUser
 
 /**
  * Class that requests authentication and user information from the remote data source and

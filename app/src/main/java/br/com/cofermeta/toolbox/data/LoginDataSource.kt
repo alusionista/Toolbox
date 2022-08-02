@@ -1,6 +1,6 @@
-package br.com.cofermeta.toolkit.data
+package br.com.cofermeta.toolbox.data
 
-import br.com.cofermeta.toolkit.data.model.LoggedInUser
+import br.com.cofermeta.toolbox.data.model.LoggedInUser
 import java.io.IOException
 
 /**

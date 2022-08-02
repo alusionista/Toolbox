@@ -1,4 +1,4 @@
-package br.com.cofermeta.toolkit.ui.theme
+package br.com.cofermeta.toolbox.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

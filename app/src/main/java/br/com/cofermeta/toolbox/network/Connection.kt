@@ -1,4 +1,4 @@
-package br.com.cofermeta.toolkit.network
+package br.com.cofermeta.toolbox.network
 
 import java.io.BufferedReader
 import java.io.InputStreamReader

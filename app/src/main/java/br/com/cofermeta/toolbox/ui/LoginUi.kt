@@ -1,4 +1,4 @@
-package br.com.cofermeta.toolkit.ui
+package br.com.cofermeta.toolbox.ui
 
 import android.content.Context
 import android.widget.Toast
@@ -25,8 +25,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import br.com.cofermeta.toolkit.network.login.JsessionDataClass
-import br.com.cofermeta.toolkit.network.login.SankhyaAuth
+import br.com.cofermeta.toolbox.network.login.JsessionDataClass
+import br.com.cofermeta.toolbox.network.login.SankhyaAuth
 
 @Composable
 fun LoginScreen(context: Context?) {
@@ -60,7 +60,7 @@ fun Login(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = "Cofermeta Toolkit",
+            text = "Cofermeta Toolbox",
             textAlign = TextAlign.Left,
             fontSize = 40.sp,
             lineHeight = 38.sp,

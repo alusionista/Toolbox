@@ -1,25 +1,20 @@
-package br.com.cofermeta.toolkit
+package br.com.cofermeta.toolbox
 
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import br.com.cofermeta.toolkit.ui.Login
-import br.com.cofermeta.toolkit.ui.LoginScreen
-import br.com.cofermeta.toolkit.ui.Query
-import br.com.cofermeta.toolkit.ui.theme.ToolkitTheme
+import br.com.cofermeta.toolbox.ui.LoginScreen
+import br.com.cofermeta.toolbox.ui.theme.ToolboxTheme
 
 
 class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ToolkitTheme {
+            ToolboxTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
