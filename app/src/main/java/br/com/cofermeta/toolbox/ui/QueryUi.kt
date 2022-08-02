@@ -20,13 +20,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import br.com.cofermeta.toolbox.network.login.JsessionDataClass
 
 @Composable
-fun QueryScreen(context: Context?, jsession: JsessionDataClass) {
-
+fun QueryScreen(context: Context?, navController: NavController, jsession: JsessionDataClass) {
     var query by rememberSaveable { mutableStateOf("12027") }
-    //var jsessionid by rememberSaveable { mutableStateOf("") }
 
     Query(
         jsession = jsession,
@@ -41,7 +40,6 @@ fun Query(
     jsession: JsessionDataClass,
     query: String,
     onQueryChange: (String) -> Unit,
-
     ) {
     Column(
         modifier = Modifier
