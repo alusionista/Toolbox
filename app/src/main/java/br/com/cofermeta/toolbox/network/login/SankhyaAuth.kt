@@ -1,7 +1,7 @@
 package br.com.cofermeta.toolbox.network.login
 
 import android.util.Log
-import br.com.cofermeta.toolbox.data.model.JsessionDataClass
+import br.com.cofermeta.toolbox.data.model.Jsession
 import br.com.cofermeta.toolbox.network.Connection
 import com.google.gson.JsonParser
 import kotlinx.coroutines.Dispatchers
@@ -11,16 +11,13 @@ import java.util.*
 
 class SankhyaAuth: Connection() {
 
-    fun verifyLogin(user: String, password: String, jsession: JsessionDataClass) {
+    fun verifyLogin(user: String, password: String, jsession: Jsession) {
         MainScope().launch(Dispatchers.IO) {
             SankhyaAuth().getJsessionId(user, password, jsession)
             return@launch
         }
     }
-
-    //fun isJSessionIdValid(jsession: JsessionDataClass) = jsession.id.length == 40
-
-    private fun getJsessionId(user: String, password: String, jsession: JsessionDataClass): JsessionDataClass {
+    private fun getJsessionId(user: String, password: String, jsession: Jsession): Jsession {
         val response = connect(
             serviceName = "MobileLoginSP.login",
             requestBody = loginBody(user, password)
@@ -28,10 +25,10 @@ class SankhyaAuth: Connection() {
         val rs = JsonParser.parseString(response)
 
         if (response.contains("status")) jsession.status = rs.asJsonObject["status"].asString
-/*        if (response.contains("responseBody")) {
+        if (response.contains("responseBody")) {
             jsession.responseBody =
-                rs.asJsonObject["responseBody"].asJsonObject.asString
-        }*/
+                rs.asJsonObject["responseBody"].toString()
+        }
         if (response.contains("statusMessage")) jsession.statusMessage =
             rs.asJsonObject["statusMessage"].asString
         if (response.contains("jsessionid")) {

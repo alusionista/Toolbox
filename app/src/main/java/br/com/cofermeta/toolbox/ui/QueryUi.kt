@@ -20,10 +20,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import br.com.cofermeta.toolbox.data.model.JsessionDataClass
+import br.com.cofermeta.toolbox.data.model.Jsession
 
 @Composable
-fun QueryScreen(context: Context?, jsession: JsessionDataClass) {
+fun QueryScreen(context: Context?, jsession: Jsession) {
 
     var query by rememberSaveable { mutableStateOf("12027") }
     //var jsessionid by rememberSaveable { mutableStateOf("") }
@@ -38,7 +38,7 @@ fun QueryScreen(context: Context?, jsession: JsessionDataClass) {
 
 @Composable
 fun Query(
-    jsession: JsessionDataClass,
+    jsession: Jsession,
     query: String,
     onQueryChange: (String) -> Unit,
 
