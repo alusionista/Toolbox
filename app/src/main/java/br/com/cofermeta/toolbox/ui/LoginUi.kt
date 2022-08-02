@@ -25,17 +25,21 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import br.com.cofermeta.toolbox.network.login.JsessionDataClass
 import br.com.cofermeta.toolbox.data.model.Jsession
+
 import br.com.cofermeta.toolbox.network.login.SankhyaAuth
 
 @Composable
-fun LoginScreen(context: Context?) {
+fun LoginScreen(context: Context?, navController: NavController) {
 
     var user by rememberSaveable { mutableStateOf("integracao") }
     var password by rememberSaveable { mutableStateOf("654321") }
 
     Login(
         context = context!!,
+        navController = navController,
         user = user,
         password = password,
         onUserChange = { user = it },
@@ -46,6 +50,7 @@ fun LoginScreen(context: Context?) {
 @Composable
 fun Login(
     context: Context,
+    navController: NavController,
     user: String,
     password: String,
     onUserChange: (String) -> Unit,
@@ -121,7 +126,10 @@ fun Login(
                         statusMessage,
                         Toast.LENGTH_SHORT
                     ).show()
-                    else Toast.makeText(context, jsession.id, Toast.LENGTH_SHORT).show()
+                    else {
+                        Toast.makeText(context, jsession.id, Toast.LENGTH_SHORT).show()
+                        navController.navigate("query_ui")
+                    }
                 },
                 shape = RoundedCornerShape(50.dp),
                 modifier = Modifier
