@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import br.com.cofermeta.toolbox.network.login.JsessionDataClass
+import br.com.cofermeta.toolbox.data.model.Jsession
+
 import br.com.cofermeta.toolbox.network.login.SankhyaAuth
 
 @Composable
@@ -54,7 +56,7 @@ fun Login(
     onUserChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit
 ) {
-    val jsession = JsessionDataClass()
+    val jsession = Jsession()
     Column(
         modifier = Modifier
             .fillMaxSize()

@@ -25,6 +25,7 @@ import br.com.cofermeta.toolbox.network.login.JsessionDataClass
 
 @Composable
 fun QueryScreen(context: Context?, navController: NavController, jsession: JsessionDataClass) {
+
     var query by rememberSaveable { mutableStateOf("12027") }
 
     Query(
@@ -37,7 +38,7 @@ fun QueryScreen(context: Context?, navController: NavController, jsession: Jsess
 
 @Composable
 fun Query(
-    jsession: JsessionDataClass,
+    jsession: Jsession,
     query: String,
     onQueryChange: (String) -> Unit,
     ) {
