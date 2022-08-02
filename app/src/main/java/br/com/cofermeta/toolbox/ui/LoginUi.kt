@@ -25,7 +25,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import br.com.cofermeta.toolbox.network.login.JsessionDataClass
+import br.com.cofermeta.toolbox.data.model.JsessionDataClass
 import br.com.cofermeta.toolbox.network.login.SankhyaAuth
 
 @Composable

@@ -1,4 +1,4 @@
-package br.com.cofermeta.toolbox.network.login
+package br.com.cofermeta.toolbox.data.model
 
 import java.util.*
 

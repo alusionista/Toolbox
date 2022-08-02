@@ -20,7 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import br.com.cofermeta.toolbox.network.login.JsessionDataClass
+import br.com.cofermeta.toolbox.data.model.JsessionDataClass
 
 @Composable
 fun QueryScreen(context: Context?, jsession: JsessionDataClass) {
