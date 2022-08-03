@@ -17,16 +17,13 @@ private val DarkColorPalette = darkColors(
 private val LightColorPalette = lightColors(
     primary = blue,
     primaryVariant = veryBlue,
-    secondary = almostBlue
-
-    /* Other default colors to override
+    secondary = almostBlue,
     background = Color.White,
     surface = Color.White,
     onPrimary = Color.White,
     onSecondary = Color.Black,
     onBackground = Color.Black,
     onSurface = Color.Black,
-    */
 )
 
 @Composable

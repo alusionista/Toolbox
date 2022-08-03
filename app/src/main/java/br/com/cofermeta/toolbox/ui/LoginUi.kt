@@ -26,13 +26,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import br.com.cofermeta.toolbox.network.login.JsessionDataClass
 import br.com.cofermeta.toolbox.data.model.Jsession
 
 import br.com.cofermeta.toolbox.network.login.SankhyaAuth
 
 @Composable
-fun LoginScreen(context: Context?, navController: NavController) {
+fun LoginScreen(context: Context?, navController: NavController, jsession: Jsession) {
 
     var user by rememberSaveable { mutableStateOf("integracao") }
     var password by rememberSaveable { mutableStateOf("654321") }
@@ -42,6 +41,7 @@ fun LoginScreen(context: Context?, navController: NavController) {
         navController = navController,
         user = user,
         password = password,
+        jsession = jsession,
         onUserChange = { user = it },
         onPasswordChange = { password = it }
     )
@@ -53,10 +53,10 @@ fun Login(
     navController: NavController,
     user: String,
     password: String,
+    jsession: Jsession,
     onUserChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit
 ) {
-    val jsession = Jsession()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -127,7 +127,6 @@ fun Login(
                         Toast.LENGTH_SHORT
                     ).show()
                     else {
-                        Toast.makeText(context, jsession.id, Toast.LENGTH_SHORT).show()
                         navController.navigate("query_ui")
                     }
                 },
