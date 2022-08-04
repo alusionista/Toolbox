@@ -24,7 +24,7 @@ class SankhyaAuthTest {
         do {
             MainScope().launch(Dispatchers.IO) {
                 if (!InetSocketAddress("$base:$port/", port).isUnresolved) {
-                    SankhyaAuth().getJsessionId(user, password, jsession)
+                    SankhyaAuth().getJsessionId(jsession)
                 } else jsession.statusMessage = connectionErrorMessage
                 return@launch
             }

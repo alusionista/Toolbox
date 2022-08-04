@@ -12,16 +12,17 @@ import java.util.*
 class SankhyaQuery : Connection() {
 
     fun tryQuery(context: Context, jsession: Jsession, productQuery: ProductQuery) {
-        //if (isOnline(context)) {
+        if (isOnline(context)) {
             MainScope().launch(Dispatchers.IO) {
+                SankhyaAuth().updateJsession(jsession)
                 SankhyaQuery().query(jsession, productQuery)
                 return@launch
             }
             while (true) {
                 if (productQuery.body.isNotEmpty()) break
-                Thread.sleep(500)
+                Thread.sleep(threadSleep)
             }
-        //} else  jsession.statusMessage = connectionErrorMessage
+        } else  jsession.statusMessage = connectionErrorMessage
     }
 
     private fun query(jsession: Jsession, productQuery: ProductQuery, query: String = "12027"): ProductQuery {
@@ -51,15 +52,6 @@ class SankhyaQuery : Connection() {
                 .asJsonObject["$"]
                 .asString
         }
-
-        Log.d("response", response)
-        Log.d("jsession status", jsession.status)
-        Log.d("jsession id", jsession.id)
-        Log.d("jsession time", jsession.time.toString())
-        Log.d("jsession user", jsession.user)
-        Log.d("jsession password", jsession.password)
-        Log.d("jsession statusMessage", jsession.statusMessage)
-
 
         logout()
         return jsession

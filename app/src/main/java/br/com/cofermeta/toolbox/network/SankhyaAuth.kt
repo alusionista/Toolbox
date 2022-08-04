@@ -12,32 +12,33 @@ import java.util.*
 class SankhyaAuth : Connection() {
 
     fun verifyLogin(context: Context, user: String, password: String, jsession: Jsession) {
+        jsession.user = user
+        jsession.password = password
         if (isOnline(context)) {
             MainScope().launch(Dispatchers.IO) {
-                SankhyaAuth().getJsessionId(user, password, jsession)
+                SankhyaAuth().getJsessionId(jsession)
+                logout(jsession.id)
                 return@launch
             }
             while (true) {
                 if (jsession.id.isNotEmpty() || jsession.statusMessage.isNotEmpty()) break
-                Thread.sleep(500)
+                Thread.sleep(threadSleep)
             }
-        } else  jsession.statusMessage = connectionErrorMessage
-    }
-    fun verifyLogin(user: String, password: String, jsession: Jsession) {
-            MainScope().launch(Dispatchers.IO) {
-                SankhyaAuth().getJsessionId(user, password, jsession)
-                return@launch
-            }
-            while (true) {
-                if (jsession.id.isNotEmpty() || jsession.statusMessage.isNotEmpty()) break
-                Thread.sleep(500)
-            }
+        } else jsession.statusMessage = connectionErrorMessage
     }
 
-    fun getJsessionId(user: String, password: String, jsession: Jsession): Jsession {
+    fun updateJsession(jsession: Jsession) {
+            SankhyaAuth().getJsessionId(jsession)
+        while (true) {
+            if (jsession.id.isNotEmpty() || jsession.statusMessage.isNotEmpty()) break
+            Thread.sleep(threadSleep)
+        }
+    }
+
+    fun getJsessionId(jsession: Jsession): Jsession {
         val response = connect(
             serviceName = loginService,
-            requestBody = loginBody(user, password)
+            requestBody = loginBody(jsession.user, jsession.password)
         )
         val rs = JsonParser.parseString(response)
 
@@ -56,8 +57,6 @@ class SankhyaAuth : Connection() {
         }
 
         jsession.time = Calendar.getInstance().time
-        jsession.user = user
-        jsession.password = password
 
         Log.d("response", response)
         Log.d("jsession status", jsession.status)
@@ -66,13 +65,14 @@ class SankhyaAuth : Connection() {
         Log.d("jsession user", jsession.user)
         Log.d("jsession password", jsession.password)
         Log.d("jsession statusMessage", jsession.statusMessage)
-
-        logout()
         return jsession
     }
 
-    private fun logout() {
-        val response = connect(logoutService, logoutBody)
+    private fun logout(id: String) {
+        val response = connect(
+            serviceName = logoutService,
+            requestBody = logoutBody,
+            jsessionid = id)
         Log.d("logout", response)
     }
 

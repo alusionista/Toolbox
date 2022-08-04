@@ -48,13 +48,14 @@ abstract class Connection {
         val bytes = requestBody.toByteArray()
         val conn = URL(baseUrl(serviceName, jsessionid)).openConnection() as HttpURLConnection
         conn.requestMethod = requestMethod
-        conn.setRequestProperty("Content-type", "application/json; utf-8")
+        conn.setRequestProperty("Content-type", "application/json; charset=utf-8")
         conn.setRequestProperty("Accept", "application/json")
         if (jsessionid.isNotEmpty()) conn.setRequestProperty("cookie", "JSESSIONID=$jsessionid")
         conn.readTimeout = 10_000
         conn.connectTimeout = 10_000
         conn.doOutput = true
         conn.doInput = true
+
 
         conn.outputStream.use { stream -> stream.write(bytes) }
         val status: Int = conn.responseCode

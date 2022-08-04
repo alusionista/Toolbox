@@ -34,7 +34,6 @@ import br.com.cofermeta.toolbox.network.SankhyaAuth
 import br.com.cofermeta.toolbox.network.defaultPasword
 import br.com.cofermeta.toolbox.network.defaultUser
 import br.com.cofermeta.toolbox.QueryActivity
-import br.com.cofermeta.toolbox.network.login.SankhyaAuth
 
 @Composable
 fun LoginScreen(context: Context?, navController: NavController, jsession: Jsession) {

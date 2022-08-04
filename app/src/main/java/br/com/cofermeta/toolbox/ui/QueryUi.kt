@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.R
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -78,21 +79,16 @@ fun Query(
         Row(modifier = Modifier.height(56.dp)) {
             Column(
                 Modifier.weight(5f)
-
-        Box(modifier = Modifier.fillMaxWidth()) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
+            ){
                 OutlinedTextField(
                     value = query,
                     onValueChange = onQueryChange,
                     shape = RoundedCornerShape(50.dp),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .fillMaxHeight()
-                        .padding(end = 8.dp)
+                        .padding(end = 10.dp)
                 )
+
             }
             Column(
                 Modifier.weight(1f)
@@ -100,7 +96,6 @@ fun Query(
                 Button(
                     onClick = {
                         SankhyaQuery().tryQuery(context, jsession, queryResult)
-                        //onHasResultChange = true
                     },
                     shape = RoundedCornerShape(50.dp),
                     modifier = Modifier
@@ -109,29 +104,6 @@ fun Query(
 
                 ) {
                     Icon(Icons.Default.Search, contentDescription = "consulta")
-/*
-                    label = {
-                        Text(
-                            text = "Produto"
-                        )
-                    },
-                    shape = RoundedCornerShape(50.dp),
-                    modifier = Modifier
-                        .weight(0.8f)
-                )
-                Button(
-                    onClick = {
-
-                    },
-                    shape = RoundedCornerShape(50.dp),
-                    modifier = Modifier
-                        .padding(horizontal = 8.dp)
-                        .weight(0.2f)
-                        .align(Alignment.CenterVertically)
-                        .height(50.dp)
-                ) {
-                    Icon(Icons.Default.Search, contentDescription = "produto")
-*/
                 }
             }
         }
