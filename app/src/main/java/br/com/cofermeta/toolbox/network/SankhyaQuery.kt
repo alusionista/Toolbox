@@ -11,11 +11,11 @@ import java.util.*
 
 class SankhyaQuery : Connection() {
 
-    fun tryQuery(context: Context, jsession: Jsession, productQuery: ProductQuery) {
+    fun tryQuery(context: Context, jsession: Jsession, productQuery: ProductQuery, query: String) {
         if (isOnline(context)) {
             MainScope().launch(Dispatchers.IO) {
                 SankhyaAuth().updateJsession(jsession)
-                SankhyaQuery().query(jsession, productQuery)
+                SankhyaQuery().query(jsession, productQuery, query)
                 return@launch
             }
             while (true) {
@@ -25,16 +25,15 @@ class SankhyaQuery : Connection() {
         } else  jsession.statusMessage = connectionErrorMessage
     }
 
-    private fun query(jsession: Jsession, productQuery: ProductQuery, query: String = "12027"): ProductQuery {
+    private fun query(jsession: Jsession, productQuery: ProductQuery, query: String): ProductQuery {
         val response = connect(
             serviceName = loadRecords,
             requestBody = loadRecordsBody(query),
             jsessionid = jsession.id
         )
         productQuery.body = response
-        Log.d("response", response)
         Log.d("productQuery body", productQuery.body)
-        logout()
+
         return productQuery
 /*
 
@@ -56,21 +55,6 @@ class SankhyaQuery : Connection() {
         logout()
         return jsession
         */
-    }
-
-    private fun logout() {
-        val response = connect(logoutService, logoutBody)
-        Log.d("logout", response)
-
-    }
-
-    fun clearJsession(jsession: Jsession) {
-        jsession.id = ""
-        jsession.responseBody = ""
-        jsession.status = ""
-        jsession.user = ""
-        jsession.password = ""
-        jsession.statusMessage = ""
     }
 
 }

@@ -17,7 +17,6 @@ class SankhyaAuth : Connection() {
         if (isOnline(context)) {
             MainScope().launch(Dispatchers.IO) {
                 SankhyaAuth().getJsessionId(jsession)
-                logout(jsession.id)
                 return@launch
             }
             while (true) {

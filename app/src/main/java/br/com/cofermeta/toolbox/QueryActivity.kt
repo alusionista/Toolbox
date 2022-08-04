@@ -10,12 +10,14 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import br.com.cofermeta.toolbox.data.model.ProductQuery
 import br.com.cofermeta.toolbox.ui.QueryScreen
 import br.com.cofermeta.toolbox.ui.theme.ToolboxTheme
 
 class QueryActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        var queryResult = ProductQuery()
         setContent { 
             ToolboxTheme {
                 Surface(
@@ -25,7 +27,7 @@ class QueryActivity: ComponentActivity() {
                     val navController = rememberNavController()
                     NavHost(navController = navController, startDestination = "query_ui" ) {
                         composable("query_ui") {
-                            QueryScreen(context = applicationContext, navController = navController, jsession = jsession)
+                            QueryScreen(context = applicationContext, navController = navController, jsession = jsession, queryResult = queryResult)
                         }
                     }
                 }

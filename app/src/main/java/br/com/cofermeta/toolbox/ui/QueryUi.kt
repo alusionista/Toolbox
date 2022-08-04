@@ -1,14 +1,10 @@
 package br.com.cofermeta.toolbox.ui
 
 import android.content.Context
-import android.widget.Toast
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.R
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -28,13 +23,17 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import br.com.cofermeta.toolbox.data.model.Jsession
 import br.com.cofermeta.toolbox.data.model.ProductQuery
-import br.com.cofermeta.toolbox.network.SankhyaAuth
 import br.com.cofermeta.toolbox.network.SankhyaQuery
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 
 @Composable
-fun QueryScreen(context: Context, navController: NavController, jsession: Jsession) {
+fun QueryScreen(
+    context: Context,
+    navController: NavController,
+    jsession: Jsession,
+    queryResult: ProductQuery
+) {
 
     var query by rememberSaveable { mutableStateOf("") }
     var hasResult by rememberSaveable { mutableStateOf(false) }
@@ -46,6 +45,7 @@ fun QueryScreen(context: Context, navController: NavController, jsession: Jsessi
         hasResult = hasResult,
         onHasResultChange = { hasResult = it },
         onQueryChange = { query = it },
+        queryResult = queryResult
         )
 }
 
@@ -57,8 +57,8 @@ fun Query(
     hasResult: Boolean,
     onHasResultChange: (Boolean) -> Unit,
     onQueryChange: (String) -> Unit,
+    queryResult: ProductQuery
 ) {
-    var queryResult = ProductQuery()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -95,7 +95,8 @@ fun Query(
             ) {
                 Button(
                     onClick = {
-                        SankhyaQuery().tryQuery(context, jsession, queryResult)
+                        SankhyaQuery().tryQuery(context, jsession, queryResult, query)
+
                     },
                     shape = RoundedCornerShape(50.dp),
                     modifier = Modifier
@@ -112,23 +113,19 @@ fun Query(
             Text(
                 text = """
             ${jsession.user}
-            ${queryResult.body}
+            
         """.trimIndent()
             )
+            QueryHeader(queryResult.body)
+            QueryBody(queryResult.body)
         }
-/*
-        Text(text = jsession.user)
-
-        QueryHeader()
-        QueryBody()
-        */
     }
 }
 
 @Composable
-fun QueryHeader() {
+fun QueryHeader(body: String) {
     Text(
-        text = nome,
+        text = body,
         fontSize = 16.sp,
         modifier = Modifier
             .wrapContentWidth()
@@ -137,7 +134,7 @@ fun QueryHeader() {
 }
 
 @Composable
-fun QueryBody() {
+fun QueryBody(body: String) {
     Surface(color = Color.LightGray, modifier = Modifier
         .fillMaxWidth()
         .padding(all = 16.dp)
