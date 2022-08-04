@@ -2,34 +2,33 @@ package br.com.cofermeta.toolbox.network
 
 import android.content.Context
 import android.util.Log
-import br.com.cofermeta.toolbox.data.model.Jsession
+import br.com.cofermeta.toolbox.data.model.Sankhya
 import br.com.cofermeta.toolbox.data.model.ProductQuery
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import java.util.*
 
-class SankhyaQuery : Connection() {
+class Query : Connection() {
 
-    fun tryQuery(context: Context, jsession: Jsession, productQuery: ProductQuery, query: String) {
+    fun tryQuery(context: Context, sankhya: Sankhya, productQuery: ProductQuery, query: String) {
         if (isOnline(context)) {
             MainScope().launch(Dispatchers.IO) {
-                SankhyaAuth().updateJsession(jsession)
-                SankhyaQuery().query(jsession, productQuery, query)
+                Auth().updateJsession(sankhya)
+                Query().query(sankhya, productQuery, query)
                 return@launch
             }
             while (true) {
                 if (productQuery.body.isNotEmpty()) break
                 Thread.sleep(threadSleep)
             }
-        } else  jsession.statusMessage = connectionErrorMessage
+        } else  sankhya.statusMessage = connectionErrorMessage
     }
 
-    private fun query(jsession: Jsession, productQuery: ProductQuery, query: String): ProductQuery {
+    private fun query(sankhya: Sankhya, productQuery: ProductQuery, query: String): ProductQuery {
         val response = connect(
             serviceName = loadRecords,
             requestBody = loadRecordsBody(query),
-            jsessionid = jsession.id
+            jsessionid = sankhya.jsessionid
         )
         productQuery.body = response
         Log.d("productQuery body", productQuery.body)

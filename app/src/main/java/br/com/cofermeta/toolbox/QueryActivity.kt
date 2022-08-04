@@ -27,7 +27,7 @@ class QueryActivity: ComponentActivity() {
                     val navController = rememberNavController()
                     NavHost(navController = navController, startDestination = "query_ui" ) {
                         composable("query_ui") {
-                            QueryScreen(context = applicationContext, navController = navController, jsession = jsession, queryResult = queryResult)
+                            QueryScreen(context = applicationContext, navController = navController, sankhya = sankhya, queryResult = queryResult)
                         }
                     }
                 }

@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
                             LoginScreen(
                                 context = applicationContext,
                                 navController = navController,
-                                jsession = jsession
+                                sankhya = sankhya
                             )
                         }
                     }

@@ -7,7 +7,7 @@ import org.junit.Assert.*
 import org.junit.Test
 import java.net.InetSocketAddress
 
-class FrameworkSankhyaAuthTest {
+class FrameworkAuthTest {
     @Test
     fun testConnection(){
         MainScope().launch(Dispatchers.IO) {

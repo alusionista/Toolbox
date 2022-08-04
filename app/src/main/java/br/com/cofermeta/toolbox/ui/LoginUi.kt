@@ -29,14 +29,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
-import br.com.cofermeta.toolbox.data.model.Jsession
-import br.com.cofermeta.toolbox.network.SankhyaAuth
+import br.com.cofermeta.toolbox.data.model.Sankhya
+import br.com.cofermeta.toolbox.network.Auth
 import br.com.cofermeta.toolbox.network.defaultPasword
 import br.com.cofermeta.toolbox.network.defaultUser
 import br.com.cofermeta.toolbox.QueryActivity
 
 @Composable
-fun LoginScreen(context: Context?, navController: NavController, jsession: Jsession) {
+fun LoginScreen(context: Context?, navController: NavController, sankhya: Sankhya) {
 
     var user by rememberSaveable { mutableStateOf(defaultUser) }
     var password by rememberSaveable { mutableStateOf(defaultPasword) }
@@ -46,7 +46,7 @@ fun LoginScreen(context: Context?, navController: NavController, jsession: Jsess
         navController = navController,
         user = user,
         password = password,
-        jsession = jsession,
+        sankhya = sankhya,
         onUserChange = { user = it },
         onPasswordChange = { password = it }
     )
@@ -58,7 +58,7 @@ fun Login(
     navController: NavController,
     user: String,
     password: String,
-    jsession: Jsession,
+    sankhya: Sankhya,
     onUserChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit
 ) {
@@ -118,17 +118,17 @@ fun Login(
         Box {
             Button(
                 onClick = {
-                    val sankhyaAuth = SankhyaAuth()
-                    if (jsession.statusMessage.isNotEmpty()) sankhyaAuth.clearJsession(jsession)
-                    sankhyaAuth.verifyLogin(context, user, password, jsession)
+                    val auth = Auth()
+                    //if (sankhya.statusMessage.isNotEmpty()) sankhyaAuth.clearJsession(sankhya)
+                    auth.verifyLogin(context, user, password, sankhya)
                     /*var i = 0
                     do {
                         if (jsession.id.isNotEmpty() || jsession.statusMessage.isNotEmpty()) break
                         Thread.sleep(500)
                         i++
                     } while (i < 10)*/
-                    val statusMessage = jsession.statusMessage.ifEmpty { "Login não realizado" }
-                    if (jsession.id.isEmpty()) Toast.makeText(
+                    val statusMessage = sankhya.statusMessage.ifEmpty { "Login não realizado" }
+                    if (sankhya.jsessionid.isEmpty()) Toast.makeText(
                         context,
                         statusMessage,
                         Toast.LENGTH_SHORT

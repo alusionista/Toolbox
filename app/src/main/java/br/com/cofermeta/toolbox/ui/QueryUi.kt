@@ -21,9 +21,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import br.com.cofermeta.toolbox.data.model.Jsession
+import br.com.cofermeta.toolbox.data.model.Sankhya
 import br.com.cofermeta.toolbox.data.model.ProductQuery
-import br.com.cofermeta.toolbox.network.SankhyaQuery
+import br.com.cofermeta.toolbox.network.Query
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 
@@ -31,7 +31,7 @@ import coil.request.ImageRequest
 fun QueryScreen(
     context: Context,
     navController: NavController,
-    jsession: Jsession,
+    sankhya: Sankhya,
     queryResult: ProductQuery
 ) {
 
@@ -40,7 +40,7 @@ fun QueryScreen(
 
     Query(
         context = context,
-        jsession = jsession,
+        sankhya = sankhya,
         query = query,
         hasResult = hasResult,
         onHasResultChange = { hasResult = it },
@@ -52,7 +52,7 @@ fun QueryScreen(
 @Composable
 fun Query(
     context: Context,
-    jsession: Jsession,
+    sankhya: Sankhya,
     query: String,
     hasResult: Boolean,
     onHasResultChange: (Boolean) -> Unit,
@@ -95,7 +95,7 @@ fun Query(
             ) {
                 Button(
                     onClick = {
-                        SankhyaQuery().tryQuery(context, jsession, queryResult, query)
+                        Query().tryQuery(context, sankhya, queryResult, query)
 
                     },
                     shape = RoundedCornerShape(50.dp),
@@ -112,7 +112,7 @@ fun Query(
         if(hasResult){
             Text(
                 text = """
-            ${jsession.user}
+            ${sankhya.user}
             
         """.trimIndent()
             )
