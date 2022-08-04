@@ -28,13 +28,15 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import br.com.cofermeta.toolbox.data.model.Jsession
 
-import br.com.cofermeta.toolbox.network.login.SankhyaAuth
+import br.com.cofermeta.toolbox.network.SankhyaAuth
+import br.com.cofermeta.toolbox.network.defaultPasword
+import br.com.cofermeta.toolbox.network.defaultUser
 
 @Composable
 fun LoginScreen(context: Context?, navController: NavController, jsession: Jsession) {
 
-    var user by rememberSaveable { mutableStateOf("integracao") }
-    var password by rememberSaveable { mutableStateOf("654321") }
+    var user by rememberSaveable { mutableStateOf(defaultUser) }
+    var password by rememberSaveable { mutableStateOf(defaultPasword) }
 
     Login(
         context = context!!,
@@ -113,13 +115,15 @@ fun Login(
         Box {
             Button(
                 onClick = {
-                    SankhyaAuth().verifyLogin(user, password, jsession)
-                    var i = 0
+                    val sankhyaAuth = SankhyaAuth()
+                    if (jsession.statusMessage.isNotEmpty()) sankhyaAuth.clearJsession(jsession)
+                    sankhyaAuth.verifyLogin(context, user, password, jsession)
+                    /*var i = 0
                     do {
                         if (jsession.id.isNotEmpty() || jsession.statusMessage.isNotEmpty()) break
                         Thread.sleep(500)
                         i++
-                    } while (i < 10)
+                    } while (i < 10)*/
                     val statusMessage = jsession.statusMessage.ifEmpty { "Login não realizado" }
                     if (jsession.id.isEmpty()) Toast.makeText(
                         context,

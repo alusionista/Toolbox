@@ -23,16 +23,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import br.com.cofermeta.toolbox.data.model.Jsession
+import br.com.cofermeta.toolbox.data.model.ProductQuery
+import br.com.cofermeta.toolbox.network.SankhyaAuth
+import br.com.cofermeta.toolbox.network.SankhyaQuery
 
 @Composable
 fun QueryScreen(context: Context, navController: NavController, jsession: Jsession) {
 
-    var query by rememberSaveable { mutableStateOf("12027") }
+    var query by rememberSaveable { mutableStateOf("") }
+    var hasResult by rememberSaveable { mutableStateOf(false) }
 
     Query(
         context = context,
         jsession = jsession,
         query = query,
+        hasResult = hasResult,
+        onHasResultChange = { hasResult = it },
         onQueryChange = { query = it },
     )
 }
@@ -42,8 +48,11 @@ fun Query(
     context: Context,
     jsession: Jsession,
     query: String,
+    hasResult: Boolean,
+    onHasResultChange: (Boolean) -> Unit,
     onQueryChange: (String) -> Unit,
 ) {
+    var queryResult = ProductQuery()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -80,18 +89,27 @@ fun Query(
             ) {
                 Button(
                     onClick = {
-                         Toast.makeText(context, jsession.id, Toast.LENGTH_SHORT).show()
-                              },
+                        SankhyaQuery().tryQuery(context, jsession, queryResult)
+                        //onHasResultChange = true
+                    },
                     shape = RoundedCornerShape(50.dp),
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight()
+
                 ) {
-                    Icon(Icons.Default.Search, contentDescription = "produto")
+                    Icon(Icons.Default.Search, contentDescription = "consulta")
                 }
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
-        Text(text = jsession.responseBody)
+        if(hasResult){
+            Text(
+                text = """
+            ${jsession.user}
+            ${queryResult.body}
+        """.trimIndent()
+            )
+        }
     }
 }

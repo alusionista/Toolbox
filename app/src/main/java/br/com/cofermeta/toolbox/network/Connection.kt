@@ -1,28 +1,62 @@
 package br.com.cofermeta.toolbox.network
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.util.Log
 import java.io.BufferedReader
+import java.io.IOException
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 
-abstract class Connection: SimpleHttpRequest {
-    private fun baseUrl(serviceName: String): String {
-        return "http://teste.cofermeta.com.br:8680/mge/service.sbr?serviceName=$serviceName&outputType=json"
+abstract class Connection {
+    private fun baseUrl(serviceName: String, jsessionid: String): String {
+        return if (jsessionid.isEmpty()) "$base:$port/mge/service.sbr?serviceName=$serviceName&outputType=json"
+        else "$base:$port/mge/service.sbr?serviceName=$serviceName&mgeSession=$jsessionid&outputType=json"
     }
 
-    override fun connect(serviceName: String,
-                         requestBody: String
+    fun isOnline(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val capabilities =
+            connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+        if (capabilities != null) {
+            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
+                return false
+            } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
+                return true
+            } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
+                return true
+            }
+        }
+        return false
+    }
+
+
+    @Throws(IOException::class, InterruptedException::class)
+    fun connect(
+        serviceName: String,
+        requestBody: String,
+        requestMethod: String = "POST",
+        jsessionid: String = ""
     ): String {
         var response: StringBuilder
-        val conn = URL(baseUrl(serviceName)).openConnection() as HttpURLConnection
-        conn.requestMethod = "POST"
-        conn.setRequestProperty("Content-type", "application/json")
+        val bytes = requestBody.toByteArray()
+        val conn = URL(baseUrl(serviceName, jsessionid)).openConnection() as HttpURLConnection
+        conn.requestMethod = requestMethod
+        conn.setRequestProperty("Content-type", "application/json; utf-8")
         conn.setRequestProperty("Accept", "application/json")
+        if (jsessionid.isNotEmpty()) conn.setRequestProperty("cookie", "JSESSIONID=$jsessionid")
         conn.readTimeout = 10_000
         conn.connectTimeout = 10_000
         conn.doOutput = true
         conn.doInput = true
-        conn.outputStream.use { stream -> stream.write(requestBody.toByteArray()) }
+
+        conn.outputStream.use { stream -> stream.write(bytes) }
         val status: Int = conn.responseCode
         val reader = if (status < 400) {
             InputStreamReader(conn.inputStream)
