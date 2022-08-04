@@ -1,12 +1,11 @@
 package br.com.cofermeta.toolbox.ui
 
 import android.content.Context
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.R
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.Icon
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
@@ -16,22 +15,26 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import br.com.cofermeta.toolbox.network.login.JsessionDataClass
+import coil.compose.SubcomposeAsyncImage
+import coil.request.ImageRequest
 
 @Composable
 fun QueryScreen(context: Context?, navController: NavController, jsession: JsessionDataClass) {
     var query by rememberSaveable { mutableStateOf("12027") }
-
     Query(
         jsession = jsession,
         query = query,
         onQueryChange = { query = it },
-
         )
 }
 
@@ -59,31 +62,96 @@ fun Query(
         )
         Spacer(modifier = Modifier.height(20.dp))
         Box(modifier = Modifier.fillMaxWidth()) {
-            OutlinedTextField(
-                value = query,
-                onValueChange = onQueryChange,
-                label = {
-                    Text(
-                        text = "Produto"
-                    )
-                },
-                shape = RoundedCornerShape(50.dp),
+            Row(
                 modifier = Modifier
-                    .width(250.dp)
-            )
-            Button(
-                onClick = {
-                    TODO()
-                },
-                shape = RoundedCornerShape(50.dp),
-                modifier = Modifier.align(Alignment.TopEnd)
-                    .height(50.dp)
-                    .width(50.dp)
+                    .fillMaxWidth()
             ) {
-                Icon(Icons.Default.Search, contentDescription = "produto")
+                OutlinedTextField(
+                    value = query,
+                    onValueChange = onQueryChange,
+                    label = {
+                        Text(
+                            text = "Produto"
+                        )
+                    },
+                    shape = RoundedCornerShape(50.dp),
+                    modifier = Modifier
+                        .weight(0.8f)
+                )
+                Button(
+                    onClick = {
+
+                    },
+                    shape = RoundedCornerShape(50.dp),
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .weight(0.2f)
+                        .align(Alignment.CenterVertically)
+                        .height(50.dp)
+                ) {
+                    Icon(Icons.Default.Search, contentDescription = "produto")
+                }
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
         Text(text = jsession.user)
+
+        QueryHeader()
+        QueryBody()
     }
+}
+
+@Composable
+fun QueryHeader() {
+    Text(
+        text = nome,
+        fontSize = 16.sp,
+        modifier = Modifier
+            .wrapContentWidth()
+            .padding(all = 8.dp)
+    )
+}
+
+@Composable
+fun QueryBody() {
+    Surface(color = Color.LightGray, modifier = Modifier
+        .fillMaxWidth()
+        .padding(all = 16.dp)
+        .clip(RoundedCornerShape(12.dp))){
+        Box(modifier = Modifier.padding(16.dp)) {
+            Column {
+                Row(horizontalArrangement = Arrangement.SpaceAround,
+                    modifier = Modifier.fillMaxWidth()) {
+                    SubcomposeAsyncImage(model = ImageRequest.Builder(LocalContext.current)
+                        .data(imgUrl)
+                        .crossfade(true)
+                        .build(),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(172.dp)
+                            .clip(RoundedCornerShape(12.dp))
+                    )
+                    Column() {
+                        Column {
+                            Text(text = "Código", fontSize = 14.sp)
+                            Text(text = codigo, fontSize = 22.sp)
+                        }
+                        Column {
+                            Text(text = "Modelo", fontSize = 14.sp)
+                            Text(text = modelo, fontSize = 22.sp)
+                        }
+                        Column {
+                            Text(text = "Referência", fontSize = 14.sp)
+                            Text(text = referencia, fontSize = 22.sp)
+                        }
+                    }
+                }
+                Column {
+                    Text(text = "Descrição", fontSize = 14.sp)
+                    Text(text = descricao, fontSize = 22.sp)
+                }
+            }
+        }
+    }
+
 }
