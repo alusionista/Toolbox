@@ -1,6 +1,8 @@
 package br.com.cofermeta.toolbox.ui
 
 import android.content.Context
+import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,12 +27,14 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
 import br.com.cofermeta.toolbox.data.model.Jsession
-
 import br.com.cofermeta.toolbox.network.SankhyaAuth
 import br.com.cofermeta.toolbox.network.defaultPasword
 import br.com.cofermeta.toolbox.network.defaultUser
+import br.com.cofermeta.toolbox.QueryActivity
+import br.com.cofermeta.toolbox.network.login.SankhyaAuth
 
 @Composable
 fun LoginScreen(context: Context?, navController: NavController, jsession: Jsession) {
@@ -131,7 +135,9 @@ fun Login(
                         Toast.LENGTH_SHORT
                     ).show()
                     else {
-                        navController.navigate("query_ui")
+
+                        val queryIntent = Intent(context, QueryActivity::class.java).setFlags(FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(context, queryIntent, null)
                     }
                 },
                 shape = RoundedCornerShape(50.dp),

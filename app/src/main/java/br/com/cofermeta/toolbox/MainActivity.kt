@@ -15,13 +15,23 @@ import br.com.cofermeta.toolbox.ui.LoginScreen
 import br.com.cofermeta.toolbox.ui.QueryScreen
 import br.com.cofermeta.toolbox.ui.theme.ToolboxTheme
 
-//@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val jsession = Jsession()
         setContent {
             ToolboxTheme {
+            val navController = rememberNavController()
+NavHost(
+    navController = navController,
+    startDestination = "login_ui"
+) {
+    composable("login_ui") {
+        LoginScreen(context = applicationContext, navController = navController)
+    }
+}
+            
+            /*
                 val navController = rememberNavController()
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -45,6 +55,9 @@ class MainActivity : ComponentActivity() {
                                 jsession = jsession
                             )
                         }
+
+*/
+
                     }
                 }
             }
