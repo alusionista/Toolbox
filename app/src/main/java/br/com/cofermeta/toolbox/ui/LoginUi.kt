@@ -29,21 +29,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
+import br.com.cofermeta.toolbox.data.model.Jsession
+import br.com.cofermeta.toolbox.network.SankhyaAuth
+import br.com.cofermeta.toolbox.network.defaultPasword
+import br.com.cofermeta.toolbox.network.defaultUser
 import br.com.cofermeta.toolbox.QueryActivity
-import br.com.cofermeta.toolbox.network.login.JsessionDataClass
 import br.com.cofermeta.toolbox.network.login.SankhyaAuth
 
 @Composable
-fun LoginScreen(context: Context?, navController: NavController) {
+fun LoginScreen(context: Context?, navController: NavController, jsession: Jsession) {
 
-    var user by rememberSaveable { mutableStateOf("integracao") }
-    var password by rememberSaveable { mutableStateOf("654321") }
+    var user by rememberSaveable { mutableStateOf(defaultUser) }
+    var password by rememberSaveable { mutableStateOf(defaultPasword) }
 
     Login(
         context = context!!,
         navController = navController,
         user = user,
         password = password,
+        jsession = jsession,
         onUserChange = { user = it },
         onPasswordChange = { password = it }
     )
@@ -55,10 +59,10 @@ fun Login(
     navController: NavController,
     user: String,
     password: String,
+    jsession: Jsession,
     onUserChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit
 ) {
-    val jsession = JsessionDataClass()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -115,13 +119,15 @@ fun Login(
         Box {
             Button(
                 onClick = {
-                    SankhyaAuth().verifyLogin(user, password, jsession)
-                    var i = 0
+                    val sankhyaAuth = SankhyaAuth()
+                    if (jsession.statusMessage.isNotEmpty()) sankhyaAuth.clearJsession(jsession)
+                    sankhyaAuth.verifyLogin(context, user, password, jsession)
+                    /*var i = 0
                     do {
                         if (jsession.id.isNotEmpty() || jsession.statusMessage.isNotEmpty()) break
                         Thread.sleep(500)
                         i++
-                    } while (i < 10)
+                    } while (i < 10)*/
                     val statusMessage = jsession.statusMessage.ifEmpty { "Login não realizado" }
                     if (jsession.id.isEmpty()) Toast.makeText(
                         context,
@@ -129,7 +135,7 @@ fun Login(
                         Toast.LENGTH_SHORT
                     ).show()
                     else {
-                        Toast.makeText(context, jsession.id, Toast.LENGTH_SHORT).show()
+
                         val queryIntent = Intent(context, QueryActivity::class.java).setFlags(FLAG_ACTIVITY_NEW_TASK)
                         startActivity(context, queryIntent, null)
                     }

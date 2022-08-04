@@ -1,6 +1,7 @@
 package br.com.cofermeta.toolbox.ui
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.R
@@ -24,26 +25,39 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import br.com.cofermeta.toolbox.network.login.JsessionDataClass
+import br.com.cofermeta.toolbox.data.model.Jsession
+import br.com.cofermeta.toolbox.data.model.ProductQuery
+import br.com.cofermeta.toolbox.network.SankhyaAuth
+import br.com.cofermeta.toolbox.network.SankhyaQuery
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 
 @Composable
-fun QueryScreen(context: Context?, navController: NavController, jsession: JsessionDataClass) {
-    var query by rememberSaveable { mutableStateOf("12027") }
+fun QueryScreen(context: Context, navController: NavController, jsession: Jsession) {
+
+    var query by rememberSaveable { mutableStateOf("") }
+    var hasResult by rememberSaveable { mutableStateOf(false) }
+
     Query(
+        context = context,
         jsession = jsession,
         query = query,
+        hasResult = hasResult,
+        onHasResultChange = { hasResult = it },
         onQueryChange = { query = it },
         )
 }
 
 @Composable
 fun Query(
-    jsession: JsessionDataClass,
+    context: Context,
+    jsession: Jsession,
     query: String,
+    hasResult: Boolean,
+    onHasResultChange: (Boolean) -> Unit,
     onQueryChange: (String) -> Unit,
-    ) {
+) {
+    var queryResult = ProductQuery()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -61,6 +75,10 @@ fun Query(
                 .fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(20.dp))
+        Row(modifier = Modifier.height(56.dp)) {
+            Column(
+                Modifier.weight(5f)
+
         Box(modifier = Modifier.fillMaxWidth()) {
             Row(
                 modifier = Modifier
@@ -69,6 +87,29 @@ fun Query(
                 OutlinedTextField(
                     value = query,
                     onValueChange = onQueryChange,
+                    shape = RoundedCornerShape(50.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight()
+                        .padding(end = 8.dp)
+                )
+            }
+            Column(
+                Modifier.weight(1f)
+            ) {
+                Button(
+                    onClick = {
+                        SankhyaQuery().tryQuery(context, jsession, queryResult)
+                        //onHasResultChange = true
+                    },
+                    shape = RoundedCornerShape(50.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight()
+
+                ) {
+                    Icon(Icons.Default.Search, contentDescription = "consulta")
+/*
                     label = {
                         Text(
                             text = "Produto"
@@ -90,14 +131,25 @@ fun Query(
                         .height(50.dp)
                 ) {
                     Icon(Icons.Default.Search, contentDescription = "produto")
+*/
                 }
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
+        if(hasResult){
+            Text(
+                text = """
+            ${jsession.user}
+            ${queryResult.body}
+        """.trimIndent()
+            )
+        }
+/*
         Text(text = jsession.user)
 
         QueryHeader()
         QueryBody()
+        */
     }
 }
 

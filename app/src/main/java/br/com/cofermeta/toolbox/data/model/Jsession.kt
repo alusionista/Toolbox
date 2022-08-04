@@ -1,8 +1,8 @@
-package br.com.cofermeta.toolbox.network.login
+package br.com.cofermeta.toolbox.data.model
 
 import java.util.*
 
-data class JsessionDataClass(
+data class Jsession(
     var user: String = "",
     var password: String = "",
     var status: String = "",
