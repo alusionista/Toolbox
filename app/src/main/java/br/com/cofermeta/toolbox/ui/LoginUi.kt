@@ -119,14 +119,7 @@ fun Login(
             Button(
                 onClick = {
                     val auth = Auth()
-                    //if (sankhya.statusMessage.isNotEmpty()) sankhyaAuth.clearJsession(sankhya)
                     auth.verifyLogin(context, user, password, sankhya)
-                    /*var i = 0
-                    do {
-                        if (jsession.id.isNotEmpty() || jsession.statusMessage.isNotEmpty()) break
-                        Thread.sleep(500)
-                        i++
-                    } while (i < 10)*/
                     val statusMessage = sankhya.statusMessage.ifEmpty { "Login não realizado" }
                     if (sankhya.jsessionid.isEmpty()) Toast.makeText(
                         context,

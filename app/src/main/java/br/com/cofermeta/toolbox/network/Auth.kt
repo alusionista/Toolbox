@@ -19,8 +19,8 @@ class Auth : Connection() {
             MainScope().launch(Dispatchers.IO) {
                 val auth = Auth()
                 auth.getJsessionId(sankhya)
-                if (sankhya.status == "1")
-                    auth.getUserData(sankhya)
+                if (sankhya.status == "1") auth.getUserData(sankhya)
+                createLogs(sankhya)
                 return@launch
             }
             while (true) {
@@ -38,13 +38,12 @@ class Auth : Connection() {
         }
     }
 
-    private fun getJsessionId(sankhya: Sankhya): Sankhya {
+    fun getJsessionId(sankhya: Sankhya): Sankhya {
         val response = connect(
             serviceName = loginService,
             requestBody = loginBody(sankhya.user, sankhya.password)
         )
         checkAndUpdateAuth(response, sankhya)
-        createLogs(sankhya)
         return sankhya
     }
 
@@ -54,9 +53,7 @@ class Auth : Connection() {
             requestBody = queryTSIUSUBody(sankhya.user),
             jsessionid = sankhya.jsessionid
         )
-        //checkAndUpdateUserData(response, sankhya)
-        Log.d("getUserData body", response)
-
+        checkAndUpdateUserData(response, sankhya)
         return sankhya
 
     }
@@ -84,13 +81,13 @@ class Auth : Connection() {
         sankhya.responseBody =
             jsonElement.asJsonObject["responseBody"].toString()
         sankhya.codusu =
-            jsonElement.asJsonObject["responseBody"].asJsonObject["rows"].asJsonArray.asJsonArray[0].toString()
+            jsonElement.asJsonObject["responseBody"].asJsonObject["rows"].asJsonArray[0].asJsonArray[0].asString
         sankhya.firstName =
-            jsonElement.asJsonObject["responseBody"].asJsonObject["rows"].asJsonArray.asJsonArray[1].toString()
+            jsonElement.asJsonObject["responseBody"].asJsonObject["rows"].asJsonArray[0].asJsonArray[1].asString
         sankhya.codgrupo =
-            jsonElement.asJsonObject["responseBody"].asJsonObject["rows"].asJsonArray.asJsonArray[2].toString()
+            jsonElement.asJsonObject["responseBody"].asJsonObject["rows"].asJsonArray[0].asJsonArray[2].asString
         sankhya.codemp =
-            jsonElement.asJsonObject["responseBody"].asJsonObject["rows"].asJsonArray.asJsonArray[3].toString()
+            jsonElement.asJsonObject["responseBody"].asJsonObject["rows"].asJsonArray[0].asJsonArray[3].asString
 
     }
 
