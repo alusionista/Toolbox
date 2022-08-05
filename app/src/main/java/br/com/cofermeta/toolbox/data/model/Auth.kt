@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class Auth : Connection() {
-    fun verifyLogin(context: Context, user: String, password: String, sankhya: Sankhya) {
+    fun verifyLogin(context: Context, user: String = defaultUser, password: String = defaultPasword, sankhya: Sankhya) {
         clearSankhya(sankhya)
         sankhya.user = user
         sankhya.password = password

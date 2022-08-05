@@ -11,7 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import br.com.cofermeta.toolbox.data.model.dataClass.ProductQuery
-import br.com.cofermeta.toolbox.ui.QueryScreen
+import br.com.cofermeta.toolbox.ui.home.QueryScreen
 import br.com.cofermeta.toolbox.ui.theme.ToolboxTheme
 
 class QueryActivity: ComponentActivity() {

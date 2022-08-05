@@ -13,3 +13,4 @@ const val executeQuery = "DbExplorerSP.executeQuery"
 const val threadSleep: Long = 50
 
 const val connectionErrorMessage = "Não foi possível conectar-se.\nVerifique sua conexão Wi-fi."
+const val searchBarPlaceHolder = "Insira o código do produto"

@@ -6,26 +6,27 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.textInputServiceFactory
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorPalette = darkColors(
-    primary = aBitBlue,
-    primaryVariant = veryBlue,
-    secondary = almostBlue,
-    background = Color.Black,
-    surface = Color.Black,
-    onPrimary = Color.Black,
+    primary = almostBlue,
+    primaryVariant = softBlue,
+    secondary = grayBlue,
+    secondaryVariant = white50p,
+    background = veryBlue,
+    surface = veryBlue,
+    error = errorColor,
+    onPrimary = veryBlue,
     onSecondary = Color.White,
-    onBackground = Color.White,
-    onSurface = Color.White,
 )
 
 private val LightColorPalette = lightColors(
-    primary = blue,
+    primary = Color.White,
     primaryVariant = veryBlue,
     secondary = almostBlue,
-    background = Color.White,
-    surface = Color.White,
+    background = lighterBlue,
+    surface = lighterBlue,
     onPrimary = Color.White,
     onSecondary = Color.Black,
     onBackground = Color.Black,
@@ -42,13 +43,11 @@ fun ToolboxTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composabl
         content = content,
     )
 
-
-
     val systemUiController = rememberSystemUiController()
 
     if (darkTheme) {
         systemUiController.setSystemBarsColor(
-            color = Color.Transparent
+            color = veryBlue
         )
     } else {
         systemUiController.setSystemBarsColor(
