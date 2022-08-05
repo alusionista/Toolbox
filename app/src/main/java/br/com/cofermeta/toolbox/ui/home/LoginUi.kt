@@ -1,4 +1,4 @@
-package br.com.cofermeta.toolbox.ui
+package br.com.cofermeta.toolbox.ui.home
 
 import android.content.Context
 import android.content.Intent
@@ -29,10 +29,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
-import br.com.cofermeta.toolbox.data.model.Sankhya
-import br.com.cofermeta.toolbox.network.Auth
-import br.com.cofermeta.toolbox.network.defaultPasword
-import br.com.cofermeta.toolbox.network.defaultUser
+import br.com.cofermeta.toolbox.data.model.dataClass.Sankhya
+import br.com.cofermeta.toolbox.data.model.Auth
+import br.com.cofermeta.toolbox.data.values.defaultPasword
+import br.com.cofermeta.toolbox.data.values.defaultUser
 import br.com.cofermeta.toolbox.QueryActivity
 
 @Composable

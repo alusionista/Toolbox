@@ -22,9 +22,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import br.com.cofermeta.toolbox.data.model.Sankhya
-import br.com.cofermeta.toolbox.data.model.ProductQuery
-import br.com.cofermeta.toolbox.network.Query
+import br.com.cofermeta.toolbox.data.model.dataClass.Sankhya
+import br.com.cofermeta.toolbox.data.model.dataClass.ProductQuery
+import br.com.cofermeta.toolbox.data.model.Query
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 
@@ -120,7 +120,7 @@ fun Query(
             text = queryResult.body
         )
         QueryHeader(queryResult.body)
-        QueryBody(queryResult.body)
+        //QueryBody(queryResult.body)
     }
 }
 

@@ -1,4 +1,4 @@
-package br.com.cofermeta.toolbox.network
+package br.com.cofermeta.toolbox.data.values
 
 const val base = "http://teste.cofermeta.com.br"
 const val port = 8280

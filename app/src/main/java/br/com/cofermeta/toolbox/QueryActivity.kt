@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import br.com.cofermeta.toolbox.data.model.ProductQuery
+import br.com.cofermeta.toolbox.data.model.dataClass.ProductQuery
 import br.com.cofermeta.toolbox.ui.QueryScreen
 import br.com.cofermeta.toolbox.ui.theme.ToolboxTheme
 

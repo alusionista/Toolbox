@@ -1,8 +1,10 @@
 package br.com.cofermeta.toolbox.network.login
 
-import android.util.Log
-import br.com.cofermeta.toolbox.data.model.Sankhya
-import br.com.cofermeta.toolbox.network.*
+import br.com.cofermeta.toolbox.data.model.Auth
+import br.com.cofermeta.toolbox.data.model.dataClass.Sankhya
+import br.com.cofermeta.toolbox.data.values.base
+import br.com.cofermeta.toolbox.data.values.connectionErrorMessage
+import br.com.cofermeta.toolbox.data.values.port
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch

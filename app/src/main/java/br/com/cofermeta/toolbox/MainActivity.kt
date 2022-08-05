@@ -10,9 +10,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import br.com.cofermeta.toolbox.ui.LoginScreen
+import br.com.cofermeta.toolbox.data.model.dataClass.Sankhya
+import br.com.cofermeta.toolbox.ui.home.LoginScreen
 import br.com.cofermeta.toolbox.ui.theme.ToolboxTheme
 
+val sankhya = Sankhya()
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,37 +38,6 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }
-
-                /*
-                    val navController = rememberNavController()
-                    Surface(
-                        modifier = Modifier.fillMaxSize(),
-                        color = MaterialTheme.colors.background
-                    ) {
-                        NavHost(
-                            navController = navController,
-                            startDestination = "login_ui"
-                        ) {
-                            composable("login_ui") {
-                                LoginScreen(
-                                    context = applicationContext,
-                                    navController = navController,
-                                    jsession = jsession
-                                )
-                            }
-                            composable("query_ui") {
-                                QueryScreen(
-                                    context = applicationContext,
-                                    navController = navController,
-                                    jsession = jsession
-                                )
-                            }
-    
-    
-    
-                        }
-                    }
-                    */
             }
         }
     }
