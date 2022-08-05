@@ -1,6 +1,7 @@
 package br.com.cofermeta.toolbox.ui
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -21,9 +22,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import br.com.cofermeta.toolbox.data.model.Jsession
+import br.com.cofermeta.toolbox.data.model.Sankhya
 import br.com.cofermeta.toolbox.data.model.ProductQuery
-import br.com.cofermeta.toolbox.network.SankhyaQuery
+import br.com.cofermeta.toolbox.network.Query
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 
@@ -31,7 +32,7 @@ import coil.request.ImageRequest
 fun QueryScreen(
     context: Context,
     navController: NavController,
-    jsession: Jsession,
+    sankhya: Sankhya,
     queryResult: ProductQuery
 ) {
 
@@ -40,19 +41,19 @@ fun QueryScreen(
 
     Query(
         context = context,
-        jsession = jsession,
+        sankhya = sankhya,
         query = query,
         hasResult = hasResult,
         onHasResultChange = { hasResult = it },
         onQueryChange = { query = it },
         queryResult = queryResult
-        )
+    )
 }
 
 @Composable
 fun Query(
     context: Context,
-    jsession: Jsession,
+    sankhya: Sankhya,
     query: String,
     hasResult: Boolean,
     onHasResultChange: (Boolean) -> Unit,
@@ -79,7 +80,7 @@ fun Query(
         Row(modifier = Modifier.height(56.dp)) {
             Column(
                 Modifier.weight(5f)
-            ){
+            ) {
                 OutlinedTextField(
                     value = query,
                     onValueChange = onQueryChange,
@@ -95,8 +96,14 @@ fun Query(
             ) {
                 Button(
                     onClick = {
-                        SankhyaQuery().tryQuery(context, jsession, queryResult, query)
-
+                        if (query.isNotEmpty()) Query().tryQuery(
+                            context,
+                            sankhya,
+                            queryResult,
+                            query
+                        )
+                        else Toast.makeText(context, "Nenum produto encontrado", Toast.LENGTH_SHORT)
+                            .show()
                     },
                     shape = RoundedCornerShape(50.dp),
                     modifier = Modifier
@@ -109,16 +116,11 @@ fun Query(
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
-        if(hasResult){
-            Text(
-                text = """
-            ${jsession.user}
-            
-        """.trimIndent()
-            )
-            QueryHeader(queryResult.body)
-            QueryBody(queryResult.body)
-        }
+        Text(
+            text = queryResult.body
+        )
+        QueryHeader(queryResult.body)
+        QueryBody(queryResult.body)
     }
 }
 
@@ -135,18 +137,23 @@ fun QueryHeader(body: String) {
 
 @Composable
 fun QueryBody(body: String) {
-    Surface(color = Color.LightGray, modifier = Modifier
-        .fillMaxWidth()
-        .padding(all = 16.dp)
-        .clip(RoundedCornerShape(12.dp))){
+    Surface(
+        color = Color.LightGray, modifier = Modifier
+            .fillMaxWidth()
+            .padding(all = 16.dp)
+            .clip(RoundedCornerShape(12.dp))
+    ) {
         Box(modifier = Modifier.padding(16.dp)) {
             Column {
-                Row(horizontalArrangement = Arrangement.SpaceAround,
-                    modifier = Modifier.fillMaxWidth()) {
-                    SubcomposeAsyncImage(model = ImageRequest.Builder(LocalContext.current)
-                        .data(imgUrl)
-                        .crossfade(true)
-                        .build(),
+                Row(
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    SubcomposeAsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(imgUrl)
+                            .crossfade(true)
+                            .build(),
                         contentDescription = null,
                         modifier = Modifier
                             .size(172.dp)

@@ -1,9 +1,9 @@
 package br.com.cofermeta.toolbox
 
 import android.app.Application
-import br.com.cofermeta.toolbox.data.model.Jsession
+import br.com.cofermeta.toolbox.data.model.Sankhya
 
-val jsession = Jsession()
+val sankhya = Sankhya()
 
 //@HiltAndroidApp
 class ToolboxApplication: Application() {

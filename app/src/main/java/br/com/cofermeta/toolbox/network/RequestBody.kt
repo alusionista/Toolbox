@@ -77,3 +77,23 @@ fun queryBody(query: String) =
     }
   }
     """.trimIndent()
+
+fun queryTSIUSUBody(user: String) =
+    """
+  {
+    "serviceName":"$executeQuery",
+    "requestBody": {
+        "sql":"
+            SELECT
+                CODUSU,
+                NOMEUSUCPLT,
+                CODGRUPO,
+                CODEMP
+            FROM
+                TSIUSU
+            WHERE
+                NOMEUSU = '$user'
+        "
+    }
+  }
+    """.trimIndent()
