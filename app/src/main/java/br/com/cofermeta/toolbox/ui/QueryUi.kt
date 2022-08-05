@@ -1,6 +1,7 @@
 package br.com.cofermeta.toolbox.ui
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -153,6 +154,7 @@ fun QueryDrawer() {
         }
     ) {
     }
+
 }
 
 @Composable
@@ -185,7 +187,7 @@ fun Query(
         Row(modifier = Modifier.height(56.dp)) {
             Column(
                 Modifier.weight(5f)
-            ){
+            ) {
                 OutlinedTextField(
                     value = query,
                     onValueChange = onQueryChange,
@@ -201,8 +203,14 @@ fun Query(
             ) {
                 Button(
                     onClick = {
-                        Query().tryQuery(context, sankhya, queryResult, query)
-
+                        if (query.isNotEmpty()) Query().tryQuery(
+                            context,
+                            sankhya,
+                            queryResult,
+                            query
+                        )
+                        else Toast.makeText(context, "Nenum produto encontrado", Toast.LENGTH_SHORT)
+                            .show()
                     },
                     shape = RoundedCornerShape(50.dp),
                     modifier = Modifier
@@ -215,16 +223,11 @@ fun Query(
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
-        if(hasResult){
-            Text(
-                text = """
-            ${sankhya.user}
-            
-        """.trimIndent()
-            )
-            QueryHeader(queryResult.body)
-            QueryBody(queryResult.body)
-        }
+        Text(
+            text = queryResult.body
+        )
+        QueryHeader(queryResult.body)
+        QueryBody(queryResult.body)
     }
 }
 
@@ -241,18 +244,23 @@ fun QueryHeader(body: String) {
 
 @Composable
 fun QueryBody(body: String) {
-    Surface(color = Color.LightGray, modifier = Modifier
-        .fillMaxWidth()
-        .padding(all = 16.dp)
-        .clip(RoundedCornerShape(12.dp))){
+    Surface(
+        color = Color.LightGray, modifier = Modifier
+            .fillMaxWidth()
+            .padding(all = 16.dp)
+            .clip(RoundedCornerShape(12.dp))
+    ) {
         Box(modifier = Modifier.padding(16.dp)) {
             Column {
-                Row(horizontalArrangement = Arrangement.SpaceAround,
-                    modifier = Modifier.fillMaxWidth()) {
-                    SubcomposeAsyncImage(model = ImageRequest.Builder(LocalContext.current)
-                        .data(imgUrl)
-                        .crossfade(true)
-                        .build(),
+                Row(
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    SubcomposeAsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(imgUrl)
+                            .crossfade(true)
+                            .build(),
                         contentDescription = null,
                         modifier = Modifier
                             .size(172.dp)
