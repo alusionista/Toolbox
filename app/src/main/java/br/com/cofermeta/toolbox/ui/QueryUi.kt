@@ -6,12 +6,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,6 +25,7 @@ import br.com.cofermeta.toolbox.data.model.ProductQuery
 import br.com.cofermeta.toolbox.network.Query
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
+import kotlinx.coroutines.launch
 
 @Composable
 fun QueryScreen(
@@ -47,7 +46,115 @@ fun QueryScreen(
         onHasResultChange = { hasResult = it },
         onQueryChange = { query = it },
         queryResult = queryResult
-    )
+        )
+    QueryDrawer()
+}
+
+@Composable
+fun QueryDrawer() {
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
+
+    ModalDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            Column {
+                var empresa by remember {
+                    mutableStateOf("")
+                }
+                var codigo1 by remember {
+                    mutableStateOf("")
+                }
+                var codigo2 by remember {
+                    mutableStateOf("")
+                }
+                var marca by remember {
+                    mutableStateOf("")
+                }
+                var localizacao by remember {
+                    mutableStateOf("")
+                }
+                var descricao by remember {
+                    mutableStateOf("")
+                }
+
+                Text(
+                    text = "Empresa",
+                    Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)
+                )
+                OutlinedTextField(
+                    value = empresa,
+                    onValueChange = { empresa = it },
+                    shape = RoundedCornerShape(50.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                )
+                Text(
+                    text = "Código",
+                    Modifier.padding(horizontal = 16.dp)
+                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    OutlinedTextField(
+                        value = codigo1,
+                        onValueChange = { codigo1 = it },
+                        shape = RoundedCornerShape(50.dp),
+                        modifier = Modifier
+                            .weight(0.3f)
+                            .padding(start = 16.dp, top = 16.dp, end = 4.dp, bottom = 16.dp)
+                    )
+                    OutlinedTextField(
+                        value = codigo2,
+                        onValueChange = { codigo2 = it },
+                        shape = RoundedCornerShape(50.dp),
+                        modifier = Modifier
+                            .weight(0.7f)
+                            .padding(start = 4.dp, top = 16.dp, end = 16.dp, bottom = 16.dp)
+                    )
+                }
+                Text(
+                    text = "Marca",
+                    Modifier.padding(horizontal = 16.dp)
+                )
+                OutlinedTextField(
+                    value = marca,
+                    onValueChange = { marca = it },
+                    shape = RoundedCornerShape(50.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                )
+                Text(
+                    text = "Localização",
+                    Modifier.padding(horizontal = 16.dp)
+                )
+                OutlinedTextField(
+                    value = localizacao,
+                    onValueChange = { localizacao = it },
+                    shape = RoundedCornerShape(50.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                )
+                Text(
+                    text = "Descrição",
+                    Modifier.padding(horizontal = 16.dp)
+                )
+                OutlinedTextField(
+                    value = descricao,
+                    onValueChange = { descricao = it },
+                    shape = RoundedCornerShape(50.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                )
+            }
+        }
+    ) {
+    }
+
 }
 
 @Composable
@@ -181,5 +288,4 @@ fun QueryBody(body: String) {
             }
         }
     }
-
 }
