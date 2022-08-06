@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import br.com.cofermeta.toolbox.data.*
-import br.com.cofermeta.toolbox.ui.componets.BasicBottomBar
 import br.com.cofermeta.toolbox.ui.componets.BasicTopBar
 import br.com.cofermeta.toolbox.ui.componets.QueryDrawer
 import coil.compose.SubcomposeAsyncImage
