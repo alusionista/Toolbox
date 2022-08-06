@@ -14,14 +14,12 @@ val Nunito = FontFamily(
 
 // Set of Material typography styles to start with
 val Typography = Typography(
+    defaultFontFamily = Nunito,
     body1 = TextStyle(
-        fontFamily = Nunito,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         letterSpacing = 2.sp
-
-    )
-    /* Other default text styles to override
+    ),
     button = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.W500,
@@ -32,5 +30,4 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp
     )
-    */
 )

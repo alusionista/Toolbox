@@ -1,6 +1,6 @@
-package br.com.cofermeta.toolbox.data.values
+package br.com.cofermeta.toolbox.data
 
-import br.com.cofermeta.toolbox.data.model.Query
+import br.com.cofermeta.toolbox.model.dataclasses.sankhya
 
 fun loginBody(user: String, password: String) =
     """
@@ -100,41 +100,55 @@ fun queryTSIUSUBody(user: String) =
   }
     """.trimIndent()
 
-
 fun setQueryWhere(
-    query: String,
+    referencia: String,
+    codprod: String,
     marca: String,
     locprin: String,
     descrprod: String,
     codemp: String
 ): String {
-    val query_ = query.ifEmpty { "Login não realizado" }
-    return """              
-    (PRO.CODPROD = $query
-        OR $query IS NULL)
-    AND
+    val whereList = ArrayList<String>()
+    val stringBuilder = StringBuilder()
 
-    (PRO.MARCA = $marca
-        OR $marca IS NULL)
-    AND
+    val _referencia = "PRO.REFERENCIA = $referencia "
+    val _codprod = "PRO.CODPROD = $codprod "
+    val _marca = "PRO.MARCA LIKE '%$marca%' "
+    val _locprin = "LOCPRIN LIKE '%$locprin'%' "
+    val _descricao = "PRO.DESCRPROD LIKE '%$descrprod%' "
+    val _codemp = "LOC.CODEMP = $codemp "
+    val _estoque = "EST.CODEMP = $codemp "
 
-    (LOCPRIN LIKE '%$locprin'%'
-        OR $locprin IS NULL)
-    AND
 
-    (PRO.DESCRPROD LIKE '%$descrprod%'
-        OR $descrprod IS NULL)
-    AND
-        LOC.CODEMP IN (2)
-    AND
-    
-    EST.CODEMP = $codemp
+    if (referencia.isNotEmpty()) whereList.add(_referencia)
+    if (codprod.isNotEmpty()) whereList.add(_codprod)
+    if (marca.isNotEmpty()) whereList.add(_marca)
+    if (locprin.isNotEmpty()) whereList.add(_locprin)
+    if (descrprod.isNotEmpty()) whereList.add(_descricao)
+    if (codprod.isNotEmpty()) {
+        whereList.add(_codemp)
+        whereList.add(_estoque)
+    }
 
-    """.trimIndent()
+
+    for (i in 0 until whereList.size) {
+        stringBuilder.append(whereList[i])
+        if (i == (whereList.size - 1)) stringBuilder.append("")
+        else stringBuilder.append(" AND ")
+    }
+
+    return stringBuilder.toString()
 }
 
 
-fun queryListagemDeProdutosBody(query: String) =
+fun queryListagemDeProdutosBody(
+    referencia: String = "",
+    codprod: String = "",
+    marca: String = "",
+    locprin: String = "",
+    descrprod: String = "",
+    codemp: String = sankhya.codemp
+) =
     """
   {
     "serviceName":"$executeQuery",
@@ -339,12 +353,7 @@ fun queryListagemDeProdutosBody(query: String) =
                 PRO.AD_NULINHA = LIN.NULINHA
                 AND LIN.CODPARC = PAR.CODPARC
             WHERE
-
-
-
-
-
-
+            ${setQueryWhere(referencia,codprod,marca,locprin,descrprod,codemp)}
             GROUP BY
                 AD_COF_CODPRODECOM,
                 PRO.CODPROD,

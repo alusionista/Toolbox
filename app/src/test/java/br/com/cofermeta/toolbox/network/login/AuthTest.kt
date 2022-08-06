@@ -1,7 +1,7 @@
 package br.com.cofermeta.toolbox.network.login
 
-import br.com.cofermeta.toolbox.data.model.Auth
-import br.com.cofermeta.toolbox.data.model.dataClass.Sankhya
+import br.com.cofermeta.toolbox.model.Auth
+import br.com.cofermeta.toolbox.model.dataclasses.Sankhya
 import br.com.cofermeta.toolbox.data.values.base
 import br.com.cofermeta.toolbox.data.values.connectionErrorMessage
 import br.com.cofermeta.toolbox.data.values.port

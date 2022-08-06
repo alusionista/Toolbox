@@ -4,8 +4,8 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
-import br.com.cofermeta.toolbox.data.values.base
-import br.com.cofermeta.toolbox.data.values.port
+import br.com.cofermeta.toolbox.data.base
+import br.com.cofermeta.toolbox.data.port
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader

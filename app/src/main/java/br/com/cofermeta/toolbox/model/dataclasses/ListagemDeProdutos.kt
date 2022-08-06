@@ -1,4 +1,4 @@
-package br.com.cofermeta.toolbox.data.model.dataClass
+package br.com.cofermeta.toolbox.model.dataclasses
 
 data class ListagemDeProdutos (
     var CODPROD: String = "",

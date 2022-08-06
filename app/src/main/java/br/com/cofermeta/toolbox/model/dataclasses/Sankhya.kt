@@ -1,7 +1,8 @@
-package br.com.cofermeta.toolbox.data.model.dataClass
+package br.com.cofermeta.toolbox.model.dataclasses
 
 import java.util.*
 
+var sankhya = Sankhya()
 data class Sankhya(
     var status: String = "",
     var responseBody: String = "",
