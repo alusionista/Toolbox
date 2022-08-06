@@ -1,5 +1,7 @@
 package br.com.cofermeta.toolbox.network
 
+import br.com.cofermeta.toolbox.data.values.base
+import br.com.cofermeta.toolbox.data.values.port
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch

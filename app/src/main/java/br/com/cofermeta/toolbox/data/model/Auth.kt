@@ -1,9 +1,10 @@
-package br.com.cofermeta.toolbox.network
+package br.com.cofermeta.toolbox.data.model
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
-import br.com.cofermeta.toolbox.data.model.Sankhya
+import br.com.cofermeta.toolbox.data.model.dataClass.Sankhya
+import br.com.cofermeta.toolbox.data.values.*
+import br.com.cofermeta.toolbox.network.*
 import com.google.gson.JsonParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
@@ -11,7 +12,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class Auth : Connection() {
-    fun verifyLogin(context: Context, user: String, password: String, sankhya: Sankhya) {
+    fun verifyLogin(context: Context, user: String = defaultUser, password: String = defaultPasword, sankhya: Sankhya) {
         clearSankhya(sankhya)
         sankhya.user = user
         sankhya.password = password
@@ -98,7 +99,6 @@ class Auth : Connection() {
         Log.d("jsession user", value.user)
         Log.d("jsession password", value.password)
         Log.d("jsession statusMessage", value.statusMessage)
-
         Log.d("jsession firstName", value.firstName)
         Log.d("jsession codusu", value.codusu)
         Log.d("jsession codgrupo", value.codgrupo)

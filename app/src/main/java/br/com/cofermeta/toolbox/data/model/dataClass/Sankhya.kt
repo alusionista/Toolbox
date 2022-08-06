@@ -1,4 +1,4 @@
-package br.com.cofermeta.toolbox.data.model
+package br.com.cofermeta.toolbox.data.model.dataClass
 
 import java.util.*
 

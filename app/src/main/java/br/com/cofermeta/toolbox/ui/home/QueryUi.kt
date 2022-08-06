@@ -1,9 +1,12 @@
-package br.com.cofermeta.toolbox.ui
+package br.com.cofermeta.toolbox.ui.home
 
 import android.content.Context
+import android.view.KeyEvent.KEYCODE_ENTER
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
@@ -14,15 +17,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import br.com.cofermeta.toolbox.data.model.Sankhya
-import br.com.cofermeta.toolbox.data.model.ProductQuery
-import br.com.cofermeta.toolbox.network.Query
+import br.com.cofermeta.toolbox.data.model.dataClass.Sankhya
+import br.com.cofermeta.toolbox.data.model.dataClass.ProductQuery
+import br.com.cofermeta.toolbox.data.model.Query
+import br.com.cofermeta.toolbox.data.values.searchBarPlaceHolder
+import br.com.cofermeta.toolbox.ui.*
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import kotlinx.coroutines.launch
@@ -175,7 +183,7 @@ fun Query(
         horizontalAlignment = Alignment.Start
     ) {
         Text(
-            text = "Consulta de Produtos",
+            text = "Listagem de Produtos",
             textAlign = TextAlign.Center,
             fontSize = 20.sp,
             lineHeight = 38.sp,
@@ -184,52 +192,63 @@ fun Query(
                 .fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(20.dp))
-        Row(modifier = Modifier.height(56.dp)) {
-            Column(
-                Modifier.weight(5f)
-            ) {
-                OutlinedTextField(
-                    value = query,
-                    onValueChange = onQueryChange,
-                    shape = RoundedCornerShape(50.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(end = 10.dp)
+        TextField(
+            value = query,
+            onValueChange = onQueryChange,
+            placeholder = {
+                Text(
+                    text = searchBarPlaceHolder
                 )
+            },
+            shape = RoundedCornerShape(50.dp),
+            leadingIcon = {
+                Icon(Icons.Default.Search, contentDescription = searchBarPlaceHolder)
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp),
+            colors = TextFieldDefaults.textFieldColors(
+                disabledTextColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent
+            ),
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
 
-            }
-            Column(
-                Modifier.weight(1f)
-            ) {
-                Button(
-                    onClick = {
-                        if (query.isNotEmpty()) Query().tryQuery(
-                            context,
-                            sankhya,
-                            queryResult,
-                            query
-                        )
-                        else Toast.makeText(context, "Nenum produto encontrado", Toast.LENGTH_SHORT)
-                            .show()
-                    },
-                    shape = RoundedCornerShape(50.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight()
 
-                ) {
-                    Icon(Icons.Default.Search, contentDescription = "consulta")
-                }
-            }
-        }
-        Spacer(modifier = Modifier.height(20.dp))
-        Text(
-            text = queryResult.body
+/*                    keyboardActions = KeyboardActions(
+                        onDone = { focusRequester.requestFocus() }
+                    ),
+                    modifier = Modifier.onKeyEvent {
+                        if (it.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_ENTER){
+                            focusRequester.requestFocus()
+                            true
+                        }
+                        false
+                    }*/
+
+
+            /*if (query.isNotEmpty()) Query().tryQuery(
+                context,
+                sankhya,
+                queryResult,
+                query
+            )
+            else Toast.makeText(context, "Nenum produto encontrado", Toast.LENGTH_SHORT)
+                .show()*/
+
+
         )
-        QueryHeader(queryResult.body)
-        QueryBody(queryResult.body)
     }
+
+    Spacer(modifier = Modifier.height(20.dp))
+    Text(
+        text = queryResult.body
+    )
+    QueryHeader(queryResult.body)
+//QueryBody(queryResult.body)
 }
+
 
 @Composable
 fun QueryHeader(body: String) {
