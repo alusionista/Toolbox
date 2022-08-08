@@ -7,8 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import br.com.cofermeta.toolbox.model.dataclasses.sankhya
-import br.com.cofermeta.toolbox.data.fakeJsessionid
 import br.com.cofermeta.toolbox.data.loginEmpty
+import br.com.cofermeta.toolbox.model.Auth
 
 class LoginViewModel: ViewModel() {
 
@@ -24,9 +24,9 @@ class LoginViewModel: ViewModel() {
     fun login(
         context: Context,
         navController: NavController
-    ){  //val auth = Auth()
-        //auth.verifyLogin(context, user, password, sankhya)
-        sankhya.jsessionid = fakeJsessionid
+    ){  val auth = Auth()
+        auth.verifyLogin(context, user, password, sankhya)
+        //sankhya.jsessionid = fakeJsessionid
         val statusMessage = sankhya.statusMessage.ifEmpty { loginEmpty }
         if (sankhya.jsessionid.isEmpty()) Toast.makeText(
             context,

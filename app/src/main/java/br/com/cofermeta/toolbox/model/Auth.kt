@@ -2,6 +2,7 @@ package br.com.cofermeta.toolbox.model
 
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.LiveData
 import br.com.cofermeta.toolbox.model.dataclasses.Sankhya
 import br.com.cofermeta.toolbox.data.*
 import br.com.cofermeta.toolbox.network.*
@@ -12,7 +13,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class Auth : Connection() {
-    fun verifyLogin(context: Context, user: String = defaultUser, password: String = defaultPasword, sankhya: Sankhya) {
+    fun verifyLogin(context: Context, user: LiveData<String> = defaultUser, password: LiveData<String> = defaultPasword, sankhya: Sankhya) {
         clearSankhya(sankhya)
         if (isOnline(context)) {
             sankhya.user = user
