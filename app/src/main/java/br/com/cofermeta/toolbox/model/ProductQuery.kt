@@ -23,7 +23,7 @@ class ProductQuery : Connection() {
                 return@launch
             }
             while (true) {
-                if (queryResult.body.isNotEmpty()) break
+                if (queryResult.responseBody.isNotEmpty()) break
                 Thread.sleep(threadSleep)
             }
         } else  sankhya.statusMessage = connectionErrorMessage
@@ -31,7 +31,7 @@ class ProductQuery : Connection() {
 
     private fun sankhyaQuery(sankhya: Sankhya, queryField: QueryFields, queryResult: QueryResult): QueryResult {
         val response = connect(
-            serviceName = loadRecords,
+            serviceName = executeQuery,
             requestBody = queryListagemDeProdutosBody(
                 referencia = queryField.referencia,
                 codprod = queryField.codprod,
@@ -42,10 +42,8 @@ class ProductQuery : Connection() {
             ),
             jsessionid = sankhya.jsessionid
         )
-        queryResult.body = response
-        Log.d("queryResult body", queryResult.body)
-
+        queryResult.responseBody = response
+        Log.d("queryResult body", queryResult.responseBody)
         return queryResult
     }
-
 }

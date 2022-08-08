@@ -6,14 +6,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import br.com.cofermeta.toolbox.data.defaultPassword
+import br.com.cofermeta.toolbox.data.defaultUser
 import br.com.cofermeta.toolbox.model.dataclasses.sankhya
 import br.com.cofermeta.toolbox.data.loginEmpty
 import br.com.cofermeta.toolbox.model.Auth
 
 class LoginViewModel: ViewModel() {
 
-    private val _user = MutableLiveData("")
-    private val _password = MutableLiveData("")
+    private val _user = MutableLiveData(defaultUser)
+    private val _password = MutableLiveData(defaultPassword)
 
     val user: LiveData<String> = _user
     val password: LiveData<String> = _password
@@ -23,7 +25,9 @@ class LoginViewModel: ViewModel() {
 
     fun login(
         context: Context,
-        navController: NavController
+        navController: NavController,
+        user: String,
+        password: String
     ){  val auth = Auth()
         auth.verifyLogin(context, user, password, sankhya)
         //sankhya.jsessionid = fakeJsessionid

@@ -147,7 +147,7 @@ fun queryListagemDeProdutosBody(
     marca: String = "",
     locprin: String = "",
     descrprod: String = "",
-    codemp: String = sankhya.codemp
+    codemp: String = ""
 ) =
     """
   {

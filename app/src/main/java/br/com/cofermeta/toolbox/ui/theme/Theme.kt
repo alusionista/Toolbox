@@ -5,8 +5,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.textInputServiceFactory
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorPalette = darkColors(
@@ -16,7 +16,7 @@ private val DarkColorPalette = darkColors(
     secondaryVariant = white50p,
     background = veryBlue,
     surface = veryBlue,
-    error = errorColor,
+    error = notificationColor,
     onPrimary = veryBlue,
     onSecondary = Color.White,
 )

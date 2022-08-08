@@ -1,9 +1,9 @@
 package br.com.cofermeta.toolbox.network
 
 import android.util.Log
+import br.com.cofermeta.toolbox.data.executeQuery
+import br.com.cofermeta.toolbox.data.queryTSIUSUBody
 import br.com.cofermeta.toolbox.model.dataclasses.Sankhya
-import br.com.cofermeta.toolbox.data.values.executeQuery
-import br.com.cofermeta.toolbox.data.values.queryTSIUSUBody
 import com.google.gson.JsonParser
 import org.junit.Test
 
