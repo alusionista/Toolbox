@@ -10,21 +10,23 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import br.com.cofermeta.toolbox.data.model.dataClass.Sankhya
-import br.com.cofermeta.toolbox.ui.home.LoginScreen
+import br.com.cofermeta.toolbox.model.dataclasses.QueryResult
+import br.com.cofermeta.toolbox.ui.LoginScreen
+import br.com.cofermeta.toolbox.ui.ProductDetailScreen
+import br.com.cofermeta.toolbox.ui.QueryScreen
 import br.com.cofermeta.toolbox.ui.theme.ToolboxTheme
 
-val sankhya = Sankhya()
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             ToolboxTheme {
+                val navController = rememberNavController()
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    val navController = rememberNavController()
                     NavHost(
                         navController = navController,
                         startDestination = "login_ui"
@@ -33,7 +35,18 @@ class MainActivity : ComponentActivity() {
                             LoginScreen(
                                 context = applicationContext,
                                 navController = navController,
-                                sankhya = sankhya
+                            )
+                        }
+                        composable("query_ui") {
+                            QueryScreen(
+                                context = applicationContext,
+                                navController = navController,
+                            )
+                        }
+                        composable("product_detail_ui") {
+                            ProductDetailScreen(
+                                context = applicationContext,
+                                navController = navController,
                             )
                         }
                     }

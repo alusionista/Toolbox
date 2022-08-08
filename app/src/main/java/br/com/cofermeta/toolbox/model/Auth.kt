@@ -1,9 +1,10 @@
-package br.com.cofermeta.toolbox.data.model
+package br.com.cofermeta.toolbox.model
 
 import android.content.Context
 import android.util.Log
-import br.com.cofermeta.toolbox.data.model.dataClass.Sankhya
-import br.com.cofermeta.toolbox.data.values.*
+import androidx.lifecycle.LiveData
+import br.com.cofermeta.toolbox.model.dataclasses.Sankhya
+import br.com.cofermeta.toolbox.data.*
 import br.com.cofermeta.toolbox.network.*
 import com.google.gson.JsonParser
 import kotlinx.coroutines.Dispatchers
@@ -12,11 +13,11 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class Auth : Connection() {
-    fun verifyLogin(context: Context, user: String = defaultUser, password: String = defaultPasword, sankhya: Sankhya) {
+    fun verifyLogin(context: Context, user: LiveData<String> = defaultUser, password: LiveData<String> = defaultPasword, sankhya: Sankhya) {
         clearSankhya(sankhya)
-        sankhya.user = user
-        sankhya.password = password
         if (isOnline(context)) {
+            sankhya.user = user
+            sankhya.password = password
             MainScope().launch(Dispatchers.IO) {
                 val auth = Auth()
                 auth.getJsessionId(sankhya)
@@ -91,7 +92,6 @@ class Auth : Connection() {
             jsonElement.asJsonObject["responseBody"].asJsonObject["rows"].asJsonArray[0].asJsonArray[3].asString
 
     }
-
 
     private fun createLogs(value: Sankhya) {
         Log.d("jsession id", value.jsessionid)

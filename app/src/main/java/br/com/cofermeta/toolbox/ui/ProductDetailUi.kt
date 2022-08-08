@@ -1,5 +1,6 @@
 package br.com.cofermeta.toolbox.ui
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
@@ -9,12 +10,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.widget.Placeholder
+import androidx.navigation.NavController
+import br.com.cofermeta.toolbox.data.imgUrl
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 
 @Composable
-fun QueryDetailScreen() {
+fun ProductDetailScreen(
+    context: Context,
+    navController: NavController,
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
