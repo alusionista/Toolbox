@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="a_bit_blue">#FF47B5FF</color>
-    <color name="blue">#FF1363DF</color>
-    <color name="very_blue">#FF06283D</color>
-    <color name="almost_blue">#FFDFF6FF</color>
-    <color name="almost_blue_90">#90DFF6FF</color>
+    <color name="almost_blue">#FFCBD5E1</color>
+    <color name="very_blue">#FF0F172A</color>
+    <color name="soft_blue">#FF1E293B</color>
+    <color name="gray_blue">#FF64748B</color>
+    <color name="white_50p">#50FFFFFF</color>
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="notification_color">#FFB91C1C</color>
+
+    <color name="lighter_blue">#FFEFF6FF</color>
+    <color name="light_blue">#FFDBEAFE</color>
+    <color name="blac_50p">#50000000</color>
 </resources>

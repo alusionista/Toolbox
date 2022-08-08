@@ -1,5 +1,6 @@
 package br.com.cofermeta.toolbox.data.values
 
+import br.com.cofermeta.toolbox.data.setQueryWhere
 import org.junit.Test
 import org.junit.Assert.*
 

@@ -86,11 +86,13 @@ dependencies {
     kapt "androidx.hilt:hilt-compiler:1.0.0"
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
 
-    /*testImplementation 'org.junit.jupiter:junit-jupiter'
-    testImplementation 'junit:junit:4.13.2'*/
+    /*
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'junit:junit:4.13.2'
+    */
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
-    androidTestImplementation 'org.junit.jupiter:junit-jupiter'
+    androidTestImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     androidTestImplementation 'junit:junit:4.13.2'
 
     //Coil

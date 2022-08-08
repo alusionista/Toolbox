@@ -1,4 +1,4 @@
-package br.com.cofermeta.toolbox.ui.componets
+package br.com.cofermeta.toolbox.ui.components
 
 import android.content.Context
 import androidx.compose.foundation.layout.*

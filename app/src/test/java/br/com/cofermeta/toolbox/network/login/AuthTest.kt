@@ -2,9 +2,9 @@ package br.com.cofermeta.toolbox.network.login
 
 import br.com.cofermeta.toolbox.model.Auth
 import br.com.cofermeta.toolbox.model.dataclasses.Sankhya
-import br.com.cofermeta.toolbox.data.values.base
-import br.com.cofermeta.toolbox.data.values.connectionErrorMessage
-import br.com.cofermeta.toolbox.data.values.port
+import br.com.cofermeta.toolbox.data.base
+import br.com.cofermeta.toolbox.data.connectionErrorMessage
+import br.com.cofermeta.toolbox.data.port
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch

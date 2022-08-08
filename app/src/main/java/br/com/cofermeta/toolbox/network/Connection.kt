@@ -48,6 +48,7 @@ abstract class Connection {
     ): String {
         var response: StringBuilder
         val bytes = requestBody.toByteArray()
+        Log.d("requestBody query", requestBody)
         val conn = URL(baseUrl(serviceName, jsessionid)).openConnection() as HttpURLConnection
         conn.requestMethod = requestMethod
         conn.setRequestProperty("Content-type", "application/json; charset=utf-8")

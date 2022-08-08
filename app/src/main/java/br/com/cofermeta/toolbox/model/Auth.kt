@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class Auth : Connection() {
-    fun verifyLogin(context: Context, user: LiveData<String> = defaultUser, password: LiveData<String> = defaultPasword, sankhya: Sankhya) {
+    fun verifyLogin(context: Context, user: String, password: String, sankhya: Sankhya) {
         clearSankhya(sankhya)
         if (isOnline(context)) {
             sankhya.user = user

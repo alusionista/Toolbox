@@ -17,10 +17,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import br.com.cofermeta.toolbox.data.defaultPasword
+import br.com.cofermeta.toolbox.data.defaultPassword
 import br.com.cofermeta.toolbox.data.defaultUser
-import br.com.cofermeta.toolbox.ui.componets.SimpleButton
-import br.com.cofermeta.toolbox.ui.componets.SimpleTextField
+import br.com.cofermeta.toolbox.ui.components.SimpleButton
+import br.com.cofermeta.toolbox.ui.components.SimpleTextField
 import br.com.cofermeta.toolbox.ui.theme.white50p
 import br.com.cofermeta.toolbox.viewmodels.LoginViewModel
 
@@ -28,7 +28,7 @@ import br.com.cofermeta.toolbox.viewmodels.LoginViewModel
 fun LoginScreen(context: Context?, navController: NavController, loginViewModel: LoginViewModel = viewModel()) {
 
     val user by loginViewModel.user.observeAsState(defaultUser)
-    val password by loginViewModel.password.observeAsState(defaultPasword)
+    val password by loginViewModel.password.observeAsState(defaultPassword)
 
     Login(
         context = context!!,
@@ -86,7 +86,7 @@ fun Login(
         SimpleButton(
             label = "Login",
             onClick = {
-                loginViewModel.login(context, navController)
+                loginViewModel.login(context, navController, user, password)
             }
         )
     }
