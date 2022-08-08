@@ -5,8 +5,8 @@ import android.util.Log
 import br.com.cofermeta.toolbox.model.dataclasses.QueryFields
 import br.com.cofermeta.toolbox.model.dataclasses.QueryResult
 import br.com.cofermeta.toolbox.model.dataclasses.Sankhya
-import br.com.cofermeta.toolbox.model.dataclasses.sankhya
 import br.com.cofermeta.toolbox.data.*
+import br.com.cofermeta.toolbox.model.dataclasses.sankhya
 import br.com.cofermeta.toolbox.network.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope

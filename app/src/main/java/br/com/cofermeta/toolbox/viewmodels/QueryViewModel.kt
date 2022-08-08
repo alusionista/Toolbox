@@ -9,6 +9,7 @@ import br.com.cofermeta.toolbox.model.ProductQuery
 import br.com.cofermeta.toolbox.model.dataclasses.QueryFields
 import br.com.cofermeta.toolbox.model.dataclasses.sankhya
 import br.com.cofermeta.toolbox.data.noProductFound
+import br.com.cofermeta.toolbox.model.Auth
 
 class QueryViewModel : ViewModel() {
 
@@ -49,8 +50,11 @@ class QueryViewModel : ViewModel() {
         if (queryField.marca.isNotEmpty() ||
             queryField.codprod.isNotEmpty() ||
             queryField.locprin.isNotEmpty() ||
-            queryField.descrprod.isNotEmpty()
-        ) ProductQuery().tryQuery(context, queryField)
+            queryField.descrprod.isNotEmpty()) {
+            ProductQuery().tryQuery(context, queryField)
+            Auth().logout(sankhya)
+        }
+
         else Toast.makeText(context, noProductFound, Toast.LENGTH_SHORT).show()
     }
 }

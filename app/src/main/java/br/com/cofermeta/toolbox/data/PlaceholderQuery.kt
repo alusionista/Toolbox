@@ -5,7 +5,7 @@ val imgUrl: String = "https://static3.tcdn.com.br/img/img_prod/469103/banco_para
 val codigo: String = "148059"
 val modelo: String = "90023"
 val referencia: String = "148059"
-val descricao: String = "Banco Com Gaveta 90023 Presto Desenvolvido para facilitar as manutenções automotivas, para oficinas, concessionárias, estéticas."
+const val descrprod: String = "Banco Com Gaveta 90023 Presto Desenvolvido para facilitar as manutenções automotivas, para oficinas, concessionárias, estéticas."
 
 const val CODPROD: String = "12027"
 const val CODIGO_LEGADO: String = "FE044705"

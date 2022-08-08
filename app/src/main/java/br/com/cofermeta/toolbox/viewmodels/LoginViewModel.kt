@@ -6,11 +6,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import br.com.cofermeta.toolbox.data.defaultPassword
-import br.com.cofermeta.toolbox.data.defaultUser
-import br.com.cofermeta.toolbox.model.dataclasses.sankhya
-import br.com.cofermeta.toolbox.data.loginEmpty
+import br.com.cofermeta.toolbox.data.*
 import br.com.cofermeta.toolbox.model.Auth
+import br.com.cofermeta.toolbox.model.dataclasses.Sankhya
+import br.com.cofermeta.toolbox.model.dataclasses.sankhya
 
 class LoginViewModel: ViewModel() {
 
@@ -23,12 +22,14 @@ class LoginViewModel: ViewModel() {
     fun onUserChange(user: String) { _user.value = user }
     fun onPasswordChange(password: String) { _password.value = password }
 
+    private val auth = Auth()
+
     fun login(
         context: Context,
         navController: NavController,
         user: String,
         password: String
-    ){  val auth = Auth()
+    ){
         auth.verifyLogin(context, user, password, sankhya)
         //sankhya.jsessionid = fakeJsessionid
         val statusMessage = sankhya.statusMessage.ifEmpty { loginEmpty }
@@ -38,6 +39,12 @@ class LoginViewModel: ViewModel() {
             Toast.LENGTH_SHORT
         ).show()
         else {
+            Toast.makeText(
+                context,
+                "Olá ${ sankhya.firstName }!",
+                Toast.LENGTH_SHORT
+            ).show()
+            auth.logout(sankhya)
             navController.navigate("query_ui")
         }
     }
