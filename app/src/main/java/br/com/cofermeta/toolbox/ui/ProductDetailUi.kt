@@ -155,14 +155,17 @@ fun ProductDetailWrapper(
     Box(modifier = modifier) {
         Column(modifier = Modifier.padding(top = 240.dp / 2f)) {
             Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp)
                     .align(Alignment.Start)
             ) {
-                ProductDetailDataItem(header = "Código", row = CODPROD)
-                ProductDetailDataItem(header = "Código", row = CODPROD)
+                Column(modifier = Modifier.weight(1f)) {
+                    ProductDetailDataItem(header = "Código", row = CODPROD)
+                }
+                Column(modifier = Modifier.weight(1f)) {
+                    ProductDetailDataItem(header = "Código", row = CODPROD)
+                }
             }
             Box(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
                 ProductDetailDescriptionItem(header = "Descrição", row = PRODUTO)
