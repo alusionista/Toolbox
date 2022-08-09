@@ -15,10 +15,16 @@ import br.com.cofermeta.toolbox.data.defaultPadding
 import br.com.cofermeta.toolbox.model.dataclasses.sankhya
 import br.com.cofermeta.toolbox.ui.theme.white50p
 import br.com.cofermeta.toolbox.viewmodels.QueryViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 
 @Composable
-fun QueryDrawer(context: Context, queryViewModel: QueryViewModel = viewModel()) {
+fun QueryDrawer(
+    context: Context,
+    scope: CoroutineScope,
+    state: ScaffoldState,
+    queryViewModel: QueryViewModel = viewModel()) {
 
     val empresa by queryViewModel.empresa.observeAsState(sankhya.codemp)
     val codigo by queryViewModel.codigo.observeAsState("")
@@ -28,6 +34,8 @@ fun QueryDrawer(context: Context, queryViewModel: QueryViewModel = viewModel()) 
 
     DrawerUi(
         context = context,
+        scope = scope,
+        state = state,
         empresa = empresa,
         codigo = codigo,
         marca = marca,
@@ -45,6 +53,8 @@ fun QueryDrawer(context: Context, queryViewModel: QueryViewModel = viewModel()) 
 @Composable
 fun DrawerUi(
     context: Context,
+    scope: CoroutineScope,
+    state: ScaffoldState,
     empresa: String,
     codigo: String,
     marca: String,
@@ -101,6 +111,8 @@ fun DrawerUi(
                 localizacao = localizacao,
                 descricao = descricao,
             )
+            scope.launch { if(state.drawerState.isClosed) state.drawerState.open() else state.drawerState.close() }
+
         }
         )
 

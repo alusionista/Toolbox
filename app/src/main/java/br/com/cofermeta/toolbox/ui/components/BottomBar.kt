@@ -41,36 +41,28 @@ fun BottomBar(
         },
             label = { Text(text = FILTROS) },
             selected = (selectedIndex.value == 1),
+            unselectedContentColor = MaterialTheme.colors.onSurface,
             onClick = {
                 scope.launch { if(state.drawerState.isClosed) state.drawerState.open() else state.drawerState.close() }
-            },
-            unselectedContentColor = MaterialTheme.colors.onSurface
+            }
         )
         BottomNavigationItem(icon = {
             Icon(imageVector = Icons.Rounded.QrCodeScanner, SCANNER)
         },
             label = { Text(text = SCANNER) },
-            selected = (selectedIndex.value == 2),
-            onClick = {
+            selected = (selectedIndex.value == 1),
+            unselectedContentColor = MaterialTheme.colors.onSurface,
+                    onClick = {
                 Toast.makeText(context, SCANNER, Toast.LENGTH_SHORT).show()
-                //scope.launch { if(it.isClosed) it.open() else it.close() }
             })
-/*        BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Default.Person,CONSULTA)
-        },
-            label = { Text(text = CONSULTA) },
-            selected = (selectedIndex.value == 3),
-            onClick = {
-                Toast.makeText(context, CONSULTA, Toast.LENGTH_SHORT).show()
-            })*/
         BottomNavigationItem(icon = {
             Icon(imageVector = Icons.Default.Person, USUARIO)
         },
             label = {
                 Text(text = sankhya.firstName.ifEmpty { USUARIO })
-                //Text(text = sankhya.firstName)
                     },
-            selected = (selectedIndex.value == 4),
+            selected = (selectedIndex.value == 1),
+            unselectedContentColor = MaterialTheme.colors.onSurface,
             onClick = {
             navController.navigate("login_ui")
             })

@@ -12,18 +12,12 @@ fun QueryScreen(
     context: Context,
     navController: NavController
 ) {
-
-/*
-    var query by rememberSaveable { mutableStateOf("") }
-    var hasResult by rememberSaveable { mutableStateOf(false) }
-*/
-    val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
     val state = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     Scaffold(
         scaffoldState = state,
         topBar = { TopBar(queryUiTitle) },
-        drawerContent = { QueryDrawer(context) },
+        drawerContent = { QueryDrawer(context, scope, state) },
         drawerBackgroundColor = MaterialTheme.colors.primaryVariant,
         drawerContentColor = MaterialTheme.colors.onSurface,
         content = { padding -> BodyContent(context, padding) },
