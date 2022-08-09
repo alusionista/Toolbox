@@ -13,7 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun BasicTopBar(title: String, iconButton: (() -> Unit)? = null) {
+fun TopBar(title: String, iconButton: (() -> Unit)? = null) {
     val appBarHorizontalPadding = 4.dp
     val titleIconModifier = Modifier.fillMaxHeight()
         .width(72.dp - appBarHorizontalPadding)

@@ -4,66 +4,91 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import br.com.cofermeta.toolbox.data.CODPROD
-import br.com.cofermeta.toolbox.data.ENDIMAGEM
-import br.com.cofermeta.toolbox.data.PRODUTO
+import br.com.cofermeta.toolbox.data.*
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 
 @Composable
-fun QueryDetailBox(
+fun ProductItem(
     codigo: String = CODPROD,
-    descricao: String = PRODUTO,
+    descricao: String = descrprod,
+    marca: String = MARCA,
+    preco: String = PRECO,
     imagem: String = ENDIMAGEM
 ) {
     Box(
         modifier = Modifier
-            .height(130.dp)
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(top = 18.dp, start = 18.dp, end = 18.dp, bottom = 0.dp)
             .clip(RoundedCornerShape(15.dp))
+            .background(MaterialTheme.colors.primaryVariant)
+
     ) {
-        Row(Modifier.fillMaxSize()) {
-            SubcomposeAsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(ENDIMAGEM)
-                    .crossfade(true)
-                    .build(),
-                contentDescription = null,
-                alignment = Alignment.Center,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .weight(0.3f)
-            )
-            Column(Modifier.fillMaxHeight().weight(0.7f)) {
+        Column( modifier = Modifier
+            .padding(18.dp)) {
+        Row {
+            Column {
+                Box(modifier = Modifier
+                    .padding(end = 16.dp)
+                    .size(120.dp, 90.dp)){
+                    SubcomposeAsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(imagem)
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(10.dp))
+                    )
+                }
+            }
+            Column {
                 Text(
-                    text = "Cód. $codigo",
-                    fontSize = 22.sp,
-                    color = Color.White
+                    text = "#$codigo",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = Color.White,
+                    letterSpacing = 0.sp,
                 )
                 Text(
-                    text = descricao,
-                    fontSize = 16.sp,
-                    color = Color.White
+                    text = marca,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = Color.White,
+                    letterSpacing = 0.sp,
+                )
+                Text(
+                    text = "R$${preco.replace(".", ",")}",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = Color.White,
+                    letterSpacing = 0.sp,
                 )
             }
+
+        }
+            Text(
+                modifier = Modifier.padding(top = 10.dp),
+                text = descricao,
+                fontSize = 16.sp,
+                letterSpacing = 0.sp,
+            )
         }
     }
 }
 
+/*
 @Preview
 @Composable
 fun QueryDetailBoxPreview() {
@@ -73,4 +98,4 @@ fun QueryDetailBoxPreview() {
     ) {
         Box { QueryDetailBox() }
     }
-}
+}*/

@@ -2,7 +2,6 @@ package br.com.cofermeta.toolbox.model.dataclasses
 
 import java.util.*
 
-var sankhya = Sankhya()
 data class Sankhya(
     var status: String = "",
     var responseBody: String = "",
@@ -18,3 +17,4 @@ data class Sankhya(
     var codgrupo: String = "",
     var codemp: String = "",
 )
+val sankhya = Sankhya()

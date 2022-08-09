@@ -1,10 +1,20 @@
 package br.com.cofermeta.toolbox.data
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
 const val base = "http://teste.cofermeta.com.br"
 const val port = 8280
 const val defaultUser = "integracao"
 const val defaultPassword = "654321"
 const val fakeJsessionid = "dX9a9e3Xm7NBzBiPCI6Soj6hoCDktoN48OU8f_LP"
+
+const val FILTROS = "Filtros"
+const val SCANNER = "Scanner"
+const val CONSULTA = "Consulta"
+const val USUARIO = "Usuário"
 
 const val loginService = "MobileLoginSP.login"
 const val logoutService = "MobileLoginSP.logout"
@@ -12,6 +22,7 @@ const val loadRecords = "CRUDServiceProvider.loadRecords"
 const val executeQuery = "DbExplorerSP.executeQuery"
 
 const val threadSleep: Long = 50
+val defaultPadding: Dp = 18.dp
 
 const val queryUiTitle = "Listagem de Produtos"
 const val connectionErrorMessage = "Não foi possível conectar-se.\nVerifique sua conexão Wi-fi."

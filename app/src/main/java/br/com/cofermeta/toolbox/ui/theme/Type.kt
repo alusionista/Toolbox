@@ -11,10 +11,25 @@ import br.com.cofermeta.toolbox.R
 val Nunito = FontFamily(
     Font(R.font.nunito_sans)
 )
+val NunitoSemiBold = FontFamily(
+    Font(R.font.nunito_sans_semibold)
+)
+val NunitoBold = FontFamily(
+    Font(R.font.nunito_sans_bold)
+)
 
 // Set of Material typography styles to start with
 val Typography = Typography(
     defaultFontFamily = Nunito,
+    h1 = TextStyle(
+        fontWeight = FontWeight.ExtraBold,
+    ),
+    h2 = TextStyle(
+        fontWeight = FontWeight.ExtraBold,
+    ),
+    h3 = TextStyle(
+        fontWeight = FontWeight.Bold,
+    ),
     body1 = TextStyle(
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,

@@ -2,9 +2,8 @@ package br.com.cofermeta.toolbox.model
 
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LiveData
-import br.com.cofermeta.toolbox.model.dataclasses.Sankhya
 import br.com.cofermeta.toolbox.data.*
+import br.com.cofermeta.toolbox.model.dataclasses.Sankhya
 import br.com.cofermeta.toolbox.network.*
 import com.google.gson.JsonParser
 import kotlinx.coroutines.Dispatchers
@@ -80,48 +79,63 @@ class Auth : Connection() {
 
     private fun checkAndUpdateUserData(response: String, sankhya: Sankhya) {
         val jsonElement = JsonParser.parseString(response)
+
         sankhya.responseBody =
             jsonElement.asJsonObject["responseBody"].toString()
         sankhya.codusu =
             jsonElement.asJsonObject["responseBody"].asJsonObject["rows"].asJsonArray[0].asJsonArray[0].asString
-        sankhya.firstName =
-            jsonElement.asJsonObject["responseBody"].asJsonObject["rows"].asJsonArray[0].asJsonArray[1].asString
         sankhya.codgrupo =
             jsonElement.asJsonObject["responseBody"].asJsonObject["rows"].asJsonArray[0].asJsonArray[2].asString
         sankhya.codemp =
             jsonElement.asJsonObject["responseBody"].asJsonObject["rows"].asJsonArray[0].asJsonArray[3].asString
 
+        val fullName = jsonElement
+            .asJsonObject["responseBody"]
+            .asJsonObject["rows"]
+            .asJsonArray[0].asJsonArray[1].asString
+        val i: Int = fullName.indexOf(' ')
+        sankhya.firstName = fullName.substring(0, i)
     }
 
     private fun createLogs(value: Sankhya) {
-        Log.d("jsession id", value.jsessionid)
-        Log.d("jsession time", value.time.toString())
-        Log.d("jsession user", value.user)
-        Log.d("jsession password", value.password)
-        Log.d("jsession statusMessage", value.statusMessage)
-        Log.d("jsession firstName", value.firstName)
-        Log.d("jsession codusu", value.codusu)
-        Log.d("jsession codgrupo", value.codgrupo)
-        Log.d("jsession codemp", value.codemp)
+        Log.d("sankhya status", value.status)
+        Log.d("sankhya statusMessage", value.statusMessage)
+        Log.d("sankhya id", value.jsessionid)
+        Log.d("sankhya time", value.time.toString())
+        Log.d("sankhya user", value.user)
+        Log.d("sankhya password", value.password)
+        Log.d("sankhya firstName", value.firstName)
+        Log.d("sankhya codusu", value.codusu)
+        Log.d("sankhya codgrupo", value.codgrupo)
+        Log.d("sankhya codemp", value.codemp)
     }
 
-    private fun logout(id: String) {
-        val response = connect(
-            serviceName = logoutService,
-            requestBody = logoutBody,
-            jsessionid = id
-        )
-        Log.d("logout", response)
+    fun logout(sankhya: Sankhya) {
+        MainScope().launch(Dispatchers.IO) {
+            val response = connect(
+                serviceName = logoutService,
+                requestBody = logoutBody,
+                jsessionid = sankhya.jsessionid
+            )
+            if (response.contains("\"status\":\"1\"")) sankhya.jsessionid = ""
+            Log.d("logout", response)
+            createLogs(sankhya)
+            return@launch
+        }
+
+        createLogs(sankhya)
     }
 
     private fun clearSankhya(sankhya: Sankhya) {
-        sankhya.user = ""
-        sankhya.password = ""
         sankhya.status = ""
         sankhya.responseBody = ""
         sankhya.jsessionid = ""
         sankhya.statusMessage = ""
         sankhya.time = null
+
+        sankhya.user = ""
+        sankhya.password = ""
+
         sankhya.firstName = ""
         sankhya.codusu = ""
         sankhya.codgrupo = ""
