@@ -62,7 +62,8 @@ fun BodyContent(
                         descrprod = descrprod,
                         endimagem = endimagem,
                         index = i,
-                        navController = navController
+                        navController = navController,
+                        queryViewModel = queryViewModel
                     )
                 }
             }

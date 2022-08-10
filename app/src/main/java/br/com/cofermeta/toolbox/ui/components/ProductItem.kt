@@ -19,8 +19,8 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import br.com.cofermeta.toolbox.data.defaultPadding
 import br.com.cofermeta.toolbox.data.imgPlaceHolder
 import br.com.cofermeta.toolbox.viewmodels.QueryViewModel
 import coil.compose.SubcomposeAsyncImage
@@ -35,8 +35,12 @@ fun ProductItem(
     endimagem: String,
     index: Int,
     navController: NavController,
-    queryViewModel: QueryViewModel = viewModel()
+    queryViewModel: QueryViewModel
 ) {
+    val newEndimagem = if (endimagem.contains("http")) endimagem else imgPlaceHolder
+    val newMarca = if (vlrvenda.contains("null")) "Sem marca" else marca.replace("\"", "").trim()
+    val newVlrvenda = if (vlrvenda.contains("null")) "Sem preço" else "R$${vlrvenda.replace(".", ",")}"
+
     val constraints = ConstraintSet {
         val detailColumn = createRefFor("detailcolumn")
         val detailImage = createRefFor("detailimage")
@@ -61,19 +65,19 @@ fun ProductItem(
             .clip(RoundedCornerShape(15.dp))
             .background(MaterialTheme.colors.primaryVariant)
             .clickable {
-                queryViewModel.onSelectItem(index)
-                Thread.sleep(1000)
-                navController.navigate("product_detail_ui")
+                queryViewModel.onSelectItem(
+                    newValue = index,
+                    newEndimagem = newEndimagem,
+                    newMarca = newMarca,
+                    newVlrvenda = newVlrvenda,
+                    navController = navController
+                )
             }
-
     ) {
         Column(modifier = Modifier
-            .padding(18.dp)) {
+            .padding(defaultPadding)
+        ) {
             ConstraintLayout(constraints) {
-                val endimagem_ = if (endimagem.contains("http")) endimagem else imgPlaceHolder
-                val marca_ = if (vlrvenda.contains("null")) "Sem marca" else marca.replace("\"", "").trim()
-                val vlrvenda_ = if (vlrvenda.contains("null")) "Sem preço" else "R$${vlrvenda.replace(".", ",")}"
-
                 Box(modifier = Modifier
                     .padding(end = 16.dp)
                     .size(120.dp, 90.dp)
@@ -81,7 +85,7 @@ fun ProductItem(
                 ) {
                         SubcomposeAsyncImage(
                             model = ImageRequest.Builder(LocalContext.current)
-                                .data(endimagem_.replace("\"", "").trim())
+                                .data(newEndimagem.replace("\"", "").trim())
                                 .crossfade(true)
                                 .build(),
                             contentDescription = null,
@@ -103,14 +107,14 @@ fun ProductItem(
                         letterSpacing = 0.sp,
                     )
                     Text(
-                        text = marca_,
+                        text = newMarca,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.ExtraBold,
                         color = MaterialTheme.colors.secondaryVariant,
                         letterSpacing = 0.sp,
                     )
                     Text(
-                        text = vlrvenda_,
+                        text = newVlrvenda,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.ExtraBold,
                         color = Color.White,
@@ -119,8 +123,7 @@ fun ProductItem(
                 }
             }
             Text(
-                modifier = Modifier
-                    .padding(top = 10.dp),
+                modifier = Modifier.padding(top = 12.dp),
                 text = descrprod.replace("\"", "").trim(),
                 fontSize = 16.sp,
                 letterSpacing = 0.sp,
