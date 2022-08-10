@@ -26,13 +26,17 @@ import br.com.cofermeta.toolbox.ui.theme.white50p
 import br.com.cofermeta.toolbox.viewmodels.LoginViewModel
 
 @Composable
-fun LoginScreen(context: Context?, navController: NavController, loginViewModel: LoginViewModel = viewModel()) {
+fun LoginScreen(
+    context: Context,
+    navController: NavController,
+    loginViewModel: LoginViewModel = viewModel()
+) {
 
     val user by loginViewModel.user.observeAsState(defaultUser)
     val password by loginViewModel.password.observeAsState(defaultPassword)
 
     Login(
-        context = context!!,
+        context = context,
         navController = navController,
         loginViewModel = loginViewModel,
         user = user,

@@ -33,15 +33,13 @@ class QueryViewModel : ViewModel() {
     private val _local = MutableLiveData("")
     private val _descricao = MutableLiveData("")
     private val _hasResult = MutableLiveData(false)
-    private val _selectedItem = MutableLiveData(0)
 
-    val empresa: LiveData<String> = _empresa
-    val codigo: LiveData<String> = _codigo
+    val codemp: LiveData<String> = _empresa
+    val codprod: LiveData<String> = _codigo
     val marca: LiveData<String> = _marca
-    val local: LiveData<String> = _local
-    val descricao: LiveData<String> = _descricao
+    val locprin: LiveData<String> = _local
+    val descrprod: LiveData<String> = _descricao
     val hasResult: LiveData<Boolean> = _hasResult
-    val selectedItem: MutableLiveData<Int> = _selectedItem
 
     fun onEmpresaChange(empresa: String) { _empresa.value = empresa }
     fun onCodigoChange(codigo: String) { _codigo.value = codigo }
@@ -49,26 +47,6 @@ class QueryViewModel : ViewModel() {
     fun onLocalChange(local: String) { _local.value = local }
     fun onDescricaoChange(descricao: String) { _descricao.value = descricao }
     fun onHasResultChange(newValue: Boolean) { _hasResult.value = newValue }
-
-/*
-    private val _newEndimagem = MutableLiveData("")
-    private val _newEndimagem = MutableLiveData(sankhya.codemp)
-    private val _newVlrvenda = MutableLiveData(sankhya.codemp)
-*/
-
-    fun onSelectItem(
-        newValue: Int,
-        navController: NavController,
-        newEndimagem: String,
-        newMarca: String,
-        newVlrvenda: String
-    ) {
-        _selectedItem.value = newValue
-        Thread.sleep(3_000)
-        navController.navigate("product_detail_ui")
-        //queryResult.selectedItem = newValue
-    }
-
 
     fun productQuery(
         context: Context,
