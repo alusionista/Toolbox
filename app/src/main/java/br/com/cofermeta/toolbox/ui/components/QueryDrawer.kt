@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import br.com.cofermeta.toolbox.data.defaultPadding
+import br.com.cofermeta.toolbox.data.threadSleep
 import br.com.cofermeta.toolbox.model.dataclasses.sankhya
 import br.com.cofermeta.toolbox.ui.theme.white50p
 import br.com.cofermeta.toolbox.viewmodels.QueryViewModel
@@ -24,13 +25,13 @@ fun QueryDrawer(
     context: Context,
     scope: CoroutineScope,
     state: ScaffoldState,
-    queryViewModel: QueryViewModel = viewModel()) {
-
-    val empresa by queryViewModel.empresa.observeAsState(sankhya.codemp)
-    val codigo by queryViewModel.codigo.observeAsState("")
-    val marca by queryViewModel.marca.observeAsState("")
-    val local by queryViewModel.local.observeAsState("")
-    val descricao by queryViewModel.descricao.observeAsState("")
+    queryViewModel: QueryViewModel,
+    empresa: String,
+    codigo: String,
+    marca: String,
+    local: String,
+    descricao: String,
+) {
 
     DrawerUi(
         context = context,
@@ -105,14 +106,14 @@ fun DrawerUi(
         SimpleButton(label = "Buscar", onClick = {
             queryViewModel.productQuery(
                 context = context,
+                scope = scope,
+                state = state,
                 empresa = empresa,
                 codigo = codigo,
                 marca = marca,
                 localizacao = localizacao,
                 descricao = descricao,
             )
-            scope.launch { if(state.drawerState.isClosed) state.drawerState.open() else state.drawerState.close() }
-
         }
         )
 

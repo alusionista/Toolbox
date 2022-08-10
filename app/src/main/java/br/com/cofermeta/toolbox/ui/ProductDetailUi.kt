@@ -6,17 +6,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.SnackbarDefaults.backgroundColor
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -25,71 +18,52 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import br.com.cofermeta.toolbox.R
-import br.com.cofermeta.toolbox.data.*
-import br.com.cofermeta.toolbox.ui.components.ProductDetailDataItem
-import br.com.cofermeta.toolbox.ui.components.ProductDetailDescriptionItem
-import br.com.cofermeta.toolbox.ui.theme.ToolboxTheme
-import br.com.cofermeta.toolbox.ui.theme.grayBlue
+import br.com.cofermeta.toolbox.data.defaultPadding
+import br.com.cofermeta.toolbox.ui.components.BottomBar
+import br.com.cofermeta.toolbox.ui.components.TopBar
+import br.com.cofermeta.toolbox.viewmodels.QueryViewModel
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 
 @Composable
 fun ProductDetailScreen(
-    // SO TA DEFININDO O NAVCONTROLLER PADRAO PRO PREVIEW FUNCIONAR!
-    // POR FAVOR FORNECA O NAVCONTROLLER CERTO SENAO VAI DAR PAU! Eu acho.
-    navController: NavController = rememberNavController(),
+    context: Context,
+    navController: NavController,
+    queryViewModel: QueryViewModel = viewModel()
 ) {
-    Scaffold(
-        bottomBar = {
-            BottomNavigation(backgroundColor = Color.Transparent, elevation = 0.dp) {
-                val iconSize = 25.dp
-                BottomNavigationItem(
-                    icon = { Icon(Icons.Default.Search, contentDescription = null, modifier = Modifier.size(iconSize))},
-                    label = { Text(text = "Consulta", fontSize = 12.sp) },
-                    selected = false,
-                    onClick = { TODO() }
-                )
-                BottomNavigationItem(
-                    icon = { Icon(painterResource(id = R.drawable.ic_qr_code_scanner), contentDescription = null, modifier = Modifier.size(iconSize)) },
-                    label = { Text(text = "Scanner", fontSize = 12.sp) },
-                    selected = false,
-                    onClick = { TODO() }
-                )
-                BottomNavigationItem(
-                    icon = { Icon(painterResource(id = R.drawable.ic_user_badge), contentDescription = null, modifier = Modifier.size(iconSize)) },
-                    label = { Text(text = "Usuário", fontSize = 12.sp) },
-                    selected = false,
-                    onClick = { TODO() }
-                )
-            }
+    val rows = queryViewModel.queryResult.rows
+    val selectedItem = queryViewModel.selectedItem.value
+    val codprod = selectedItem?.let { rows?.asJsonArray?.get(it)?.asJsonArray?.get(0).toString() }
+    val marca = selectedItem?.let { rows?.asJsonArray?.get(it)?.asJsonArray?.get(1).toString() }
+    val vlrvenda = selectedItem?.let { rows?.asJsonArray?.get(it)?.asJsonArray?.get(2).toString() }
+    val descrprod = selectedItem?.let { rows?.asJsonArray?.get(it)?.asJsonArray?.get(3).toString() }
+    val endimagem = selectedItem?.let { rows?.asJsonArray?.get(it)?.asJsonArray?.get(4).toString() }
+
+    TopBar("#$codprod") { navController.popBackStack() }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        if (marca != null && vlrvenda != null && descrprod != null) {
+            ProductDetailWrapper(marca, vlrvenda, descrprod)
         }
-    ) { scaffoldBottomPadding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            ProductDetailTopSection(
-                navController = navController,
+            SubcomposeAsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(endimagem)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.2f)
-                    .align(Alignment.TopCenter)
-            )
-            ProductDetailWrapper(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(
-                        top = 16.dp + 240.dp / 2f,
-                        start = 16.dp,
-                        end = 16.dp,
-                        bottom = scaffoldBottomPadding.calculateBottomPadding() + 16.dp
-                    )
+                    .size(240.dp, 170.dp)
+                    .offset(y = 70.dp)
                     .clip(RoundedCornerShape(10.dp))
-                    .background(MaterialTheme.colors.primaryVariant)
-                    .align(Alignment.BottomCenter)
             )
             Box(
                 contentAlignment = Alignment.TopCenter,
@@ -110,72 +84,79 @@ fun ProductDetailScreen(
             }
         }
     }
-
+    //BottomBar(context, navController, scope, state)
 }
 
-@Composable
-fun ProductDetailTopSection(
-    navController: NavController,
-    modifier: Modifier = Modifier,
-) {
-    Box(
-        contentAlignment = Alignment.TopStart,
-        modifier = modifier
+    @Composable
+    fun ProductDetailWrapper(
+        marca: String,
+        vlrvenda: String,
+        descrprod: String,
     ) {
-        Icon(
-            imageVector = Icons.Default.ArrowBack,
-            contentDescription = null,
-            tint = MaterialTheme.colors.onSurface,
-            modifier = Modifier
-                .size(36.dp)
-                .offset(16.dp, 16.dp)
-                .clickable {
-                    navController.navigate("pokemon_list_screen")
-                }
-        )
-    }
-    Box(modifier = Modifier.fillMaxWidth()) {
-        Text(
-            text = "#$CODPROD",
-            fontSize = 28.sp,
-            color = MaterialTheme.colors.onSurface,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .offset(y = 12.dp)
-                .align(Alignment.TopCenter)
-        )
-    }
-}
 
-@Composable
-fun ProductDetailWrapper(
-    modifier: Modifier = Modifier
-) {
-
-    Box(modifier = modifier) {
-        Column(modifier = Modifier.padding(top = 240.dp / 2f)) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-                    .align(Alignment.Start)
-            ) {
-                Column(modifier = Modifier.weight(1f)) {
-                    ProductDetailDataItem(header = "Código", row = CODPROD)
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(
+                    top = defaultPadding + 240.dp / 2f,
+                    start = defaultPadding,
+                    end = defaultPadding,
+                    bottom = defaultPadding
+                )
+                .clip(RoundedCornerShape(10.dp))
+                .background(MaterialTheme.colors.primaryVariant)
+            //.align(Alignment.BottomCenter)
+        ) {
+            Column(modifier = Modifier.padding(top = 240.dp / 2f)) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .align(Alignment.Start)
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        ProductDetailDataItem(header = "Marca", row = marca)
+                    }
+                    Column(modifier = Modifier.weight(1f)) {
+                        ProductDetailDataItem(header = "Preço", row = vlrvenda)
+                    }
                 }
-                Column(modifier = Modifier.weight(1f)) {
-                    ProductDetailDataItem(header = "Código", row = CODPROD)
+                Box(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
+                    ProductDetailDescriptionItem(header = "Descrição", row = descrprod)
                 }
-            }
-            Box(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
-                ProductDetailDescriptionItem(header = "Descrição", row = PRODUTO)
             }
         }
     }
-}
 
-@Preview
-@Composable
-fun ProductDetailPreview() {
-    ToolboxTheme { ProductDetailScreen() }
-}
+    @Composable
+    fun ProductDetailDataItem(header: String, row: String) {
+        Column {
+            Text(
+                text = header,
+                fontSize = 14.sp,
+                color = MaterialTheme.colors.onSurface
+            )
+            Text(
+                text = row,
+                fontSize = 22.sp,
+                color = MaterialTheme.colors.onSurface
+            )
+        }
+    }
+
+    @Composable
+    fun ProductDetailDescriptionItem(header: String, row: String) {
+        Column {
+            Text(
+                text = header,
+                fontSize = 14.sp,
+                color = MaterialTheme.colors.onSurface
+            )
+            Text(
+                text = row,
+                fontSize = 24.sp,
+                color = MaterialTheme.colors.onSurface
+            )
+        }
+    }
+

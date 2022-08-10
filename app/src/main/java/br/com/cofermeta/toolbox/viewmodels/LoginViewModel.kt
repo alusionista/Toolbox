@@ -13,6 +13,8 @@ import br.com.cofermeta.toolbox.model.dataclasses.sankhya
 
 class LoginViewModel: ViewModel() {
 
+    private val auth = Auth()
+
     private val _user = MutableLiveData(defaultUser)
     private val _password = MutableLiveData(defaultPassword)
 
@@ -21,8 +23,6 @@ class LoginViewModel: ViewModel() {
 
     fun onUserChange(user: String) { _user.value = user }
     fun onPasswordChange(password: String) { _password.value = password }
-
-    private val auth = Auth()
 
     fun login(
         context: Context,
@@ -39,13 +39,14 @@ class LoginViewModel: ViewModel() {
             Toast.LENGTH_SHORT
         ).show()
         else {
+            navController.navigate("query_ui")
+            auth.logout(sankhya)
+            Thread.sleep(threadSleep)
             Toast.makeText(
                 context,
                 "Olá ${ sankhya.firstName }!",
                 Toast.LENGTH_SHORT
             ).show()
-            auth.logout(sankhya)
-            navController.navigate("query_ui")
         }
     }
 }

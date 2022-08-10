@@ -1,15 +1,14 @@
 package br.com.cofermeta.toolbox.data
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
-const val base = "http://teste.cofermeta.com.br"
-const val port = 8280
+const val base = "http://sankhya.cofermeta.com.br"
+const val port = 8180
 const val defaultUser = "integracao"
 const val defaultPassword = "654321"
 const val fakeJsessionid = "dX9a9e3Xm7NBzBiPCI6Soj6hoCDktoN48OU8f_LP"
+const val imgPlaceHolder = "https://via.placeholder.com/400x300.png?text=Toolbox"
 
 const val FILTROS = "Filtros"
 const val SCANNER = "Scanner"
@@ -21,7 +20,7 @@ const val logoutService = "MobileLoginSP.logout"
 const val loadRecords = "CRUDServiceProvider.loadRecords"
 const val executeQuery = "DbExplorerSP.executeQuery"
 
-const val threadSleep: Long = 50
+const val threadSleep: Long = 300
 val defaultPadding: Dp = 18.dp
 
 const val queryUiTitle = "Listagem de Produtos"
@@ -29,6 +28,7 @@ const val connectionErrorMessage = "Não foi possível conectar-se.\nVerifique s
 const val searchBarPlaceHolder = "Insira o código do produto"
 const val loginEmpty = "Login não realizado"
 const val noProductFound = "Nenhum produto encontrado"
+const val noProductSelected = "Nenhum\nproduto\nselecionado"
 
 val sampleQueryResponseBody =
     """

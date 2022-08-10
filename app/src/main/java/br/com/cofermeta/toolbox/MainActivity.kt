@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import br.com.cofermeta.toolbox.model.dataclasses.QueryResult
+import br.com.cofermeta.toolbox.model.dataclasses.sankhya
 import br.com.cofermeta.toolbox.ui.LoginScreen
 import br.com.cofermeta.toolbox.ui.ProductDetailScreen
 import br.com.cofermeta.toolbox.ui.QueryScreen
@@ -23,13 +24,17 @@ class MainActivity : ComponentActivity() {
         setContent {
             ToolboxTheme {
                 val navController = rememberNavController()
+                val starDestination =
+                    if (sankhya.user.isNotEmpty() && sankhya.password.isNotEmpty())
+                        "query_ui" else "login_ui"
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+
                     NavHost(
                         navController = navController,
-                        startDestination = "login_ui"
+                        startDestination = starDestination
                     ) {
                         composable("login_ui") {
                             LoginScreen(

@@ -8,28 +8,34 @@ import br.com.cofermeta.toolbox.model.dataclasses.Sankhya
 import br.com.cofermeta.toolbox.data.*
 import br.com.cofermeta.toolbox.model.dataclasses.sankhya
 import br.com.cofermeta.toolbox.network.*
+import com.google.gson.JsonElement
+import com.google.gson.JsonParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 class ProductQuery : Connection() {
 
-    fun tryQuery(context: Context, queryField: QueryFields) {
+    fun tryQuery(context: Context, queryField: QueryFields, queryResult: QueryResult, auth: Auth) {
+        clearQueryResult(queryResult)
         if (isOnline(context)) {
-            val queryResult = QueryResult()
             MainScope().launch(Dispatchers.IO) {
-                Auth().updateJsession(sankhya)
-                ProductQuery().sankhyaQuery(sankhya,queryField, queryResult)
+                auth.updateJsession(sankhya)
+                ProductQuery().sankhyaQuery(sankhya, queryField, queryResult)
                 return@launch
             }
             while (true) {
-                if (queryResult.responseBody.isNotEmpty()) break
+                if (queryResult.status == "1" || queryResult.statusMessage.isNotEmpty()) break
                 Thread.sleep(threadSleep)
             }
-        } else  sankhya.statusMessage = connectionErrorMessage
+        } else queryResult.statusMessage = connectionErrorMessage
     }
 
-    private fun sankhyaQuery(sankhya: Sankhya, queryField: QueryFields, queryResult: QueryResult): QueryResult {
+    private fun sankhyaQuery(
+        sankhya: Sankhya,
+        queryField: QueryFields,
+        queryResult: QueryResult
+    ): QueryResult {
         val response = connect(
             serviceName = executeQuery,
             requestBody = queryListagemDeProdutosBody(
@@ -42,8 +48,39 @@ class ProductQuery : Connection() {
             ),
             jsessionid = sankhya.jsessionid
         )
-        queryResult.responseBody = response
-        Log.d("queryResult body", queryResult.responseBody)
+        checkAndUpdateProductData(response, queryResult)
+        Log.d("queryResult body", response)
+        Log.d("value.status", queryResult.status)
+        Log.d("value.statusMessage", queryResult.statusMessage)
+        Log.d("value.fieldsMetadata", queryResult.fieldsMetadata.toString())
+        Log.d("value.numberOfHeaders", queryResult.numberOfHeaders.toString())
+        Log.d("value.rows", queryResult.rows.toString())
+        Log.d("value.numberOfRows", queryResult.numberOfRows.toString())
+
         return queryResult
+    }
+
+    private fun checkAndUpdateProductData(response: String, value: QueryResult) {
+        val jsonElement = JsonParser.parseString(response)
+        if (response.contains("status")) value.status = jsonElement.asJsonObject["status"].asString
+        if (value.status == "1") {
+            val responseBody = jsonElement.asJsonObject["responseBody"]
+            value.numberOfHeaders = responseBody.asJsonObject["fieldsMetadata"].asJsonArray.size()
+            value.fieldsMetadata = responseBody.asJsonObject["fieldsMetadata"].asJsonArray
+            value.numberOfRows = responseBody.asJsonObject["rows"].asJsonArray.size()
+            value.rows = responseBody.asJsonObject["rows"].asJsonArray
+        } else {
+            if (response.contains("statusMessage")) value.statusMessage =
+                jsonElement.asJsonObject["statusMessage"].asString
+        }
+    }
+
+    private fun clearQueryResult(value: QueryResult) {
+        value.status = ""
+        value.statusMessage = ""
+        value.fieldsMetadata = null
+        value.numberOfHeaders = 0
+        value.rows = null
+        value.numberOfRows = 0
     }
 }
