@@ -16,6 +16,7 @@ fun DrawerTextField(label: String, value: String, onValueChange: (String) -> Uni
         value = value,
         onValueChange = onValueChange,
         shape = RoundedCornerShape(50.dp),
+        maxLines = 1,
         label = {
             Text(
                 text = label

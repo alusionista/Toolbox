@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -16,13 +16,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import br.com.cofermeta.toolbox.data.defaultPadding
 import br.com.cofermeta.toolbox.data.imgPlaceHolder
-import br.com.cofermeta.toolbox.viewmodels.QueryViewModel
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 
@@ -33,13 +34,25 @@ fun ProductItem(
     vlrvenda: String,
     descrprod: String,
     endimagem: String,
-    index: Int,
-    navController: NavController,
-    queryViewModel: QueryViewModel
 ) {
-    val newEndimagem = if (endimagem.contains("http")) endimagem else imgPlaceHolder
+    val newCodprod = "#$codprod"
+    val newEndimagem = if (endimagem.contains("http")) endimagem.replace("\"", "").trim() else imgPlaceHolder
     val newMarca = if (vlrvenda.contains("null")) "Sem marca" else marca.replace("\"", "").trim()
     val newVlrvenda = if (vlrvenda.contains("null")) "Sem preço" else "R$${vlrvenda.replace(".", ",")}"
+    val newDescrprod = descrprod.replace("\"", "").trim()
+
+    val showDialog =  remember { mutableStateOf(false) }
+
+    if(showDialog.value)
+        ProductDialog(
+            endimagem = newEndimagem,
+            codprod = newCodprod,
+            marca = newMarca,
+            vlrvenda = newVlrvenda,
+            descrprod = newDescrprod,
+            onShowDialog = {
+                showDialog.value = it
+            })
 
     val constraints = ConstraintSet {
         val detailColumn = createRefFor("detailcolumn")
@@ -65,13 +78,7 @@ fun ProductItem(
             .clip(RoundedCornerShape(15.dp))
             .background(MaterialTheme.colors.primaryVariant)
             .clickable {
-                queryViewModel.onSelectItem(
-                    newValue = index,
-                    newEndimagem = newEndimagem,
-                    newMarca = newMarca,
-                    newVlrvenda = newVlrvenda,
-                    navController = navController
-                )
+                showDialog.value = true
             }
     ) {
         Column(modifier = Modifier
@@ -85,7 +92,7 @@ fun ProductItem(
                 ) {
                         SubcomposeAsyncImage(
                             model = ImageRequest.Builder(LocalContext.current)
-                                .data(newEndimagem.replace("\"", "").trim())
+                                .data(newEndimagem)
                                 .crossfade(true)
                                 .build(),
                             contentDescription = null,
@@ -100,7 +107,7 @@ fun ProductItem(
                         .layoutId("detailcolumn")
                 ) {
                     Text(
-                        text = "#$codprod",
+                        text = newCodprod,
                         fontSize = 22.sp,
                         fontWeight = FontWeight.ExtraBold,
                         color = Color.White,
@@ -124,10 +131,22 @@ fun ProductItem(
             }
             Text(
                 modifier = Modifier.padding(top = 12.dp),
-                text = descrprod.replace("\"", "").trim(),
+                text = newDescrprod,
                 fontSize = 16.sp,
                 letterSpacing = 0.sp,
             )
+        }
+    }
+}
+@Composable
+fun MyDialog() {
+    var showDialog by remember { mutableStateOf(false) }
+    Text("Click me",
+        Modifier.clickable { showDialog = true }
+    )
+    if(showDialog) {
+        Dialog({ showDialog = false }) {
+            Text("I am the content of the dialog")
         }
     }
 }

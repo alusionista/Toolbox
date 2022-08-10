@@ -15,8 +15,8 @@ class LoginViewModel: ViewModel() {
 
     private val auth = Auth()
 
-    private val _user = MutableLiveData(defaultUser)
-    private val _password = MutableLiveData(defaultPassword)
+    private val _user = MutableLiveData(sankhya.user)
+    private val _password = MutableLiveData(sankhya.password)
 
     val user: LiveData<String> = _user
     val password: LiveData<String> = _password

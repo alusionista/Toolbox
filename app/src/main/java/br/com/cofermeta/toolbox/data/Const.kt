@@ -22,6 +22,7 @@ const val executeQuery = "DbExplorerSP.executeQuery"
 
 const val threadSleep: Long = 300
 val defaultPadding: Dp = 18.dp
+val largePadding: Dp = 36.dp
 
 const val queryUiTitle = "Listagem de Produtos"
 const val connectionErrorMessage = "Não foi possível conectar-se.\nVerifique sua conexão Wi-fi."

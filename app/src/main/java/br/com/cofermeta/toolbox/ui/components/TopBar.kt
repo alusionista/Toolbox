@@ -42,7 +42,7 @@ fun TopBar(title: String, iconButton: (() -> Unit)? = null) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
 
-                        ProvideTextStyle(value = MaterialTheme.typography.h6) {
+                        ProvideTextStyle(value = MaterialTheme.typography.h4) {
                             CompositionLocalProvider(
                                 LocalContentAlpha provides ContentAlpha.high,
                             ) {

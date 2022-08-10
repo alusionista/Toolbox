@@ -1,5 +1,7 @@
 package br.com.cofermeta.toolbox.model.dataclasses
 
+import br.com.cofermeta.toolbox.data.defaultPassword
+import br.com.cofermeta.toolbox.data.defaultUser
 import java.util.*
 
 data class Sankhya(
@@ -9,8 +11,8 @@ data class Sankhya(
     var statusMessage: String = "",
     var time: Date? = null,
 
-    var user: String = "",
-    var password: String = "",
+    var user: String = defaultUser,
+    var password: String = defaultPassword,
 
     var firstName: String = "",
     var codusu: String = "",
