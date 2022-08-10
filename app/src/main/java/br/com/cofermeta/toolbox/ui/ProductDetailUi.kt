@@ -2,6 +2,7 @@ package br.com.cofermeta.toolbox.ui
 
 import android.content.Context
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -11,6 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -45,8 +50,8 @@ fun ProductDetailScreen(
             ProductDetailWrapper(marca, vlrvenda, descrprod)
         }
         Box(
-            contentAlignment = Alignment.TopCenter,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
         ) {
             SubcomposeAsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
@@ -60,6 +65,23 @@ fun ProductDetailScreen(
                     .offset(y = 70.dp)
                     .clip(RoundedCornerShape(10.dp))
             )
+            Box(
+                contentAlignment = Alignment.TopCenter,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                SubcomposeAsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(ENDIMAGEM)
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(240.dp, 170.dp)
+                        .offset(y = 70.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                )
+            }
         }
     }
     //BottomBar(context, navController, scope, state)
@@ -137,3 +159,4 @@ fun ProductDetailScreen(
             )
         }
     }
+

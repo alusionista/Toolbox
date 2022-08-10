@@ -50,8 +50,7 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("product_detail_ui") {
                             ProductDetailScreen(
-                                context = applicationContext,
-                                navController = navController,
+                                navController = navController
                             )
                         }
                     }
