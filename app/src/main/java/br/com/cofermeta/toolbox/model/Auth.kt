@@ -79,7 +79,6 @@ class Auth : Connection() {
 
     private fun checkAndUpdateUserData(response: String, sankhya: Sankhya) {
         val jsonElement = JsonParser.parseString(response)
-
         sankhya.responseBody =
             jsonElement.asJsonObject["responseBody"].toString()
         sankhya.codusu =
@@ -118,12 +117,9 @@ class Auth : Connection() {
                 jsessionid = sankhya.jsessionid
             )
             if (response.contains("\"status\":\"1\"")) sankhya.jsessionid = ""
-            Log.d("logout", response)
             createLogs(sankhya)
             return@launch
         }
-
-        createLogs(sankhya)
     }
 
     private fun clearSankhya(sankhya: Sankhya) {

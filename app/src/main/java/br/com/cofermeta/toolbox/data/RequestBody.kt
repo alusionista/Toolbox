@@ -125,11 +125,10 @@ fun setQueryWhere(
     if (marca.isNotEmpty()) whereList.add(_marca)
     if (locprin.isNotEmpty()) whereList.add(_locprin)
     if (descrprod.isNotEmpty()) whereList.add(_descricao)
-    if (codprod.isNotEmpty()) {
+    if (codemp.isNotEmpty()) {
         whereList.add(_codemp)
         whereList.add(_estoque)
     }
-
 
     for (i in 0 until whereList.size) {
         stringBuilder.append(whereList[i])
@@ -158,59 +157,59 @@ fun queryListagemDeProdutosBody(
                 CASE
                     WHEN PRO.CODPROD = NULL THEN 0
                     ELSE PRO.CODPROD
-                END 'COD_PROD',
-                CASE
-                    WHEN PRO.AD_COF_CODPRODLEG = NULL THEN ' '
-                    ELSE PRO.AD_COF_CODPRODLEG
-                END 'CODIGO_LEGADO',
-                CASE
-                    WHEN PRO.DESCRPROD = NULL THEN ' '
-                    ELSE PRO.DESCRPROD
-                END 'PRODUTO',
-                CASE
-                    WHEN PRO.CODVOL = NULL THEN ' '
-                    ELSE PRO.CODVOL
-                END 'UNIDADE_MEDIDA',
-                CASE
-                    WHEN LOCPRIN = NULL THEN ' '
-                    ELSE LOCPRIN
-                END 'LOC_PRINCIPAL',
-                CASE
-                    WHEN MAX(EXC.VLRVENDA) = NULL THEN 0
-                    ELSE MAX(EXC.VLRVENDA)
-                END 'PRECO',
-                CASE
-                    WHEN PRO.AD_CODPRODFORN = NULL THEN ' '
-                    ELSE PRO.AD_CODPRODFORN
-                END 'CODIGO_FORNECEDOR',
-                CASE
-                    WHEN PRO.REFFORN = NULL THEN ' '
-                    ELSE PRO.REFFORN
-                END 'REFERENCIA_FORNECEDOR',
-                CASE
-                    WHEN PRO.REFERENCIA = NULL THEN ' '
-                    ELSE PRO.REFERENCIA
-                END 'CODIGO_DE_BARRAS',
+                END 'CODPROD',
                 CASE
                     WHEN PRO.MARCA = NULL THEN ' '
                     ELSE PRO.MARCA
                 END 'MARCA',
                 CASE
+                    WHEN MAX(EXC.VLRVENDA) = NULL THEN 0
+                    ELSE MAX(EXC.VLRVENDA)
+                END 'VLRVENDA',
+                CASE
+                    WHEN PRO.DESCRPROD = NULL THEN ' '
+                    ELSE PRO.DESCRPROD
+                END 'DESCRPROD',
+                CASE
+                    WHEN PRO.ENDIMAGEM = NULL THEN ' '
+                    ELSE PRO.ENDIMAGEM
+                END 'ENDIMAGEM',
+                CASE
+                    WHEN PRO.AD_COF_CODPRODLEG = NULL THEN ' '
+                    ELSE PRO.AD_COF_CODPRODLEG
+                END 'CODPRODLEG',
+                CASE
+                    WHEN PRO.CODVOL = NULL THEN ' '
+                    ELSE PRO.CODVOL
+                END 'CODVOL',
+                CASE
+                    WHEN LOCPRIN = NULL THEN ' '
+                    ELSE LOCPRIN
+                END 'LOCPRIN',
+                CASE
+                    WHEN PRO.AD_CODPRODFORN = NULL THEN ' '
+                    ELSE PRO.AD_CODPRODFORN
+                END 'CODPRODFORN',
+                CASE
                     WHEN PRO.REFFORN = NULL THEN ' '
                     ELSE PRO.REFFORN
-                END 'REF_FORNECEDOR',
+                END 'REFFORN',
+                CASE
+                    WHEN PRO.REFERENCIA = NULL THEN ' '
+                    ELSE PRO.REFERENCIA
+                END 'REFERENCIA',
                 CASE
                     WHEN DESCRGRUPOPROD = NULL THEN ' '
                     ELSE DESCRGRUPOPROD
-                END 'CATEGORIA',
+                END 'DESCRGRUPOPROD',
                 CASE
                     WHEN PRO.PESOLIQ = NULL THEN 0
                     ELSE PRO.PESOLIQ
-                END 'PESO',
+                END 'PESOLIQ',
                 CASE
                     WHEN PRO.ORIGPROD = NULL THEN 0
                     ELSE PRO.ORIGPROD
-                END 'ORIGEM',
+                END 'ORIGPROD',
                 CASE
                     WHEN PRO.NCM = NULL THEN 0
                     ELSE PRO.NCM
@@ -218,19 +217,15 @@ fun queryListagemDeProdutosBody(
                 CASE
                     WHEN PRO.ORIGPROD = NULL THEN ' '
                     ELSE PRO.ORIGPROD
-                END 'ORIGEM_PRODUTO',
+                END 'ORIGPROD',
                 CASE
                     WHEN EST.CODLOCAL = NULL THEN ' '
                     ELSE EST.CODLOCAL
-                END 'COD_LOCAL',
+                END 'CODLOCAL',
                 CASE
                     WHEN EST.RESERVADO = NULL THEN 0
                     ELSE EST.RESERVADO
-                END 'EST_RESERVADO',
-                CASE
-                    WHEN (EST.ESTOQUE - EST.RESERVADO) < EST.ESTMIN THEN 'ESTOQUE MIN > ESTOQUE'
-                    ELSE 'ESTOQUE NORMAL'
-                END AS SITUACAO_ESTOQUE,
+                END 'ESTOQUE_RESERVADO',
                 CASE
                     WHEN EST.ESTOQUE = NULL THEN 0
                     ELSE EST.ESTOQUE
@@ -242,11 +237,11 @@ fun queryListagemDeProdutosBody(
                 CASE
                     WHEN EST.ESTMIN = NULL THEN 0
                     ELSE EST.ESTMIN
-                END 'ESTOQUE_MINIMO',
+                END 'ESTMIN',
                 CASE
                     WHEN EST.ESTMAX = NULL THEN 0
                     ELSE EST.ESTMAX
-                END 'ESTOQUE_MAXIMO',
+                END 'ESTMAX',
                 CASE
                     WHEN PRO.ATIVO = 'S' THEN 'SIM'
                     ELSE 'NÃO'
@@ -268,7 +263,7 @@ fun queryListagemDeProdutosBody(
                         TGFCUS
                     WHERE
                         CODPROD = PRO.CODPROD)),
-                0) 'CUSTO_GERENCIAL',
+                0) 'CUSGER',
                 -- ULTIMO CUSTO REPOSIÇÃO  
             
                 ISNULL((
@@ -302,11 +297,11 @@ fun queryListagemDeProdutosBody(
                         TGFCUS
                     WHERE
                         CODPROD = PRO.CODPROD)),
-                0) 'CUSVAR',
+                0) 'CUSVARIAVEL',
                 CASE
                     WHEN PAR.CODPARC = NULL THEN 0
                     ELSE PAR.CODPARC
-                END 'COD_FORN',
+                END 'CODPARC_FORN',
                 CASE
                     WHEN PAR.NOMEPARC = NULL THEN ' '
                     ELSE PAR.NOMEPARC
@@ -314,16 +309,15 @@ fun queryListagemDeProdutosBody(
                 CASE
                     WHEN PRO.AD_NULINHA = NULL THEN 0
                     ELSE PRO.AD_NULINHA
-                END 'COD_LINHA',
+                END 'NULINHA',
                 CASE
                     WHEN LIN.DESCRICAO = NULL THEN ' '
                     ELSE LIN.DESCRICAO
-                END 'LINHA',
+                END 'DESCRICAO_LINHA',
                 CASE 
                     WHEN PRO.AD_COF_CODPRODECOM = NULL THEN ' '
-                    ELSE PRO.AD_COF_CODPRODECOM 
-                END 'CODPRODECOM',
-                PRO.ENDIMAGEM
+                    ELSE PRO.AD_COF_CODPRODECOM
+                END 'CODPRODECOM'
                 
             FROM
                 TGFPRO PRO

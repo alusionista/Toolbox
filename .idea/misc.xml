@@ -4,7 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/martinssilva/AndroidStudioProjects/Toolkit/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.135" />
+        <entry key="..\:/Users/martinssilva/AndroidStudioProjects/Toolkit/app/src/main/res/drawable-v24/ic_placeholder.xml" value="0.1485" />
         <entry key="..\:/Users/martinssilva/AndroidStudioProjects/Toolkit/app/src/main/res/drawable/ic_launcher_background.xml" value="0.135" />
+        <entry key="..\:/Users/martinssilva/AndroidStudioProjects/Toolkit/app/src/main/res/drawable/ic_placeholder_background.xml" value="0.1485" />
+        <entry key="..\:/Users/martinssilva/AndroidStudioProjects/Toolkit/app/src/main/res/drawable/ic_placeholder_vector.xml" value="0.1485" />
         <entry key="..\:/Users/martinssilva/AndroidStudioProjects/Toolkit/app/src/main/res/drawable/ic_tools_icon_vector.xml" value="0.1745" />
         <entry key="..\:/Users/martinssilva/AndroidStudioProjects/Toolkit/app/src/main/res/font/nunito_sans_bold.xml" value="0.28072916666666664" />
         <entry key="..\:/Users/martinssilva/AndroidStudioProjects/Toolkit/app/src/main/res/layout/activity_main.xml" value="0.35260416666666666" />

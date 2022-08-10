@@ -11,6 +11,7 @@ import java.io.IOException
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.concurrent.TimeoutException
 
 abstract class Connection {
     private fun baseUrl(serviceName: String, jsessionid: String): String {
@@ -38,8 +39,7 @@ abstract class Connection {
         return false
     }
 
-
-    @Throws(IOException::class, InterruptedException::class)
+    @Throws(IOException::class, InterruptedException::class, TimeoutException::class)
     fun connect(
         serviceName: String,
         requestBody: String,
@@ -58,7 +58,6 @@ abstract class Connection {
         conn.connectTimeout = 10_000
         conn.doOutput = true
         conn.doInput = true
-
 
         conn.outputStream.use { stream -> stream.write(bytes) }
         val status: Int = conn.responseCode
