@@ -46,22 +46,69 @@ class QueryViewModel : ViewModel() {
     val referencia: LiveData<String> = _referencia
     val hasResult: LiveData<Boolean> = _hasResult
 
+    fun onEmpresaChange(empresa: String) {
+        _empresa.value = empresa
+    }
 
-    fun onEmpresaChange(empresa: String) { _empresa.value = empresa }
-    fun onCodigoChange(codigo: String) { _codigo.value = codigo }
-    fun onMarcaChange(marca: String) { _marca.value = marca }
-    fun onLocalChange(local: String) { _local.value = local }
-    fun onDescricaoChange(descricao: String) { _descricao.value = descricao }
-    fun onHasResultChange(newValue: Boolean) { _hasResult.value = newValue }
+    fun onCodigoChange(codigo: String) {
+        _codigo.value = codigo
+    }
 
-    fun onReferenciaChange(context: Context, referencia: String) {
-        queryField.referencia = referencia
+    fun onMarcaChange(marca: String) {
+        _marca.value = marca
+    }
+
+    fun onLocalChange(local: String) {
+        _local.value = local
+    }
+
+    fun onDescricaoChange(descricao: String) {
+        _descricao.value = descricao
+    }
+
+    private fun onHasResultChange(newValue: Boolean) {
+        _hasResult.value = newValue
+    }
+
+    private fun updateQueryFields() {
         queryField.codemp = codemp.value.toString()
         queryField.marca = marca.value.toString()
         queryField.codprod = codprod.value.toString()
         queryField.locprin = locprin.value.toString()
         queryField.descrprod = descrprod.value.toString()
+    }
+
+    fun onReferenciaChange(context: Context, referencia: String) {
+        queryField.referencia = referencia
+        updateQueryFields()
         onHasResultChange(false)
+        sankhyaRequest(context)
+        queryField.referencia = ""
+    }
+
+    fun productQuery(
+        context: Context,
+        scope: CoroutineScope,
+        state: ScaffoldState,
+    ) {
+        updateQueryFields()
+        onHasResultChange(false)
+
+        if (checkEmptyFields()) {
+            sankhyaRequest(context)
+            scope.launch { state.drawerState.close() }
+        } else Toast.makeText(context, noProductFound, Toast.LENGTH_SHORT).show()
+        scope.launch { state.drawerState.close() }
+    }
+
+    private fun checkEmptyFields(): Boolean {
+        return queryField.marca.isNotEmpty() ||
+                queryField.codprod.isNotEmpty() ||
+                queryField.locprin.isNotEmpty() ||
+                queryField.descrprod.isNotEmpty()
+    }
+
+    private fun sankhyaRequest(context: Context) {
         productQuery.tryQuery(context, queryField, queryResult, auth)
         auth.logout(sankhya)
         while (true) {
@@ -73,44 +120,6 @@ class QueryViewModel : ViewModel() {
         } else {
             Toast.makeText(context, noProductFound, Toast.LENGTH_SHORT).show()
         }
-        queryField.referencia = ""
-    }
 
-    fun productQuery(
-        context: Context,
-        scope: CoroutineScope,
-        state: ScaffoldState,
-        empresa: String,
-        codigo: String,
-        marca: String,
-        localizacao: String,
-        descricao: String,
-    ) {
-        queryField.codemp = empresa
-        queryField.marca = marca
-        queryField.codprod = codigo
-        queryField.locprin = localizacao
-        queryField.descrprod = descricao
-
-        onHasResultChange(false)
-        if (queryField.marca.isNotEmpty() ||
-            queryField.codprod.isNotEmpty() ||
-            queryField.locprin.isNotEmpty() ||
-            queryField.descrprod.isNotEmpty()
-        ) {
-            productQuery.tryQuery(context, queryField, queryResult, auth)
-            auth.logout(sankhya)
-            while (true) {
-                if (queryResult.status == "1" || queryResult.statusMessage.isNotEmpty()) break
-                Thread.sleep(threadSleep)
-            }
-            scope.launch { state.drawerState.close() }
-            if (queryResult.numberOfRows > 0) {
-                onHasResultChange(true)
-            } else {
-                Toast.makeText(context, noProductFound, Toast.LENGTH_SHORT).show()
-            }
-        } else Toast.makeText(context, noProductFound, Toast.LENGTH_SHORT).show()
-        scope.launch { state.drawerState.close() }
     }
 }

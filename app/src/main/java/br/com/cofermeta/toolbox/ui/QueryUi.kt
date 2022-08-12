@@ -1,80 +1,47 @@
 package br.com.cofermeta.toolbox.ui
 
-import android.content.Context
-import androidx.compose.material.*
-import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavController
 import br.com.cofermeta.toolbox.data.queryUiTitle
-import br.com.cofermeta.toolbox.model.dataclasses.sankhya
-import br.com.cofermeta.toolbox.ui.components.*
-import br.com.cofermeta.toolbox.viewmodels.QueryViewModel
+import br.com.cofermeta.toolbox.ui.components.BodyContent
+import br.com.cofermeta.toolbox.ui.components.BottomBar
+import br.com.cofermeta.toolbox.ui.components.Drawer
+import br.com.cofermeta.toolbox.ui.components.TopBar
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun QueryScreen(
-    context: Context,
     navController: NavController,
-    queryViewModel: QueryViewModel = viewModel()
 ) {
     val state = rememberScaffoldState()
     val scope = rememberCoroutineScope()
-    val codemp by queryViewModel.codemp.observeAsState(sankhya.codemp)
-    val codprod by queryViewModel.codprod.observeAsState("")
-    val marca by queryViewModel.marca.observeAsState("")
-    val locprin by queryViewModel.locprin.observeAsState("")
-    val descrprod by queryViewModel.descrprod.observeAsState("")
 
-ScaffoldQueryUi(
-    context = context,
-    navController = navController,
-    queryViewModel = queryViewModel,
-    state = state,
-    scope = scope,
-    codemp = codemp,
-    codprod = codprod,
-    marca = marca,
-    locprin = locprin,
-    descrprod = descrprod
-)
+    ScaffoldQueryUi(
+        navController = navController,
+        state = state,
+        scope = scope,
+    )
 }
 
 @Composable
 fun ScaffoldQueryUi(
-    context: Context,
     navController: NavController,
     state: ScaffoldState,
     scope: CoroutineScope,
-    codemp: String,
-    codprod: String,
-    marca: String,
-    locprin: String,
-    descrprod: String,
-    queryViewModel: QueryViewModel
 ) {
 
     Scaffold(
         scaffoldState = state,
         topBar = { TopBar(queryUiTitle) },
-        drawerContent = {
-            QueryDrawer(
-                context = context,
-                scope = scope,
-                state = state,
-                queryViewModel = queryViewModel,
-                codemp = codemp,
-                codprod = codprod,
-                marca = marca,
-                locprin = locprin,
-                descrprod = descrprod,
-            )
-        },
+        drawerContent = { Drawer(scope, state) },
         drawerBackgroundColor = MaterialTheme.colors.primaryVariant,
         drawerContentColor = MaterialTheme.colors.onSurface,
-        content = { padding ->
-            BodyContent(padding, navController, queryViewModel)
-        },
+        content = { padding -> BodyContent(padding) },
         bottomBar = { BottomBar(navController, scope, state) },
     )
 }

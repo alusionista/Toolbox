@@ -10,24 +10,97 @@ import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Cancel
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.window.Dialog
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
+import br.com.cofermeta.toolbox.data.SCANNER
 import br.com.cofermeta.toolbox.data.defaultPadding
 import br.com.cofermeta.toolbox.model.CameraAnalyzer
 import br.com.cofermeta.toolbox.viewmodels.QueryViewModel
+
+@Composable
+fun ScannerDialog(
+    onShowDialog: (Boolean) -> Unit
+) {
+    Dialog(onDismissRequest = { onShowDialog(false) }) {
+        Surface(
+            modifier = Modifier.width(400.dp),
+            shape = RoundedCornerShape(16.dp),
+            color = MaterialTheme.colors.primaryVariant
+        ) {
+            Column() {
+                Spacer(modifier = Modifier.height(defaultPadding))
+                Box(Modifier.height(32.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+
+                        ProvideTextStyle(value = MaterialTheme.typography.h5) {
+                            CompositionLocalProvider(
+                                LocalContentAlpha provides ContentAlpha.high,
+                            ) {
+                                Text(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    textAlign = TextAlign.Center,
+                                    maxLines = 1,
+                                    fontWeight = FontWeight.ExtraBold,
+                                    text = SCANNER,
+                                    color = Color.White,
+                                )
+                            }
+                        }
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(end = 10.dp),
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        CompositionLocalProvider(
+                            LocalContentAlpha provides ContentAlpha.high,
+                        ) {
+                            IconButton(
+                                onClick = { onShowDialog(false) },
+                                enabled = true,
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Rounded.Cancel,
+                                    contentDescription = "voltar",
+                                    tint = Color.White,
+                                    modifier = Modifier
+                                        .width(30.dp)
+                                        .height(30.dp)
+                                )
+                            }
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(defaultPadding))
+                Scanner({onShowDialog(it)})
+                Spacer(modifier = Modifier.height(defaultPadding))
+
+            }
+
+        }
+    }
+}
+
 
 @Composable
 fun Scanner(
@@ -96,7 +169,7 @@ fun Scanner(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = defaultPadding)
-                    .height(450.dp)
+                    .height(150.dp)
                     .clip(RoundedCornerShape(15.dp))
             )
         }

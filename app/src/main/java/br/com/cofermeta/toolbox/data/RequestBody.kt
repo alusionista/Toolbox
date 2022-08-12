@@ -215,10 +215,6 @@ fun queryListagemDeProdutosBody(
                     ELSE PRO.NCM
                 END 'NCM',
                 CASE
-                    WHEN PRO.ORIGPROD = NULL THEN ' '
-                    ELSE PRO.ORIGPROD
-                END 'ORIGPROD',
-                CASE
                     WHEN EST.CODLOCAL = NULL THEN ' '
                     ELSE EST.CODLOCAL
                 END 'CODLOCAL',
@@ -361,7 +357,6 @@ fun queryListagemDeProdutosBody(
                 PRO.PESOLIQ,
                 PRO.ORIGPROD,
                 PRO.NCM,
-                PRO.ORIGPROD,
                 EST.ESTMIN,
                 EST.ESTMAX,
                 EST.CODLOCAL,
