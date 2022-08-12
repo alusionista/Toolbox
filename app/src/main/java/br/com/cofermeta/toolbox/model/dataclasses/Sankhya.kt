@@ -1,5 +1,6 @@
 package br.com.cofermeta.toolbox.model.dataclasses
 
+import br.com.cofermeta.toolbox.data.defaultCodemp
 import br.com.cofermeta.toolbox.data.defaultPassword
 import br.com.cofermeta.toolbox.data.defaultUser
 import java.util.*
@@ -17,6 +18,6 @@ data class Sankhya(
     var firstName: String = "",
     var codusu: String = "",
     var codgrupo: String = "",
-    var codemp: String = "",
+    var codemp: String = defaultCodemp,
 )
 val sankhya = Sankhya()

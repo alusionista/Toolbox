@@ -23,12 +23,14 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun BottomBar(
-    context: Context,
     navController: NavController,
     scope: CoroutineScope,
     state: ScaffoldState
 ) {
-    val selectedIndex = remember { mutableStateOf(0) }
+
+    val showDialog = remember { mutableStateOf(false) }
+
+    if (showDialog.value) ScannerDialog( onShowDialog = { showDialog.value = it })
 
     BottomAppBar(
         elevation = 0.dp,
@@ -40,7 +42,7 @@ fun BottomBar(
             Icon(imageVector = Icons.Rounded.FilterList, FILTROS)
         },
             label = { Text(text = FILTROS) },
-            selected = (selectedIndex.value == 1),
+            selected = false,
             unselectedContentColor = MaterialTheme.colors.onSurface,
             onClick = {
                 scope.launch { if(state.drawerState.isClosed) state.drawerState.open() else state.drawerState.close() }
@@ -50,10 +52,10 @@ fun BottomBar(
             Icon(imageVector = Icons.Rounded.QrCodeScanner, SCANNER)
         },
             label = { Text(text = SCANNER) },
-            selected = (selectedIndex.value == 1),
+            selected = false,
             unselectedContentColor = MaterialTheme.colors.onSurface,
                     onClick = {
-                Toast.makeText(context, SCANNER, Toast.LENGTH_SHORT).show()
+                        showDialog.value = true
             })
         BottomNavigationItem(icon = {
             Icon(imageVector = Icons.Default.Person, USUARIO)
@@ -61,7 +63,7 @@ fun BottomBar(
             label = {
                 Text(text = sankhya.firstName.ifEmpty { USUARIO })
                     },
-            selected = (selectedIndex.value == 1),
+            selected = false,
             unselectedContentColor = MaterialTheme.colors.onSurface,
             onClick = {
             navController.navigate("login_ui")

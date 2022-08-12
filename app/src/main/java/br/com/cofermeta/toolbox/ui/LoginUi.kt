@@ -2,6 +2,7 @@ package br.com.cofermeta.toolbox.ui
 
 import android.content.Context
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -12,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -27,11 +29,11 @@ import br.com.cofermeta.toolbox.viewmodels.LoginViewModel
 
 @Composable
 fun LoginScreen(
-    context: Context,
     navController: NavController,
     loginViewModel: LoginViewModel = viewModel()
 ) {
 
+    val context = LocalContext.current
     val user by loginViewModel.user.observeAsState(defaultUser)
     val password by loginViewModel.password.observeAsState(defaultPassword)
 
@@ -58,7 +60,6 @@ fun Login(
 ) {
     Column(
         modifier = Modifier
-            //.verticalScroll(rememberScrollState())
             .fillMaxSize()
             .padding(26.dp),
         verticalArrangement = Arrangement.Center,

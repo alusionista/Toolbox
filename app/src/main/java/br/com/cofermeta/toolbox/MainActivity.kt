@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -21,32 +22,27 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ToolboxTheme {
-                val navController = rememberNavController()
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    val startDestination = if (sankhya.user.isNotEmpty()) "query_ui" else "login_ui"
-
-                    NavHost(
-                        navController = navController,
-                        startDestination = startDestination
-                    ) {
-                        composable("login_ui") {
-                            LoginScreen(
-                                context = applicationContext,
-                                navController = navController,
-                            )
-                        }
-                        composable("query_ui") {
-                            QueryScreen(
-                                context = applicationContext,
-                                navController = navController,
-                            )
-                        }
-                    }
+                    MainNavHost()
                 }
             }
         }
     }
+}
+
+@Composable
+fun MainNavHost () {
+    val navController = rememberNavController()
+    val startDestination = if (sankhya.user.isNotEmpty()) "query_ui" else "login_ui"
+    NavHost(
+        navController = navController,
+        startDestination = startDestination
+    ) {
+        composable("login_ui") { LoginScreen( navController ) }
+        composable("query_ui") { QueryScreen( navController) }
+    }
+
 }

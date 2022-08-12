@@ -3,10 +3,11 @@ package br.com.cofermeta.toolbox.data
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-const val base = "http://sankhya.cofermeta.com.br"
-const val port = 8180
+const val base = "http://teste.cofermeta.com.br"
+const val port = 8280
 const val defaultUser = "integracao"
 const val defaultPassword = "654321"
+const val defaultCodemp = "1"
 const val fakeJsessionid = "dX9a9e3Xm7NBzBiPCI6Soj6hoCDktoN48OU8f_LP"
 const val imgPlaceHolder = "https://via.placeholder.com/400x300.png?text=Toolbox"
 

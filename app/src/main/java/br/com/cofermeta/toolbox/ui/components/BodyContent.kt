@@ -12,25 +12,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.lifecycle.viewmodel.compose.viewModel
 import br.com.cofermeta.toolbox.data.noProductSelected
+import br.com.cofermeta.toolbox.ui.Item
 import br.com.cofermeta.toolbox.viewmodels.QueryViewModel
 
 @Composable
 fun BodyContent(
     padding: PaddingValues,
-    navController: NavController,
-    queryViewModel: QueryViewModel
+    queryViewModel: QueryViewModel = viewModel()
 ) {
     val hasResult by queryViewModel.hasResult.observeAsState(false)
 
     if (hasResult) {
-        val numberOfHeaders = queryViewModel.queryResult.numberOfHeaders
-        val fieldsMetadata = queryViewModel.queryResult.fieldsMetadata
-        val numberOfRows =
-            if (queryViewModel.queryResult.numberOfRows < 100) queryViewModel.queryResult.numberOfRows else 100
-        val rows = queryViewModel.queryResult.rows
 
+        val queryResult = queryViewModel.queryResult
+        val numberOfHeaders = queryResult.numberOfHeaders
+        val fieldsMetadata = queryResult.fieldsMetadata
+        val numberOfRows =
+            if (queryResult.numberOfRows < 100) queryResult.numberOfRows else 100
 
         Column(
             modifier = Modifier
@@ -43,27 +43,12 @@ fun BodyContent(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(horizontal = 22.dp, vertical = 10.dp),
-                    text = "Mostrando $numberOfRows de ${queryViewModel.queryResult.numberOfRows} resultados",
+                    text = "Mostrando $numberOfRows de ${queryResult.numberOfRows} resultados",
                     color = MaterialTheme.colors.secondaryVariant,
                     textAlign = TextAlign.Center
                 )
             }
-            for (i in 0 until numberOfRows) {
-                val codprod = rows?.asJsonArray?.get(i)?.asJsonArray?.get(0).toString()
-                val marca = rows?.asJsonArray?.get(i)?.asJsonArray?.get(1).toString()
-                val vlrvenda = rows?.asJsonArray?.get(i)?.asJsonArray?.get(2).toString()
-                val descrprod = rows?.asJsonArray?.get(i)?.asJsonArray?.get(3).toString()
-                val endimagem = rows?.asJsonArray?.get(i)?.asJsonArray?.get(4).toString()
-                Row {
-                    ProductItem(
-                        codprod = codprod,
-                        marca = marca,
-                        vlrvenda = vlrvenda,
-                        descrprod = descrprod,
-                        endimagem = endimagem,
-                    )
-                }
-            }
+             Item().ProductItem(queryResult)
         }
     } else {
         Column(

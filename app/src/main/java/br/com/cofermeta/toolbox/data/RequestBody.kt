@@ -111,7 +111,7 @@ fun setQueryWhere(
     val whereList = ArrayList<String>()
     val stringBuilder = StringBuilder()
 
-    val _referencia = "PRO.REFERENCIA = $referencia "
+    val _referencia = "PRO.REFERENCIA = '$referencia' "
     val _codprod = "PRO.CODPROD = $codprod "
     val _marca = "PRO.MARCA LIKE '%$marca%' "
     val _locprin = "LOCPRIN LIKE '%$locprin'%' "
@@ -214,10 +214,6 @@ fun queryListagemDeProdutosBody(
                     WHEN PRO.NCM = NULL THEN 0
                     ELSE PRO.NCM
                 END 'NCM',
-                CASE
-                    WHEN PRO.ORIGPROD = NULL THEN ' '
-                    ELSE PRO.ORIGPROD
-                END 'ORIGPROD',
                 CASE
                     WHEN EST.CODLOCAL = NULL THEN ' '
                     ELSE EST.CODLOCAL
@@ -361,7 +357,6 @@ fun queryListagemDeProdutosBody(
                 PRO.PESOLIQ,
                 PRO.ORIGPROD,
                 PRO.NCM,
-                PRO.ORIGPROD,
                 EST.ESTMIN,
                 EST.ESTMAX,
                 EST.CODLOCAL,
