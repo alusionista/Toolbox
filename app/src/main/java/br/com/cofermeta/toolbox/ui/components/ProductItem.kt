@@ -36,14 +36,16 @@ fun ProductItem(
     endimagem: String,
 ) {
     val newCodprod = "#$codprod"
-    val newEndimagem = if (endimagem.contains("http")) endimagem.replace("\"", "").trim() else imgPlaceHolder
+    val newEndimagem =
+        if (endimagem.contains("http")) endimagem.replace("\"", "").trim() else imgPlaceHolder
     val newMarca = if (vlrvenda.contains("null")) "Sem marca" else marca.replace("\"", "").trim()
-    val newVlrvenda = if (vlrvenda.contains("null")) "Sem preço" else "R$${vlrvenda.replace(".", ",")}"
+    val newVlrvenda =
+        if (vlrvenda.contains("null")) "Sem preço" else "R$${vlrvenda.replace(".", ",")}"
     val newDescrprod = descrprod.replace("\"", "").trim()
 
-    val showDialog =  remember { mutableStateOf(false) }
+    val showDialog = remember { mutableStateOf(false) }
 
-    if(showDialog.value)
+    if (showDialog.value)
         ProductDialog(
             endimagem = newEndimagem,
             codprod = newCodprod,
@@ -81,25 +83,27 @@ fun ProductItem(
                 showDialog.value = true
             }
     ) {
-        Column(modifier = Modifier
-            .padding(defaultPadding)
+        Column(
+            modifier = Modifier
+                .padding(defaultPadding)
         ) {
             ConstraintLayout(constraints) {
-                Box(modifier = Modifier
-                    .padding(end = 16.dp)
-                    .size(120.dp, 90.dp)
-                    .layoutId("detailimage")
+                Box(
+                    modifier = Modifier
+                        .padding(end = 16.dp)
+                        .size(120.dp, 90.dp)
+                        .layoutId("detailimage")
                 ) {
-                        SubcomposeAsyncImage(
-                            model = ImageRequest.Builder(LocalContext.current)
-                                .data(newEndimagem)
-                                .crossfade(true)
-                                .build(),
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(10.dp))
-                        )
+                    SubcomposeAsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(newEndimagem)
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(10.dp))
+                    )
                 }
                 Column(
                     verticalArrangement = Arrangement.SpaceBetween,
@@ -138,13 +142,14 @@ fun ProductItem(
         }
     }
 }
+
 @Composable
 fun MyDialog() {
     var showDialog by remember { mutableStateOf(false) }
     Text("Click me",
         Modifier.clickable { showDialog = true }
     )
-    if(showDialog) {
+    if (showDialog) {
         Dialog({ showDialog = false }) {
             Text("I am the content of the dialog")
         }

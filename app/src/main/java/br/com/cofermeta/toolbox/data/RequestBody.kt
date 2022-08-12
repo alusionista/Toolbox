@@ -111,7 +111,7 @@ fun setQueryWhere(
     val whereList = ArrayList<String>()
     val stringBuilder = StringBuilder()
 
-    val _referencia = "PRO.REFERENCIA = $referencia "
+    val _referencia = "PRO.REFERENCIA = '$referencia' "
     val _codprod = "PRO.CODPROD = $codprod "
     val _marca = "PRO.MARCA LIKE '%$marca%' "
     val _locprin = "LOCPRIN LIKE '%$locprin'%' "

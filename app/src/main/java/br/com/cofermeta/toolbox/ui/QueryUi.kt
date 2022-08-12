@@ -75,6 +75,6 @@ fun ScaffoldQueryUi(
         content = { padding ->
             BodyContent(padding, navController, queryViewModel)
         },
-        bottomBar = { BottomBar(context, navController, scope, state) },
+        bottomBar = { BottomBar(navController, scope, state) },
     )
 }

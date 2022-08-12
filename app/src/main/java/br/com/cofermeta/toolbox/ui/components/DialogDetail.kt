@@ -14,14 +14,15 @@ import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 
 @Composable
-fun ProductDetailDialog(
+fun DialogDetail(
     marca: String,
     vlrvenda: String,
     descrprod: String,
     endimagem: String,
 ) {
-    Column {
-        Spacer(modifier = Modifier.height(defaultPadding))
+    Column (
+        modifier = Modifier.padding(defaultPadding)
+            ) {
         SubcomposeAsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(endimagem)
@@ -41,18 +42,15 @@ fun ProductDetailDialog(
                 .align(Alignment.Start)
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                ProductDetailDataItem(header = "Marca", row = marca)
+                DetailData(header = "Marca", row = marca)
             }
             Column(modifier = Modifier.weight(1f)) {
-                ProductDetailDataItem(header = "Preço", row = vlrvenda)
+                DetailData(header = "Preço", row = vlrvenda)
             }
         }
-        ProductDetailDescriptionItem(header = "Descrição", row = descrprod)
-        ProductDetailDescriptionItem(header = "Descrição", row = descrprod)
-        ProductDetailDescriptionItem(header = "Descrição", row = descrprod)
-        ProductDetailDescriptionItem(header = "Descrição", row = descrprod)
-        ProductDetailDescriptionItem(header = "Descrição", row = descrprod)
-        ProductDetailDescriptionItem(header = "Descrição", row = descrprod)
-        ProductDetailDescriptionItem(header = "Descrição", row = descrprod)
+
+        Spacer(modifier = Modifier.height(defaultPadding))
+        DetailData(header = "Descrição", row = descrprod)
+
     }
 }

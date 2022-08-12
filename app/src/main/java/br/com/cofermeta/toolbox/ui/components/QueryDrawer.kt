@@ -2,6 +2,8 @@ package br.com.cofermeta.toolbox.ui.components
 
 import android.content.Context
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -72,6 +74,8 @@ fun DrawerUi(
         modifier = Modifier
             .fillMaxSize()
             .padding(defaultPadding)
+            //.verticalScroll(rememberScrollState())
+
     ) {
         Text(
             text = "Cofermeta Toolbox",

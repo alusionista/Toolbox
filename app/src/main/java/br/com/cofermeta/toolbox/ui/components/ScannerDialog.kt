@@ -1,5 +1,6 @@
 package br.com.cofermeta.toolbox.ui.components
 
+import android.content.Context
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,25 +20,16 @@ import androidx.compose.ui.window.Dialog
 import br.com.cofermeta.toolbox.data.defaultPadding
 
 @Composable
-fun ProductDialog(
-    codprod: String,
-    marca: String,
-    vlrvenda: String,
-    descrprod: String,
-    endimagem: String,
+fun ScannerDialog(
     onShowDialog: (Boolean) -> Unit
 ) {
     Dialog(onDismissRequest = { onShowDialog(false) }) {
         Surface(
-            modifier = Modifier.defaultMinSize(minHeight = 450.dp),
+            modifier = Modifier.width(250.dp),
             shape = RoundedCornerShape(16.dp),
             color = MaterialTheme.colors.primaryVariant
         ) {
-            Column(
-                modifier = Modifier
-                    .verticalScroll(rememberScrollState())
-
-            ) {
+            Column() {
                 Spacer(modifier = Modifier.height(defaultPadding))
                 Box(Modifier.height(32.dp)) {
                     Row(
@@ -54,7 +46,7 @@ fun ProductDialog(
                                     textAlign = TextAlign.Center,
                                     maxLines = 1,
                                     fontWeight = FontWeight.ExtraBold,
-                                    text = codprod,
+                                    text = "Scanner",
                                     color = Color.White,
                                 )
                             }
@@ -64,7 +56,7 @@ fun ProductDialog(
                         modifier = Modifier.fillMaxWidth().padding(end = 10.dp),
                         horizontalArrangement = Arrangement.End,
                         verticalAlignment = Alignment.CenterVertically,
-                        ) {
+                    ) {
                         CompositionLocalProvider(
                             LocalContentAlpha provides ContentAlpha.high,
                         ) {
@@ -84,12 +76,10 @@ fun ProductDialog(
                         }
                     }
                 }
-                DialogDetail(
-                    marca = marca,
-                    vlrvenda = vlrvenda,
-                    descrprod = descrprod,
-                    endimagem = endimagem,
-                )
+                Spacer(modifier = Modifier.height(defaultPadding))
+                Scanner(/*context,*/ {onShowDialog(it)})
+                Spacer(modifier = Modifier.height(defaultPadding))
+
             }
 
         }

@@ -2,6 +2,7 @@ package br.com.cofermeta.toolbox.ui
 
 import android.content.Context
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -58,7 +59,6 @@ fun Login(
 ) {
     Column(
         modifier = Modifier
-            //.verticalScroll(rememberScrollState())
             .fillMaxSize()
             .padding(26.dp),
         verticalArrangement = Arrangement.Center,

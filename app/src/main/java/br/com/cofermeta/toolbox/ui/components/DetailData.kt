@@ -9,7 +9,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun ProductDetailDescriptionItem(header: String, row: String) {
+fun DetailData(header: String, row: String) {
         Text(
             text = header,
             fontSize = 14.sp,
