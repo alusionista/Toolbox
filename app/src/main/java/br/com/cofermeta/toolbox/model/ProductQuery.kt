@@ -6,9 +6,8 @@ import br.com.cofermeta.toolbox.model.dataclasses.QueryFields
 import br.com.cofermeta.toolbox.model.dataclasses.QueryResult
 import br.com.cofermeta.toolbox.model.dataclasses.Sankhya
 import br.com.cofermeta.toolbox.data.*
-import br.com.cofermeta.toolbox.model.dataclasses.sankhya
+import br.com.cofermeta.toolbox.sankhya
 import br.com.cofermeta.toolbox.network.*
-import com.google.gson.JsonElement
 import com.google.gson.JsonParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
@@ -62,7 +61,7 @@ class ProductQuery : Connection() {
 
     private fun checkAndUpdateProductData(response: String, value: QueryResult) {
         val jsonElement = JsonParser.parseString(response)
-        if (response.contains("status")) value.status = jsonElement.asJsonObject["status"].asString
+        if (response.contains("status\":\"")) value.status = jsonElement.asJsonObject["status"].asString
         if (value.status == "1") {
             val responseBody = jsonElement.asJsonObject["responseBody"]
             value.numberOfHeaders = responseBody.asJsonObject["fieldsMetadata"].asJsonArray.size()

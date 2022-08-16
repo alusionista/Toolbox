@@ -12,7 +12,7 @@ internal class ProductQueryTest {
         val value = QueryResult()
 
         val jsonElement = JsonParser.parseString(response)
-        if (response.contains("status")) value.status = jsonElement.asJsonObject["status"].asString
+        if (response.contains("status\":\"")) value.status = jsonElement.asJsonObject["status"].asString
         if (value.status == "1") {
             val responseBody = jsonElement.asJsonObject["responseBody"]
             value.numberOfHeaders = responseBody.asJsonObject["fieldsMetadata"].asJsonArray.size()

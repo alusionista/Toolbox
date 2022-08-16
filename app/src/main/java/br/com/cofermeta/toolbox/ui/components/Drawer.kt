@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import br.com.cofermeta.toolbox.data.defaultPadding
-import br.com.cofermeta.toolbox.model.dataclasses.sankhya
+import br.com.cofermeta.toolbox.sankhya
 import br.com.cofermeta.toolbox.ui.theme.white50p
 import br.com.cofermeta.toolbox.viewmodels.QueryViewModel
 import kotlinx.coroutines.CoroutineScope
