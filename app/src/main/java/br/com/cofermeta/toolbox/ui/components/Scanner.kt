@@ -3,6 +3,7 @@ package br.com.cofermeta.toolbox.ui.components
 import android.Manifest
 import android.content.pm.PackageManager
 import android.util.Size
+import android.view.Surface.ROTATION_0
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
@@ -33,6 +34,8 @@ import br.com.cofermeta.toolbox.data.SCANNER
 import br.com.cofermeta.toolbox.data.defaultPadding
 import br.com.cofermeta.toolbox.model.CameraAnalyzer
 import br.com.cofermeta.toolbox.viewmodels.QueryViewModel
+import com.google.zxing.PlanarYUVLuminanceSource
+
 
 @Composable
 fun ScannerDialog(
@@ -40,7 +43,7 @@ fun ScannerDialog(
 ) {
     Dialog(onDismissRequest = { onShowDialog(false) }) {
         Surface(
-            modifier = Modifier.width(400.dp),
+            modifier = Modifier.width(250.dp),
             shape = RoundedCornerShape(16.dp),
             color = MaterialTheme.colors.primaryVariant
         ) {
@@ -68,7 +71,9 @@ fun ScannerDialog(
                         }
                     }
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(end = 10.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(end = 10.dp),
                         horizontalArrangement = Arrangement.End,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
@@ -114,6 +119,7 @@ fun Scanner(
     val selector = CameraSelector.Builder()
         .requireLensFacing(CameraSelector.LENS_FACING_BACK)
         .build()
+
     val imageAnalysis = ImageAnalysis.Builder()
         .setTargetResolution(Size(previewView.width, previewView.height))
         .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
@@ -169,7 +175,7 @@ fun Scanner(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = defaultPadding)
-                    .height(150.dp)
+                    .height(550.dp)
                     .clip(RoundedCornerShape(15.dp))
             )
         }

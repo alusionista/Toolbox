@@ -6,9 +6,11 @@ import com.google.zxing.*
 import com.google.zxing.common.HybridBinarizer
 import java.nio.ByteBuffer
 
-class CameraAnalyzer( private val onBarcodeScanned: (String) -> Unit ) : ImageAnalysis.Analyzer {
+class CameraAnalyzer(private val onBarcodeScanned: (String) -> Unit) : ImageAnalysis.Analyzer {
     override fun analyze(image: ImageProxy) {
         val bytes = image.planes.first().buffer.toByteArray()
+
+        //Log.d("ImageProxy", bytes.toString())
         val source = PlanarYUVLuminanceSource(
             bytes,
             image.width,
@@ -17,7 +19,7 @@ class CameraAnalyzer( private val onBarcodeScanned: (String) -> Unit ) : ImageAn
             0,
             image.width,
             image.height,
-            false
+            true
         )
         val binaryBmp = BinaryBitmap(HybridBinarizer(source))
 

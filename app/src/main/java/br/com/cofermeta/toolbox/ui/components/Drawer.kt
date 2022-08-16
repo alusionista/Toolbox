@@ -18,6 +18,7 @@ import br.com.cofermeta.toolbox.sankhya
 import br.com.cofermeta.toolbox.ui.theme.white50p
 import br.com.cofermeta.toolbox.viewmodels.QueryViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -69,13 +70,19 @@ fun Drawer(
         Spacer(modifier = Modifier.height(20.dp))
 
         SimpleButton(label = "Buscar", onClick = {
-            queryViewModel.productQuery(
+            scope.launch {
+                queryViewModel.onLoadingChange(true)
+                state.drawerState.close()
+                queryViewModel.productQuery(context)
+            }
+/*            queryViewModel.productQuery(
                 context = context,
                 scope = scope,
                 state = state
-            )
+            )*/
         }
         )
+        //LoadingQueryDialog()
 
     }
 }

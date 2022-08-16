@@ -8,10 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavController
 import br.com.cofermeta.toolbox.data.queryUiTitle
-import br.com.cofermeta.toolbox.ui.components.BodyContent
-import br.com.cofermeta.toolbox.ui.components.BottomBar
-import br.com.cofermeta.toolbox.ui.components.Drawer
-import br.com.cofermeta.toolbox.ui.components.TopBar
+import br.com.cofermeta.toolbox.ui.components.*
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
@@ -34,7 +31,6 @@ fun ScaffoldQueryUi(
     state: ScaffoldState,
     scope: CoroutineScope,
 ) {
-
     Scaffold(
         scaffoldState = state,
         topBar = { TopBar(queryUiTitle) },

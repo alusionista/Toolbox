@@ -22,14 +22,15 @@ class QueryViewModel : ViewModel() {
     private val auth = Auth()
     private val queryField = QueryFields()
     private val productQuery = ProductQuery()
-
     private val _empresa = MutableLiveData(sankhya.codemp)
+
     private val _codigo = MutableLiveData("")
     private val _marca = MutableLiveData("")
     private val _local = MutableLiveData("")
     private val _descricao = MutableLiveData("")
     private val _referencia = MutableLiveData("")
     private val _hasResult = MutableLiveData(false)
+    private val _loading = MutableLiveData(false)
 
     val codemp: LiveData<String> = _empresa
     val codprod: LiveData<String> = _codigo
@@ -38,6 +39,7 @@ class QueryViewModel : ViewModel() {
     val descrprod: LiveData<String> = _descricao
     val referencia: LiveData<String> = _referencia
     val hasResult: LiveData<Boolean> = _hasResult
+    val loading: LiveData<Boolean> = _loading
 
     fun onEmpresaChange(empresa: String) {
         _empresa.value = empresa
@@ -63,6 +65,10 @@ class QueryViewModel : ViewModel() {
         _hasResult.value = newValue
     }
 
+    fun onLoadingChange(newValue: Boolean) {
+        _loading.value = newValue
+    }
+
     private fun updateQueryFields() {
         queryField.codemp = codemp.value.toString()
         queryField.marca = marca.value.toString()
@@ -81,17 +87,13 @@ class QueryViewModel : ViewModel() {
 
     fun productQuery(
         context: Context,
-        scope: CoroutineScope,
-        state: ScaffoldState,
     ) {
+        onLoadingChange(true)
         updateQueryFields()
         onHasResultChange(false)
-
         if (checkEmptyFields()) {
             sankhyaRequest(context)
-            scope.launch { state.drawerState.close() }
         } else Toast.makeText(context, noProductFound, Toast.LENGTH_SHORT).show()
-        scope.launch { state.drawerState.close() }
     }
 
     private fun checkEmptyFields(): Boolean {
@@ -109,8 +111,11 @@ class QueryViewModel : ViewModel() {
             Thread.sleep(threadSleep)
         }
         if (queryResult.numberOfRows > 0) {
+            onLoadingChange(false)
             onHasResultChange(true)
+
         } else {
+            onLoadingChange(false)
             Toast.makeText(context, noProductFound, Toast.LENGTH_SHORT).show()
         }
 
