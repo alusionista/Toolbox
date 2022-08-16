@@ -61,11 +61,11 @@ fun Drawer(
 
         Spacer(modifier = Modifier.height(40.dp))
 
-        DrawerTextField("Código do produto", codprod) { queryViewModel.onCodigoChange(it) }
-        DrawerTextField("Empresa", codemp) { queryViewModel.onEmpresaChange(it) }
-        DrawerTextField("Marca", marca) { queryViewModel.onMarcaChange(it) }
-        DrawerTextField("Localização", locprin) { queryViewModel.onLocalChange(it) }
-        DrawerTextField("Descrição", descrprod) { queryViewModel.onDescricaoChange(it) }
+        TextFieldOutlined("Código do produto", codprod, true) { queryViewModel.onCodigoChange(it) }
+        TextFieldOutlined("Empresa", codemp, true) { queryViewModel.onEmpresaChange(it) }
+        TextFieldOutlined("Marca", marca) { queryViewModel.onMarcaChange(it) }
+        TextFieldOutlined("Localização", locprin) { queryViewModel.onLocalChange(it) }
+        TextFieldOutlined("Descrição", descrprod) { queryViewModel.onDescricaoChange(it) }
 
         Spacer(modifier = Modifier.height(20.dp))
 
@@ -75,14 +75,7 @@ fun Drawer(
                 state.drawerState.close()
                 queryViewModel.productQuery(context)
             }
-/*            queryViewModel.productQuery(
-                context = context,
-                scope = scope,
-                state = state
-            )*/
         }
         )
-        //LoadingQueryDialog()
-
     }
 }

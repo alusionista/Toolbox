@@ -1,20 +1,29 @@
 package br.com.cofermeta.toolbox.ui.components
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
-import androidx.compose.runtime.Composable
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.rounded.Cancel
+import androidx.compose.material.icons.rounded.VisibilityOff
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.InputMode.Companion.Keyboard
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import br.com.cofermeta.toolbox.data.defaultPadding
 
 @Composable
 fun TextFieldFilled(
@@ -23,28 +32,40 @@ fun TextFieldFilled(
     onValueChange: (String) -> Unit,
     icon: ImageVector,
     isPassword: Boolean = false,
-    ) {
+) {
+    var showPassword by remember { mutableStateOf(false) }
+    val focusManager = LocalFocusManager.current
+
+
     if (isPassword) {
         TextField(
             value = value,
             onValueChange = onValueChange,
-            placeholder = {
-                Text(
-                    text = label
+            shape = RoundedCornerShape(50.dp),
+            singleLine = true,
+            leadingIcon = { Icon(icon, contentDescription = label) },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Password,
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
+            placeholder = { Text( text = label) },
+            modifier = Modifier.fillMaxWidth(),
+            visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = {
+                Icon(
+                    imageVector = if (showPassword) {
+                        Icons.Filled.Visibility
+                    } else {
+                        Icons.Filled.VisibilityOff
+                    },
+                    contentDescription = "mostrar senha",
+                    tint = MaterialTheme.colors.secondaryVariant,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(50.dp))
+                        .clickable { showPassword = !showPassword },
                 )
             },
-            shape = RoundedCornerShape(50.dp),
-            leadingIcon = {
-                Icon(icon, contentDescription = label)
-            },
-            singleLine = true,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 10.dp),
-
-            visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-
             colors = TextFieldDefaults.textFieldColors(
                 disabledTextColor = Color.Transparent,
                 focusedIndicatorColor = Color.Transparent,
@@ -52,24 +73,30 @@ fun TextFieldFilled(
                 disabledIndicatorColor = Color.Transparent
             )
         )
+
+
     } else {
         TextField(
             value = value,
             onValueChange = onValueChange,
-            placeholder = {
-                Text(
-                    text = label
-                )
-            },
             shape = RoundedCornerShape(50.dp),
-            leadingIcon = {
-                Icon(icon, contentDescription = label)
-            },
             singleLine = true,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 10.dp),
+            leadingIcon = { Icon(icon, contentDescription = label) },
+            keyboardOptions = KeyboardOptions.Default.copy( imeAction = ImeAction.Done ),
+            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
+            placeholder = { Text( text = label ) },
+            modifier = Modifier.fillMaxWidth(),
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Rounded.Cancel,
+                    contentDescription = "apagar conteúdo do campo",
+                    tint = MaterialTheme.colors.secondaryVariant,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(50.dp))
+                        .clickable { onValueChange("") },
 
+                    )
+            },
             colors = TextFieldDefaults.textFieldColors(
                 disabledTextColor = Color.Transparent,
                 focusedIndicatorColor = Color.Transparent,
