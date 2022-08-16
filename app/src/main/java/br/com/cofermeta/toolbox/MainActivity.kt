@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import br.com.cofermeta.toolbox.model.dataclasses.sankhya
+import br.com.cofermeta.toolbox.model.dataclasses.Sankhya
 import br.com.cofermeta.toolbox.ui.LoginScreen
 import br.com.cofermeta.toolbox.ui.QueryScreen
 import br.com.cofermeta.toolbox.ui.theme.ToolboxTheme
@@ -32,6 +32,8 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+val sankhya = Sankhya()
 
 @Composable
 fun MainNavHost () {

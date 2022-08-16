@@ -2,20 +2,13 @@ package br.com.cofermeta.toolbox.viewmodels
 
 import android.content.Context
 import android.widget.Toast
-import androidx.camera.core.Preview
-import androidx.camera.view.PreviewView
 import androidx.compose.material.ScaffoldState
-import androidx.compose.material.rememberScaffoldState
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.navigation.NavController
 import br.com.cofermeta.toolbox.model.ProductQuery
 import br.com.cofermeta.toolbox.model.dataclasses.QueryFields
-import br.com.cofermeta.toolbox.model.dataclasses.sankhya
+import br.com.cofermeta.toolbox.sankhya
 import br.com.cofermeta.toolbox.data.noProductFound
 import br.com.cofermeta.toolbox.data.threadSleep
 import br.com.cofermeta.toolbox.model.Auth

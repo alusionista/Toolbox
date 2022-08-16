@@ -4,7 +4,9 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
+import androidx.camera.lifecycle.ProcessCameraProvider
 import br.com.cofermeta.toolbox.data.base
+import br.com.cofermeta.toolbox.data.httpRequestErroRMessage
 import br.com.cofermeta.toolbox.data.port
 import java.io.BufferedReader
 import java.io.IOException
@@ -59,22 +61,29 @@ abstract class Connection {
         conn.doOutput = true
         conn.doInput = true
 
-        conn.outputStream.use { stream -> stream.write(bytes) }
-        val status: Int = conn.responseCode
-        val reader = if (status < 400) {
-            InputStreamReader(conn.inputStream)
-        } else {
-            InputStreamReader(conn.errorStream)
-        }
-        reader.use { stream ->
-            response = StringBuilder()
-            val bufferedReader = BufferedReader(stream)
-            bufferedReader.useLines { lines ->
-                lines.forEach {
-                    response.append(it.trim())
+        try {
+            conn.outputStream.use { stream -> stream.write(bytes) }
+            val status: Int = conn.responseCode
+            val reader = if (status < 400) {
+                InputStreamReader(conn.inputStream)
+            } else {
+                InputStreamReader(conn.errorStream)
+            }
+            reader.use { stream ->
+                response = StringBuilder()
+                val bufferedReader = BufferedReader(stream)
+                bufferedReader.useLines { lines ->
+                    lines.forEach {
+                        response.append(it.trim())
+                    }
                 }
             }
+            Log.d("Responde", response.toString())
+            return response.toString()
+        } catch (e: Exception) {
+            Log.d("Exception", e.printStackTrace().toString())
+            return httpRequestErroRMessage
         }
-        return response.toString()
+
     }
 }

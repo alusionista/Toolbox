@@ -1,7 +1,5 @@
 package br.com.cofermeta.toolbox.data
 
-import br.com.cofermeta.toolbox.model.dataclasses.sankhya
-
 fun loginBody(user: String, password: String) =
     """
     {

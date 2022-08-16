@@ -1,23 +1,19 @@
 package br.com.cofermeta.toolbox.ui.components
 
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import br.com.cofermeta.toolbox.data.*
-import br.com.cofermeta.toolbox.model.dataclasses.sankhya
+import br.com.cofermeta.toolbox.sankhya
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

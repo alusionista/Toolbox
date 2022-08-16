@@ -20,4 +20,3 @@ data class Sankhya(
     var codgrupo: String = "",
     var codemp: String = defaultCodemp,
 )
-val sankhya = Sankhya()

@@ -54,7 +54,7 @@ class Auth : Connection() {
             requestBody = queryTSIUSUBody(sankhya.user),
             jsessionid = sankhya.jsessionid
         )
-        checkAndUpdateUserData(response, sankhya)
+        if (sankhya.statusMessage.isEmpty())checkAndUpdateUserData(response, sankhya)
         return sankhya
 
     }
@@ -62,7 +62,7 @@ class Auth : Connection() {
     private fun checkAndUpdateAuth(response: String, value: Sankhya) {
         val jsonElement = JsonParser.parseString(response)
         value.time = Calendar.getInstance().time
-        if (response.contains("status")) value.status = jsonElement.asJsonObject["status"].asString
+        if (response.contains("status\":\"")) value.status = jsonElement.asJsonObject["status"].asString
         if (response.contains("responseBody")) {
             value.responseBody =
                 jsonElement.asJsonObject["responseBody"].toString()

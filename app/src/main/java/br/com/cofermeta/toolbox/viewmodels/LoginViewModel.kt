@@ -8,8 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import br.com.cofermeta.toolbox.data.*
 import br.com.cofermeta.toolbox.model.Auth
-import br.com.cofermeta.toolbox.model.dataclasses.Sankhya
-import br.com.cofermeta.toolbox.model.dataclasses.sankhya
+import br.com.cofermeta.toolbox.sankhya
 
 class LoginViewModel: ViewModel() {
 
