@@ -33,7 +33,7 @@ import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.google.gson.JsonElement
 
-class Item: DataFormating() {
+class ItemUI: DataFormating() {
     @Composable
     fun ProductItem(
         queryResult: QueryResult,

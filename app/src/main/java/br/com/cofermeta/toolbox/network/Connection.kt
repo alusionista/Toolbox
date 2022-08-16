@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
-import androidx.camera.lifecycle.ProcessCameraProvider
 import br.com.cofermeta.toolbox.data.base
 import br.com.cofermeta.toolbox.data.httpRequestErroRMessage
 import br.com.cofermeta.toolbox.data.port
@@ -48,6 +47,9 @@ abstract class Connection {
         requestMethod: String = "POST",
         jsessionid: String = ""
     ): String {
+
+
+
         var response: StringBuilder
         val bytes = requestBody.toByteArray()
         Log.d("requestBody query", requestBody)

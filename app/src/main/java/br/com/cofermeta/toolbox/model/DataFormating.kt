@@ -12,11 +12,11 @@ abstract class DataFormating {
     private fun formatEndimagem(endimagem: JsonElement?) = if (endimagem.toString().contains("http")) formatData(endimagem) else imgPlaceHolder
     private fun formatMarca(marca: JsonElement?) = if (marca.toString().contains("null")) "Sem marca" else formatData(marca)
     private fun formatVlr(vlr: JsonElement?) = if (!vlr.toString().contains("0")) {
-        //"R$${formatData(vlr).toFloat().toString().replace(".", ",")}"
-        val input = formatData(vlr).toFloat()
+        "R$${formatData(vlr).replace(".", ",")}"
+/*        val input = formatData(vlr).toFloat()
         val maskFloat = (input * 100.0).roundToInt() / 100.0
         val rs = maskFloat.toString().replace(".", ",")
-        "R$${rs}"
+        "R$${rs}"*/
     } else "Sem preço"
 
     fun getCodprod(index: Int, rows: JsonElement?) = formatCodprod(rows?.asJsonArray?.get(index)?.asJsonArray?.get(0))

@@ -15,12 +15,15 @@ class LoginViewModel: ViewModel() {
     private val auth = Auth()
     private val _user = MutableLiveData(sankhya.user)
     private val _password = MutableLiveData(sankhya.password)
+    private val _loading = MutableLiveData(false)
 
     val user: LiveData<String> = _user
     val password: LiveData<String> = _password
+    val loading: LiveData<Boolean> = _loading
 
     fun onUserChange(user: String) { _user.value = user }
     fun onPasswordChange(password: String) { _password.value = password }
+    fun onLoadingChange(newValue: Boolean) { _loading.value = newValue }
 
     fun login(
         context: Context,
@@ -28,6 +31,7 @@ class LoginViewModel: ViewModel() {
         user: String,
         password: String
     ){
+        onLoadingChange(true)
         auth.verifyLogin(context, user, password, sankhya)
         //sankhya.jsessionid = fakeJsessionid
         val statusMessage = sankhya.statusMessage.ifEmpty { loginEmpty }
@@ -40,6 +44,7 @@ class LoginViewModel: ViewModel() {
             navController.navigate("query_ui")
             auth.logout(sankhya)
             Thread.sleep(threadSleep)
+            onLoadingChange(false)
             Toast.makeText(
                 context,
                 "Olá ${ sankhya.firstName }!",

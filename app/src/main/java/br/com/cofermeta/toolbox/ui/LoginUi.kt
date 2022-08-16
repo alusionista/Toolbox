@@ -2,9 +2,7 @@ package br.com.cofermeta.toolbox.ui
 
 import android.content.Context
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
@@ -22,6 +20,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import br.com.cofermeta.toolbox.data.defaultPassword
 import br.com.cofermeta.toolbox.data.defaultUser
+import br.com.cofermeta.toolbox.ui.components.LoadingLoginDialog
 import br.com.cofermeta.toolbox.ui.components.SimpleButton
 import br.com.cofermeta.toolbox.ui.components.TextFieldFilled
 import br.com.cofermeta.toolbox.ui.theme.white50p
@@ -90,11 +89,9 @@ fun Login(
         TextFieldFilled("Senha", password, onPasswordChange, Icons.Default.Lock, true)
         Spacer(modifier = Modifier.height(40.dp))
 
-        SimpleButton(
-            label = "Login",
-            onClick = {
-                loginViewModel.login(context, navController, user, password)
-            }
-        )
+        SimpleButton("Login") {
+            loginViewModel.login(context, navController, user, password)
+        }
+        LoadingLoginDialog()
     }
 }
