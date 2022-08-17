@@ -35,11 +35,15 @@ class LoginViewModel: ViewModel() {
         auth.verifyLogin(context, user, password, sankhya)
         //sankhya.jsessionid = fakeJsessionid
         val statusMessage = sankhya.statusMessage.ifEmpty { loginEmpty }
-        if (sankhya.jsessionid.isEmpty()) Toast.makeText(
-            context,
-            statusMessage,
-            Toast.LENGTH_SHORT
-        ).show()
+        if (sankhya.jsessionid.isEmpty()) {
+            Toast.makeText(
+                context,
+                statusMessage,
+                Toast.LENGTH_SHORT
+            ).show()
+            onLoadingChange(false)
+        }
+
         else {
             navController.navigate("query_ui")
             auth.logout(sankhya)

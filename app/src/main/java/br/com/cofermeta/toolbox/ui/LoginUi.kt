@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import br.com.cofermeta.toolbox.data.defaultPadding
 import br.com.cofermeta.toolbox.data.defaultPassword
 import br.com.cofermeta.toolbox.data.defaultUser
 import br.com.cofermeta.toolbox.ui.components.LoadingLoginDialog
@@ -84,8 +85,9 @@ fun Login(
                 .fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(40.dp))
         TextFieldFilled("Usuário", user, onUserChange, Icons.Default.Person)
+        Spacer(modifier = Modifier.height(10.dp))
         TextFieldFilled("Senha", password, onPasswordChange, Icons.Default.Lock, true)
         Spacer(modifier = Modifier.height(40.dp))
 

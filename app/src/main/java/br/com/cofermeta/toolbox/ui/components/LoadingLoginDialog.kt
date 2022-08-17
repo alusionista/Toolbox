@@ -17,7 +17,7 @@ fun LoadingLoginDialog(loginViewModel: LoginViewModel = viewModel()) {
     if (loading) {
         Dialog(
             onDismissRequest = { loginViewModel.onLoadingChange(false) },
-            DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
+            DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = false)
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
