@@ -78,6 +78,10 @@ class QueryViewModel : ViewModel() {
     }
 
     fun onReferenciaChange(context: Context, referencia: String) {
+        queryField.codprod = ""
+        queryField.marca = ""
+        queryField.locprin = ""
+        queryField.descrprod = ""
         queryField.referencia = referencia
         updateQueryFields()
         onHasResultChange(false)
@@ -93,7 +97,11 @@ class QueryViewModel : ViewModel() {
         onHasResultChange(false)
         if (checkEmptyFields()) {
             sankhyaRequest(context)
-        } else Toast.makeText(context, noProductFound, Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(context, noProductFound, Toast.LENGTH_SHORT).show()
+            onLoadingChange(false)
+        }
+
     }
 
     private fun checkEmptyFields(): Boolean {
@@ -110,6 +118,7 @@ class QueryViewModel : ViewModel() {
             if (queryResult.status == "1" || queryResult.statusMessage.isNotEmpty()) break
             Thread.sleep(threadSleep)
         }
+
         if (queryResult.numberOfRows > 0) {
             onLoadingChange(false)
             onHasResultChange(true)
@@ -118,6 +127,5 @@ class QueryViewModel : ViewModel() {
             onLoadingChange(false)
             Toast.makeText(context, noProductFound, Toast.LENGTH_SHORT).show()
         }
-
     }
 }

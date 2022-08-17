@@ -53,7 +53,8 @@ fun ScannerDialog(
             modifier = Modifier
                 .width(250.dp)
                 .height(550.dp),
-            shape = RoundedCornerShape(defaultPadding)
+            shape = RoundedCornerShape(defaultPadding),
+            color = Color.Transparent
         ) {
             Scanner({ onShowDialog(it) })
             ScannerHeader { onShowDialog(it) }
@@ -67,10 +68,10 @@ fun ScannerHeader(onShowDialog: (Boolean) -> Unit) {
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.End,
         verticalAlignment = Alignment.Bottom
     ) {
-        IconButton(
+/*        IconButton(
             onClick = { onShowDialog(false) },
             enabled = true,
         ) {
@@ -83,7 +84,7 @@ fun ScannerHeader(onShowDialog: (Boolean) -> Unit) {
                     .height(30.dp)
                     .rotate(90F)
             )
-        }
+        }*/
         IconButton(
             onClick = { onShowDialog(false) },
             enabled = true,
