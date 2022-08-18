@@ -18,6 +18,11 @@ abstract class DataFormating {
         val rs = maskFloat.toString().replace(".", ",")
         "R$${rs}"*/
     } else "Sem preço"
+    private fun formatPesoliq(vlr: JsonElement?) = if (vlr.toString() != "0.0") {
+        val input = formatData(vlr).toFloat()
+        val maskFloat = (input * 100.0).roundToInt() / 100.0
+        "${maskFloat.toString().replace(".", ",")} Kg"
+    } else "Não Aplicável"
 
     fun getCodprod(index: Int, rows: JsonElement?) = formatCodprod(rows?.asJsonArray?.get(index)?.asJsonArray?.get(0))
     fun getMarca(index: Int, rows: JsonElement?) = formatMarca(rows?.asJsonArray?.get(index)?.asJsonArray?.get(1))
@@ -31,7 +36,7 @@ abstract class DataFormating {
     fun getRefforn(index: Int, rows: JsonElement?) = formatData(rows?.asJsonArray?.get(index)?.asJsonArray?.get(9))
     fun getReferencia(index: Int, rows: JsonElement?) = formatData(rows?.asJsonArray?.get(index)?.asJsonArray?.get(10))
     fun getDescrgrupoprod(index: Int, rows: JsonElement?) = formatData(rows?.asJsonArray?.get(index)?.asJsonArray?.get(11))
-    fun getPesoliq(index: Int, rows: JsonElement?) = formatData(rows?.asJsonArray?.get(index)?.asJsonArray?.get(12))
+    fun getPesoliq(index: Int, rows: JsonElement?) = formatPesoliq(rows?.asJsonArray?.get(index)?.asJsonArray?.get(12))
     fun getOrigprod(index: Int, rows: JsonElement?) = formatData(rows?.asJsonArray?.get(index)?.asJsonArray?.get(13))
     fun getNcm(index: Int, rows: JsonElement?) = formatData(rows?.asJsonArray?.get(index)?.asJsonArray?.get(14))
     fun getCodlocal(index: Int, rows: JsonElement?) = formatData(rows?.asJsonArray?.get(index)?.asJsonArray?.get(15))

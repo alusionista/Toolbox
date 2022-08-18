@@ -1,11 +1,9 @@
 package br.com.cofermeta.toolbox.ui
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Cancel
@@ -29,6 +27,7 @@ import br.com.cofermeta.toolbox.model.DataFormating
 import br.com.cofermeta.toolbox.data.defaultPadding
 import br.com.cofermeta.toolbox.model.dataclasses.QueryResult
 import br.com.cofermeta.toolbox.ui.components.DetailData
+import br.com.cofermeta.toolbox.ui.components.StockAnim
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.google.gson.JsonElement
@@ -172,7 +171,9 @@ class ItemUI: DataFormating() {
                             }
                         }
                         Row(
-                            modifier = Modifier.fillMaxWidth().padding(end = 10.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(end = 10.dp),
                             horizontalArrangement = Arrangement.End,
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
@@ -265,14 +266,56 @@ class ItemUI: DataFormating() {
                                     .fillMaxWidth()
                                     .align(Alignment.Start)
                             ) {
-                                Column(modifier = Modifier.weight(1f)) {
-                                    DetailData(header = "Estoque", row = getEstoque(i, rows))
-                                }
-                                Column(modifier = Modifier.weight(1f)) {
-                                    DetailData(header = "Disponível", row = getEstoque_disponivel(i, rows))
-                                }
-                                Column(modifier = Modifier.weight(1f)) {
-                                    DetailData(header = "Reservado", row = getEstoque_reservado(i, rows))
+//                                Column(modifier = Modifier.weight(1f)) {
+//                                    DetailData(header = "Estoque", row = getEstoque(i, rows))
+//                                }
+//                                Column(modifier = Modifier.weight(1f)) {
+//                                    DetailData(header = "Disponível", row = getEstoque_disponivel(i, rows))
+//                                }
+//                                Column(modifier = Modifier.weight(1f)) {
+//                                    DetailData(header = "Reservado", row = getEstoque_reservado(i, rows))
+//                                }
+                                if (getEstoque_disponivel(i,rows) == "0.0") {
+                                    Column {
+                                        Text(
+                                            text = "Estoque",
+                                            fontSize = 14.sp,
+                                            fontWeight = FontWeight.ExtraBold,
+                                            color = MaterialTheme.colors.secondaryVariant,
+                                            letterSpacing = 0.sp,
+                                        )
+                                        Spacer(modifier = Modifier.height(8.dp))
+                                        Row(
+                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            modifier = Modifier
+                                                .fillMaxHeight()
+                                                .fillMaxWidth()
+                                                .clip(CircleShape)
+                                                .background(MaterialTheme.colors.error)
+                                                .padding(horizontal = 8.dp)
+                                        ) {
+                                            Text(
+                                                text = "Indisponível",
+                                                fontWeight = FontWeight.Bold
+                                            )
+                                        }
+                                    }
+                                } else {
+                                    Column {
+                                        Text(
+                                            text = "Estoque",
+                                            fontSize = 14.sp,
+                                            fontWeight = FontWeight.ExtraBold,
+                                            color = MaterialTheme.colors.secondaryVariant,
+                                            letterSpacing = 0.sp,
+                                        )
+                                        Spacer(modifier = Modifier.height(8.dp))
+                                        StockAnim(statName = "Disponível",
+                                            estoqueMin = getEstoque_disponivel(i, rows),
+                                            estoqueMax = getEstmax(i, rows),
+                                            barColor = Color(0xFF12664F))
+                                    }
                                 }
                             }
 
