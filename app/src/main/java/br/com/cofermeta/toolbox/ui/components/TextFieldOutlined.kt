@@ -4,7 +4,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -21,7 +20,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import br.com.cofermeta.toolbox.data.defaultPadding
 
 @Composable
 fun TextFieldOutlined(
@@ -38,7 +36,7 @@ fun TextFieldOutlined(
             onValueChange = onValueChange,
             shape = RoundedCornerShape(50.dp),
             singleLine = true,
-            label = { Text( text = label ) },
+            label = { Text(text = label) },
             modifier = Modifier.fillMaxWidth(),
             keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
             keyboardOptions = KeyboardOptions.Default.copy(
@@ -62,9 +60,9 @@ fun TextFieldOutlined(
             onValueChange = onValueChange,
             shape = RoundedCornerShape(50.dp),
             singleLine = true,
-            keyboardOptions = KeyboardOptions.Default.copy( imeAction = ImeAction.Done),
+            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
-            label = { Text( text = label ) },
+            label = { Text(text = label) },
             modifier = Modifier.fillMaxWidth(),
             trailingIcon = {
                 Icon(
@@ -79,6 +77,4 @@ fun TextFieldOutlined(
         )
     }
     Spacer(modifier = Modifier.height(10.dp))
-
-
 }

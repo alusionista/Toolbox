@@ -3,9 +3,8 @@ package br.com.cofermeta.toolbox.ui.components
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -17,29 +16,31 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import br.com.cofermeta.toolbox.ui.theme.white50p
 
 @Composable
-fun StockAnim(
+fun StockBar(
     statName: String,
-    estoqueMin: String,
-    estoqueMax: String,
+    estoqueMin: Float,
+    estoqueMax: Float,
     barColor: Color,
-    height: Dp = 28.dp,
-    animDuration: Int = 1000,
-    animDelay: Int = 100,
+
 ) {
-    var animationPlayed by remember {
-        mutableStateOf(false)
-    }
+    val height: Dp = 28.dp
+    val animDuration: Int = 1000
+    val animDelay: Int = 100
+    var animationPlayed by remember {mutableStateOf(false) }
+
     val curPercent = animateFloatAsState(
         targetValue = if (animationPlayed) {
-            estoqueMin.toFloat() / estoqueMax.toFloat()
+            estoqueMin / estoqueMax
         } else 0f,
         animationSpec = tween(
             animDuration,
             animDelay
         )
     )
+
     LaunchedEffect(key1 = true) {
         animationPlayed = true
     }
@@ -47,7 +48,7 @@ fun StockAnim(
         modifier = Modifier
             .fillMaxWidth()
             .height(height)
-            .clip(CircleShape)
+            .clip(RoundedCornerShape(10.dp))
             .background(MaterialTheme.colors.secondaryVariant)
     ) {
         Row(
@@ -56,17 +57,19 @@ fun StockAnim(
             modifier = Modifier
                 .fillMaxHeight()
                 .fillMaxWidth(curPercent.value)
-                .clip(CircleShape)
+                .clip(RoundedCornerShape(10.dp))
                 .background(barColor)
                 .padding(horizontal = 8.dp)
         ) {
             Text(
                 text = statName,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = white50p
             )
             Text(
-                text = (curPercent.value * estoqueMax.toFloat()).toInt().toString(),
-                fontWeight = FontWeight.Bold
+                text = "${ curPercent.value * estoqueMax }",
+                fontWeight = FontWeight.Bold,
+                color = white50p
             )
         }
     }
@@ -75,5 +78,5 @@ fun StockAnim(
 @Preview
 @Composable
 fun StockAnimPreview() {
-    StockAnim(statName = "Estoque", estoqueMin = "0.0", estoqueMax = "0.0", barColor = Color.Magenta)
+    StockBar(statName = "Estoque", estoqueMin = 0F, estoqueMax = 0F, barColor = Color.Magenta)
 }

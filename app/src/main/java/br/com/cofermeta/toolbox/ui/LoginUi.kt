@@ -18,9 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import br.com.cofermeta.toolbox.data.defaultPadding
-import br.com.cofermeta.toolbox.data.defaultPassword
-import br.com.cofermeta.toolbox.data.defaultUser
+import br.com.cofermeta.toolbox.data.*
 import br.com.cofermeta.toolbox.ui.components.LoadingLoginDialog
 import br.com.cofermeta.toolbox.ui.components.SimpleButton
 import br.com.cofermeta.toolbox.ui.components.TextFieldFilled
@@ -34,8 +32,8 @@ fun LoginScreen(
 ) {
 
     val context = LocalContext.current
-    val user by loginViewModel.user.observeAsState(defaultUser)
-    val password by loginViewModel.password.observeAsState(defaultPassword)
+    val user by loginViewModel.user.observeAsState(INTEGRACAO)
+    val password by loginViewModel.password.observeAsState(INTEGRACAO_PASSWORD)
 
     Login(
         context = context,
@@ -66,7 +64,7 @@ fun Login(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = "Cofermeta Toolbox",
+            text = COFERMETA_TOOLBOX,
             textAlign = TextAlign.Left,
             fontSize = 25.sp,
             lineHeight = 38.sp,
@@ -76,7 +74,7 @@ fun Login(
                 .fillMaxWidth()
         )
         Text(
-            text = "Listagem de Produtos",
+            text = LISTAGEM_DE_PRODUTOS,
             textAlign = TextAlign.Left,
             fontSize = 40.sp,
             lineHeight = 38.sp,
@@ -86,14 +84,17 @@ fun Login(
         )
 
         Spacer(modifier = Modifier.height(40.dp))
-        TextFieldFilled("Usuário", user, onUserChange, Icons.Default.Person)
+
+        TextFieldFilled(USUARIO, user, onUserChange, Icons.Default.Person)
+
         Spacer(modifier = Modifier.height(10.dp))
-        TextFieldFilled("Senha", password, onPasswordChange, Icons.Default.Lock, true)
+
+        TextFieldFilled(SENHA, password, onPasswordChange, Icons.Default.Lock, true)
+
         Spacer(modifier = Modifier.height(40.dp))
 
-        SimpleButton("Login") {
-            loginViewModel.login(context, navController, user, password)
-        }
+        SimpleButton(LOGIN) { loginViewModel.login(context, navController, user, password) }
+
         LoadingLoginDialog()
     }
 }

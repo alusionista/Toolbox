@@ -41,9 +41,3 @@ fun LoadingDialog() {
         }
     }
 }
-
-@Preview
-@Composable
-fun LoadingDialogPreview() {
-    LoadingDialog()
-}

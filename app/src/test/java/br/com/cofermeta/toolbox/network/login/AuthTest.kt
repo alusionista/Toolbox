@@ -2,9 +2,9 @@ package br.com.cofermeta.toolbox.network.login
 
 import br.com.cofermeta.toolbox.model.Auth
 import br.com.cofermeta.toolbox.model.dataclasses.Sankhya
-import br.com.cofermeta.toolbox.data.base
-import br.com.cofermeta.toolbox.data.connectionErrorMessage
-import br.com.cofermeta.toolbox.data.port
+import br.com.cofermeta.toolbox.data.BASE
+import br.com.cofermeta.toolbox.data.NO_CONNECTION_MESSAGE
+import br.com.cofermeta.toolbox.data.PORT
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -15,7 +15,7 @@ import java.net.InetSocketAddress
 class AuthTest {
     @Test
     fun testConnection(){
-        assertFalse(InetSocketAddress("$base:$port/", port).isUnresolved)
+        assertFalse(InetSocketAddress("$BASE:$PORT/", PORT).isUnresolved)
     }
 
     @Test
@@ -23,9 +23,9 @@ class AuthTest {
         var i = 0
         do {
             MainScope().launch(Dispatchers.IO) {
-                if (!InetSocketAddress("$base:$port/", port).isUnresolved) {
-                    Auth().getJsessionId(sankhya)
-                } else sankhya.statusMessage = connectionErrorMessage
+                if (!InetSocketAddress("$BASE:$PORT/", PORT).isUnresolved) {
+                    Auth().getJsessionId()
+                } else sankhya.statusMessage = NO_CONNECTION_MESSAGE
                 return@launch
             }
             if (sankhya.jsessionid.isNotEmpty() || sankhya.statusMessage.isNotEmpty()) break

@@ -3,82 +3,82 @@ package br.com.cofermeta.toolbox.model
 import android.content.Context
 import android.util.Log
 import br.com.cofermeta.toolbox.data.*
-import br.com.cofermeta.toolbox.model.dataclasses.Sankhya
-import br.com.cofermeta.toolbox.network.*
+import br.com.cofermeta.toolbox.network.Connection
+import br.com.cofermeta.toolbox.sankhya
+import com.google.gson.JsonElement
 import com.google.gson.JsonParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import java.util.*
 
 class Auth : Connection() {
-    fun verifyLogin(context: Context, user: String, password: String, sankhya: Sankhya) {
-        clearSankhya(sankhya)
+    private fun jsonElement(value: String): JsonElement = JsonParser.parseString(value)
+
+    fun verifyLogin(context: Context, user: String, password: String) {
+        clearSankhya()
+
         if (isOnline(context)) {
             sankhya.user = user
             sankhya.password = password
+
             MainScope().launch(Dispatchers.IO) {
-                val auth = Auth()
-                auth.getJsessionId(sankhya)
-                if (sankhya.status == "1") auth.getUserData(sankhya)
-                createLogs(sankhya)
+                this@Auth.getJsessionId()
+                if (sankhya.status == "1") this@Auth.getUserData()
+                createLogs()
                 return@launch
             }
+
             while (true) {
                 if (sankhya.jsessionid.isNotEmpty() || sankhya.statusMessage.isNotEmpty()) break
-                Thread.sleep(threadSleep)
+                Thread.sleep(SLEEP_300)
             }
-        } else sankhya.statusMessage = connectionErrorMessage
+        } else sankhya.statusMessage = NO_CONNECTION_MESSAGE
     }
 
-    fun updateJsession(sankhya: Sankhya) {
-        Auth().getJsessionId(sankhya)
+    fun updateJsession() {
+        getJsessionId()
         while (true) {
             if (sankhya.jsessionid.isNotEmpty() || sankhya.statusMessage.isNotEmpty()) break
-            Thread.sleep(threadSleep)
+            Thread.sleep(SLEEP_300)
         }
     }
 
-    fun getJsessionId(sankhya: Sankhya): Sankhya {
+    fun getJsessionId() {
         val response = connect(
-            serviceName = loginService,
+            serviceName = LOGIN_SERVICE,
             requestBody = loginBody(sankhya.user, sankhya.password)
         )
-        checkAndUpdateAuth(response, sankhya)
-        return sankhya
+        checkAndUpdateAuth(response)
     }
 
-    private fun getUserData(sankhya: Sankhya): Sankhya {
+    private fun getUserData() {
         val response = connect(
-            serviceName = executeQuery,
+            serviceName = EXECUTE_QUERY,
             requestBody = queryTSIUSUBody(sankhya.user),
             jsessionid = sankhya.jsessionid
         )
-        if (sankhya.statusMessage.isEmpty())checkAndUpdateUserData(response, sankhya)
-        return sankhya
-
+        if (sankhya.statusMessage.isEmpty()) checkAndUpdateUserData(response)
     }
 
-    private fun checkAndUpdateAuth(response: String, value: Sankhya) {
-        val jsonElement = JsonParser.parseString(response)
-        value.time = Calendar.getInstance().time
-        if (response.contains("status\":\"")) value.status = jsonElement.asJsonObject["status"].asString
+    private fun checkAndUpdateAuth(response: String) {
+        val jsonElement = jsonElement(response)
+        if (response.contains("status\"")) sankhya.status = jsonElement.asJsonObject["status"].asString
         if (response.contains("responseBody")) {
-            value.responseBody =
+            sankhya.responseBody =
                 jsonElement.asJsonObject["responseBody"].toString()
         }
-        if (response.contains("statusMessage")) value.statusMessage =
+        if (response.contains("statusMessage")) sankhya.statusMessage =
             jsonElement.asJsonObject["statusMessage"].asString
         if (response.contains("jsessionid")) {
-            value.jsessionid = jsonElement.asJsonObject["responseBody"]
+            sankhya.jsessionid = jsonElement.asJsonObject["responseBody"]
                 .asJsonObject["jsessionid"]
                 .asJsonObject["$"]
                 .asString
         }
     }
 
-    private fun checkAndUpdateUserData(response: String, sankhya: Sankhya) {
-        val jsonElement = JsonParser.parseString(response)
+    private fun checkAndUpdateUserData(response: String) {
+        val jsonElement = jsonElement(response)
         sankhya.responseBody =
             jsonElement.asJsonObject["responseBody"].toString()
         sankhya.codusu =
@@ -96,38 +96,35 @@ class Auth : Connection() {
         sankhya.firstName = fullName.substring(0, i)
     }
 
-    private fun createLogs(value: Sankhya) {
-        Log.d("sankhya status", value.status)
-        Log.d("sankhya statusMessage", value.statusMessage)
-        Log.d("sankhya id", value.jsessionid)
-        Log.d("sankhya time", value.time.toString())
-        Log.d("sankhya user", value.user)
-        Log.d("sankhya password", value.password)
-        Log.d("sankhya firstName", value.firstName)
-        Log.d("sankhya codusu", value.codusu)
-        Log.d("sankhya codgrupo", value.codgrupo)
-        Log.d("sankhya codemp", value.codemp)
+    private fun createLogs() {
+        Log.d("sankhya status", sankhya.status)
+        Log.d("sankhya statusMessage", sankhya.statusMessage)
+        Log.d("sankhya id", sankhya.jsessionid)
+        Log.d("sankhya user", sankhya.user)
+        Log.d("sankhya password", sankhya.password)
+        Log.d("sankhya firstName", sankhya.firstName)
+        Log.d("sankhya codusu", sankhya.codusu)
+        Log.d("sankhya codgrupo", sankhya.codgrupo)
+        Log.d("sankhya codemp", sankhya.codemp)
     }
 
-    fun logout(sankhya: Sankhya) {
+    fun logout() {
         MainScope().launch(Dispatchers.IO) {
             val response = connect(
-                serviceName = logoutService,
+                serviceName = LOGOUT_SERVICE,
                 requestBody = logoutBody,
                 jsessionid = sankhya.jsessionid
             )
-            if (response.contains("\"status\":\"1\"")) sankhya.jsessionid = ""
-            createLogs(sankhya)
+            if (response.contains("status\":\"1\"")) sankhya.jsessionid = ""
             return@launch
         }
     }
 
-    private fun clearSankhya(sankhya: Sankhya) {
+    private fun clearSankhya() {
         sankhya.status = ""
         sankhya.responseBody = ""
         sankhya.jsessionid = ""
         sankhya.statusMessage = ""
-        sankhya.time = null
 
         sankhya.user = ""
         sankhya.password = ""

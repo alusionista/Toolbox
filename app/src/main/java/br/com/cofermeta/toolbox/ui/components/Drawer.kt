@@ -15,7 +15,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import br.com.cofermeta.toolbox.data.defaultPadding
+import br.com.cofermeta.toolbox.data.DEFAULT_PADDING
 import br.com.cofermeta.toolbox.sankhya
 import br.com.cofermeta.toolbox.ui.theme.white50p
 import br.com.cofermeta.toolbox.viewmodels.QueryViewModel
@@ -39,7 +39,7 @@ fun Drawer(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(defaultPadding)
+            .padding(DEFAULT_PADDING)
             .verticalScroll(rememberScrollState())
     ) {
         Text(
@@ -49,8 +49,7 @@ fun Drawer(
             lineHeight = 38.sp,
             fontWeight = FontWeight.Bold,
             color = white50p,
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         )
         Text(
             text = "Listagem de Produtos",
@@ -58,16 +57,19 @@ fun Drawer(
             fontSize = 30.sp,
             lineHeight = 38.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(40.dp))
 
         TextFieldOutlined("Código do produto", codprod, true) { queryViewModel.onCodigoChange(it) }
+
         TextFieldOutlined("Empresa", codemp, true) { queryViewModel.onEmpresaChange(it) }
+
         TextFieldOutlined("Marca", marca) { queryViewModel.onMarcaChange(it) }
+
         TextFieldOutlined("Localização", locprin) { queryViewModel.onLocalChange(it) }
+
         TextFieldOutlined("Descrição", descrprod) { queryViewModel.onDescricaoChange(it) }
 
         Spacer(modifier = Modifier.height(20.dp))

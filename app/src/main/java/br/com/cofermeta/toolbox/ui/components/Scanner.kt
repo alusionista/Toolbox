@@ -1,15 +1,12 @@
 package br.com.cofermeta.toolbox.ui.components
 
 import android.Manifest
-import android.content.Context
-import android.content.Context.CAMERA_SERVICE
 import android.content.pm.PackageManager
-import android.hardware.camera2.CameraManager
-import android.util.Size
+import android.util.Log
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.camera.core.CameraProvider
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
@@ -17,76 +14,61 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Surface
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Cancel
+import androidx.compose.material.icons.rounded.FlashOff
 import androidx.compose.material.icons.rounded.FlashOn
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.viewmodel.compose.viewModel
-import br.com.cofermeta.toolbox.data.defaultPadding
-import br.com.cofermeta.toolbox.model.CameraAnalyzer
+import br.com.cofermeta.toolbox.data.DEFAULT_PADDING
+import br.com.cofermeta.toolbox.data.NO_CAMERA_PERMISSION
+import br.com.cofermeta.toolbox.model.BarCodeAnalyser
 import br.com.cofermeta.toolbox.viewmodels.QueryViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
+import com.google.common.util.concurrent.ListenableFuture
+import java.util.concurrent.Executors
 
 
 @Composable
 fun ScannerDialog(
-    onShowDialog: (Boolean) -> Unit
+    queryViewModel: QueryViewModel = viewModel()
 ) {
-    Dialog(onDismissRequest = { onShowDialog(false) }) {
-        Toast.makeText(LocalContext.current, "Gire para escanear.", Toast.LENGTH_SHORT).show()
+    Dialog(onDismissRequest = { queryViewModel.onShowScannerChange(false) }) {
         Surface(
             modifier = Modifier
-                .width(250.dp)
-                .height(550.dp),
-            shape = RoundedCornerShape(defaultPadding),
+                .width(550.dp)
+                .height(150.dp),
+            shape = RoundedCornerShape(DEFAULT_PADDING),
             color = Color.Transparent
         ) {
-            Scanner({ onShowDialog(it) })
-            ScannerHeader { onShowDialog(it) }
+            CameraPreview()
+            ScannerHeader()
         }
     }
 }
 
 @Composable
-fun ScannerHeader(onShowDialog: (Boolean) -> Unit) {
+fun ScannerHeader(queryViewModel: QueryViewModel = viewModel()) {
     Row(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 8.dp),
         horizontalArrangement = Arrangement.End,
-        verticalAlignment = Alignment.Bottom
+        verticalAlignment = Alignment.Top
     ) {
-/*        IconButton(
-            onClick = { onShowDialog(false) },
-            enabled = true,
-        ) {
-            Icon(
-                imageVector = Icons.Rounded.FlashOn,
-                contentDescription = "voltar",
-                tint = Color.White,
-                modifier = Modifier
-                    .width(30.dp)
-                    .height(30.dp)
-                    .rotate(90F)
-            )
-        }*/
         IconButton(
-            onClick = { onShowDialog(false) },
+            onClick = { queryViewModel.onShowScannerChange(false) },
             enabled = true,
         ) {
             Icon(
@@ -99,79 +81,99 @@ fun ScannerHeader(onShowDialog: (Boolean) -> Unit) {
             )
         }
     }
-}
+    Row(
+        Modifier.fillMaxSize(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
 
+        ProvideTextStyle(value = MaterialTheme.typography.h4) {
+            CompositionLocalProvider(
+                LocalContentAlpha provides ContentAlpha.high,
+            ) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    text = "|||| ||| || ||| ||||||"
+                )
+            }
+        }
+    }
+}
 
 @Composable
-fun Scanner(
-    onShowDialog: (Boolean) -> Unit,
-    queryViewModel: QueryViewModel = viewModel()
-) {
+fun CameraPreview(queryViewModel: QueryViewModel = viewModel()) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
-    val previewView = PreviewView(context)
-    val preview = Preview.Builder().build()
-    val selector = CameraSelector.Builder()
-        .requireLensFacing(CameraSelector.LENS_FACING_BACK)
-        .build()
+    val isDialogOpen by queryViewModel.showScanner.observeAsState()
+    val barCodeVal = remember { mutableStateOf("") }
+    var preview: Preview
 
-    val imageAnalysis = ImageAnalysis.Builder()
-        .setTargetResolution(Size(previewView.width, previewView.height))
-        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-        .build()
 
-    var hasCamPermission by remember {
-        mutableStateOf(
-            ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.CAMERA
-            ) == PackageManager.PERMISSION_GRANTED
-        )
-    }
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission(),
-        onResult = { granted ->
-            hasCamPermission = granted
-        }
-    )
-    LaunchedEffect(key1 = true) {
-        launcher.launch(Manifest.permission.CAMERA)
-    }
+    val camSelector = CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
+    val camExecutor = Executors.newSingleThreadExecutor()
+    val camProviderFuture: ListenableFuture<ProcessCameraProvider> = ProcessCameraProvider.getInstance(context)
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        if (hasCamPermission) {
-            AndroidView(
-                factory = { context ->
-                    preview.setSurfaceProvider(previewView.surfaceProvider)
-                    imageAnalysis.setAnalyzer(
-                        ContextCompat.getMainExecutor(context),
-                        CameraAnalyzer { result ->
-                            //Toast.makeText(context, result, Toast.LENGTH_SHORT).show()
-                            queryViewModel.onReferenciaChange(context, result)
-                            onShowDialog(false)
-                        }
+    val contextCompat = ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
+    var hasCamPermission by remember { mutableStateOf(contextCompat == PackageManager.PERMISSION_GRANTED) }
+    val requestPermission = ActivityResultContracts.RequestPermission()
+    val launcher = rememberLauncherForActivityResult( requestPermission) { granted -> hasCamPermission = granted }
+
+    LaunchedEffect(key1 = true) { launcher.launch(Manifest.permission.CAMERA) }
+
+    if (hasCamPermission) {
+        AndroidView(
+            modifier = Modifier
+                .fillMaxSize(),
+            factory = { AndroidViewContext ->
+                PreviewView(AndroidViewContext).apply {
+                    this.scaleType = PreviewView.ScaleType.FILL_CENTER
+                    layoutParams = ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT,
                     )
-                    try {
-                        ProcessCameraProvider.getInstance(context).get().unbindAll()
-                        ProcessCameraProvider.getInstance(context).get().bindToLifecycle(
-                            lifecycleOwner,
-                            selector,
-                            preview,
-                            imageAnalysis
-                        )
-                    } catch (e: Exception) {
-                        e.printStackTrace()
+                    implementationMode = PreviewView.ImplementationMode.COMPATIBLE
+                }
+            },
+            update = { previewView ->
+                if (isDialogOpen == false) camExecutor.shutdown()
+
+                camProviderFuture.addListener({
+                    preview = Preview.Builder().build().also {
+                        it.setSurfaceProvider(previewView.surfaceProvider)
                     }
-                    previewView
-                },
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(defaultPadding, defaultPadding, defaultPadding, 45.dp)
-                    .clip(RoundedCornerShape(8.dp))
-            )
-        }
-    }
+                    val cameraProvider: ProcessCameraProvider = camProviderFuture.get()
+                    val barcodeAnalyser = BarCodeAnalyser { barcodes ->
+                        barcodes.forEach { barcode ->
+                            barcode.rawValue?.let { barcodeValue ->
+                                barCodeVal.value = barcodeValue
+                                Toast.makeText(context, barcodeValue, Toast.LENGTH_SHORT).show()
+                                queryViewModel.onCodeScanned(context, barcodeValue)
+                                queryViewModel.onShowScannerChange(false)
+                                camExecutor.shutdown()
+                            }
+                        }
+                    }
+                    val imageAnalysis: ImageAnalysis = ImageAnalysis.Builder()
+                        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                        .build()
+                        .also { it.setAnalyzer(camExecutor, barcodeAnalyser) }
+
+                    try {
+                        cameraProvider.unbindAll()
+                        cameraProvider.bindToLifecycle(
+                        lifecycleOwner,
+                        camSelector,
+                        preview,
+                        imageAnalysis
+                        ).also { it.cameraControl.enableTorch(true)}
+
+                    } catch (e: Exception) {
+                        Log.d("TAG", "CameraPreview: ${e.localizedMessage}")
+                    }
+                }, ContextCompat.getMainExecutor(context))
+            }
+        )
+    } else Toast.makeText(context, NO_CAMERA_PERMISSION, Toast.LENGTH_SHORT).show()
 }
+

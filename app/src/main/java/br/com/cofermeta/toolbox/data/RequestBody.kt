@@ -3,7 +3,7 @@ package br.com.cofermeta.toolbox.data
 fun loginBody(user: String, password: String) =
     """
     {
-    "serviceName": "$loginService",
+    "serviceName": "$LOGIN_SERVICE",
         "requestBody": {
             "NOMUSU": {
                 "$": "$user"
@@ -21,7 +21,7 @@ fun loginBody(user: String, password: String) =
 val logoutBody =
     """
     {
-        "serviceName":"$logoutService",
+        "serviceName":"$LOGOUT_SERVICE",
         "status":"1",
         "pendingPrinting":"false",
     }
@@ -30,7 +30,7 @@ val logoutBody =
 fun loadRecordsBody(query: String) =
     """
 {
-  "serviceName": "$loadRecords",
+  "serviceName": "$LOAD_RECORDS",
   "requestBody": {
     "dataSet": {
       "rootEntity": "Produto",
@@ -55,7 +55,7 @@ fun loadRecordsBody(query: String) =
 fun queryBody(query: String) =
     """
   {
-    "serviceName":"$executeQuery",
+    "serviceName":"$EXECUTE_QUERY",
     "requestBody": {
         "sql":"
             SELECT 
@@ -81,7 +81,7 @@ fun queryBody(query: String) =
 fun queryTSIUSUBody(user: String) =
     """
   {
-    "serviceName":"$executeQuery",
+    "serviceName":"$EXECUTE_QUERY",
     "requestBody": {
         "sql":"
             SELECT
@@ -98,13 +98,13 @@ fun queryTSIUSUBody(user: String) =
   }
     """.trimIndent()
 
-fun setQueryWhere(
-    referencia: String,
-    codprod: String,
-    marca: String,
-    locprin: String,
-    descrprod: String,
-    codemp: String
+fun queryListagemDeProdutosBody(
+    referencia: String = "",
+    codprod: String = "",
+    marca: String = "",
+    locprin: String = "",
+    descrprod: String = "",
+    codemp: String = ""
 ): String {
     val whereList = ArrayList<String>()
     val stringBuilder = StringBuilder()
@@ -116,7 +116,6 @@ fun setQueryWhere(
     val _descricao = "PRO.DESCRPROD LIKE '%$descrprod%' "
     val _codemp = "LOC.CODEMP = $codemp "
     val _estoque = "EST.CODEMP = $codemp "
-
 
     if (referencia.isNotEmpty()) whereList.add(_referencia)
     if (codprod.isNotEmpty()) whereList.add(_codprod)
@@ -134,21 +133,9 @@ fun setQueryWhere(
         else stringBuilder.append(" AND ")
     }
 
-    return stringBuilder.toString()
-}
-
-
-fun queryListagemDeProdutosBody(
-    referencia: String = "",
-    codprod: String = "",
-    marca: String = "",
-    locprin: String = "",
-    descrprod: String = "",
-    codemp: String = ""
-) =
-    """
+    return """
   {
-    "serviceName":"$executeQuery",
+    "serviceName":"$EXECUTE_QUERY",
     "requestBody": {
         "sql":"
             SELECT 
@@ -341,7 +328,7 @@ fun queryListagemDeProdutosBody(
                 PRO.AD_NULINHA = LIN.NULINHA
                 AND LIN.CODPARC = PAR.CODPARC
             WHERE
-            ${setQueryWhere(referencia,codprod,marca,locprin,descrprod,codemp)}
+            $stringBuilder
             GROUP BY
                 AD_COF_CODPRODECOM,
                 PRO.CODPROD,
@@ -377,3 +364,4 @@ fun queryListagemDeProdutosBody(
     }
   }
     """.trimIndent()
+}

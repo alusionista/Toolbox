@@ -1,6 +1,6 @@
 package br.com.cofermeta.toolbox.model
 
-import br.com.cofermeta.toolbox.data.sampleQueryResponseBody
+import br.com.cofermeta.toolbox.data.RESPONSE_SAMPLE
 import br.com.cofermeta.toolbox.model.dataclasses.QueryResult
 import com.google.gson.JsonParser
 import org.junit.Test
@@ -8,7 +8,7 @@ import org.junit.Test
 internal class ProductQueryTest {
     @Test
     fun testProductQueryOutput() {
-        val response = sampleQueryResponseBody
+        val response = RESPONSE_SAMPLE
         val value = QueryResult()
 
         val jsonElement = JsonParser.parseString(response)

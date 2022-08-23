@@ -14,9 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import br.com.cofermeta.toolbox.data.noProductSelected
-import br.com.cofermeta.toolbox.data.onLoadingText
-import br.com.cofermeta.toolbox.ui.ItemUI
+import br.com.cofermeta.toolbox.data.NO_PRODUCT_SELECTED
+import br.com.cofermeta.toolbox.data.ON_LOADING_MESSAGE
 import br.com.cofermeta.toolbox.viewmodels.QueryViewModel
 
 @Composable
@@ -28,11 +27,8 @@ fun BodyContent(
     val loading by queryViewModel.loading.observeAsState(true)
 
     if (hasResult) {
-
         val queryResult = queryViewModel.queryResult
-        val numberOfRows =
-            if (queryResult.numberOfRows < 100) queryResult.numberOfRows else 100
-
+        val numberOfRows = if (queryResult.numberOfRows < 100) queryResult.numberOfRows else 100
         Column(
             modifier = Modifier
                 .padding(paddingValues = padding)
@@ -49,7 +45,7 @@ fun BodyContent(
                     textAlign = TextAlign.Center
                 )
             }
-            ItemUI().ProductItem(queryResult)
+            ProductItem(queryResult)
         }
     } else if (!loading) {
         Column(
@@ -58,13 +54,12 @@ fun BodyContent(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = noProductSelected,
+                text = NO_PRODUCT_SELECTED,
                 color = MaterialTheme.colors.secondaryVariant,
                 textAlign = TextAlign.Center
             )
         }
     }
-
     if (loading) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -72,10 +67,9 @@ fun BodyContent(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = onLoadingText,
+                text = ON_LOADING_MESSAGE,
                 textAlign = TextAlign.Center
             )
-
             LinearProgressIndicator()
         }
     }

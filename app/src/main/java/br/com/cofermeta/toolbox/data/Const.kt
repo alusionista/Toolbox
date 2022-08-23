@@ -2,39 +2,26 @@ package br.com.cofermeta.toolbox.data
 
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.google.gson.JsonElement
+import com.google.gson.JsonParser
 
-const val base = "http://teste.cofermeta.com.br"
-const val port = 8280
-const val defaultUser = "integracao"
-const val defaultPassword = "654321"
-const val defaultCodemp = "1"
-const val fakeJsessionid = "dX9a9e3Xm7NBzBiPCI6Soj6hoCDktoN48OU8f_LP"
-const val imgPlaceHolder = "https://via.placeholder.com/400x300.png?text=Toolbox"
+const val BASE = "http://sankhya.cofermeta.com.br"
+const val PORT = 8180
+const val INTEGRACAO = ""
+const val INTEGRACAO_PASSWORD = ""
+const val CODEMP_1 = ""
+const val IMG_PLACEHOLDER = "https://via.placeholder.com/400x300.png?text=Toolbox"
 
-const val FILTROS = "Filtros"
-const val SCANNER = "Scanner"
-const val CONSULTA = "Consulta"
-const val USUARIO = "Usuário"
+const val LOGIN_SERVICE = "MobileLoginSP.login"
+const val LOGOUT_SERVICE = "MobileLoginSP.logout"
+const val LOAD_RECORDS = "CRUDServiceProvider.loadRecords"
+const val EXECUTE_QUERY = "DbExplorerSP.executeQuery"
 
-const val loginService = "MobileLoginSP.login"
-const val logoutService = "MobileLoginSP.logout"
-const val loadRecords = "CRUDServiceProvider.loadRecords"
-const val executeQuery = "DbExplorerSP.executeQuery"
+const val SLEEP_300: Long = 300
+val DEFAULT_PADDING: Dp = 18.dp
+val JSON_ELEMENT: JsonElement = JsonParser.parseString("")
 
-const val threadSleep: Long = 300
-val defaultPadding: Dp = 18.dp
-val largePadding: Dp = 36.dp
-
-const val queryUiTitle = "Listagem de Produtos"
-const val connectionErrorMessage = "Não foi possível conectar-se.\nVerifique sua conexão Wi-fi."
-const val httpRequestErroRMessage = """{"statusMessage":"Não foi possível conectar-se ao Sankhya."}"""
-const val searchBarPlaceHolder = "Insira o código do produto"
-const val loginEmpty = "Login não realizado"
-const val noProductFound = "Nenhum produto encontrado"
-const val noProductSelected = "Nenhum\nproduto\nselecionado"
-const val onLoadingText = "Aguarde:\nConsultando o Sankhya..."
-
-val sampleQueryResponseBody =
+val RESPONSE_SAMPLE =
     """
         {
             "serviceName": "DbExplorerSP.executeQuery",

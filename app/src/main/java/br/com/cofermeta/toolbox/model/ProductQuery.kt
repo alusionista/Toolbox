@@ -2,41 +2,43 @@ package br.com.cofermeta.toolbox.model
 
 import android.content.Context
 import android.util.Log
-import br.com.cofermeta.toolbox.model.dataclasses.QueryFields
-import br.com.cofermeta.toolbox.model.dataclasses.QueryResult
-import br.com.cofermeta.toolbox.model.dataclasses.Sankhya
+import br.com.cofermeta.toolbox.model.dataclasses.*
 import br.com.cofermeta.toolbox.data.*
 import br.com.cofermeta.toolbox.sankhya
 import br.com.cofermeta.toolbox.network.*
+import com.google.gson.JsonElement
 import com.google.gson.JsonParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
-class ProductQuery : Connection() {
+class ProductQuery(private val queryResult: QueryResult) : Connection() {
 
-    fun tryQuery(context: Context, queryField: QueryFields, queryResult: QueryResult, auth: Auth) {
-        clearQueryResult(queryResult)
+    private val auth = Auth()
+    private fun jsonElement(string: String = ""): JsonElement = JsonParser.parseString(string)
+
+    fun tryQuery(context: Context, queryField: QueryFields): QueryResult {
+        clearQueryResult()
         if (isOnline(context)) {
             MainScope().launch(Dispatchers.IO) {
-                auth.updateJsession(sankhya)
-                ProductQuery().sankhyaQuery(sankhya, queryField, queryResult)
+                auth.updateJsession()
+                ProductQuery(queryResult).sankhyaQuery(queryField, queryResult)
                 return@launch
             }
             while (true) {
                 if (queryResult.status == "1" || queryResult.statusMessage.isNotEmpty()) break
-                Thread.sleep(threadSleep)
+                Thread.sleep(SLEEP_300)
             }
-        } else queryResult.statusMessage = connectionErrorMessage
+        } else queryResult.statusMessage = NO_CONNECTION_MESSAGE
+        return queryResult
     }
 
     private fun sankhyaQuery(
-        sankhya: Sankhya,
         queryField: QueryFields,
         queryResult: QueryResult
     ): QueryResult {
         val response = connect(
-            serviceName = executeQuery,
+            serviceName = EXECUTE_QUERY,
             requestBody = queryListagemDeProdutosBody(
                 referencia = queryField.referencia,
                 codprod = queryField.codprod,
@@ -47,7 +49,7 @@ class ProductQuery : Connection() {
             ),
             jsessionid = sankhya.jsessionid
         )
-        checkAndUpdateProductData(response, queryResult)
+        checkAndUpdateProductData(response)
         Log.d("queryResult body", response)
         Log.d("value.status", queryResult.status)
         Log.d("value.statusMessage", queryResult.statusMessage)
@@ -59,27 +61,27 @@ class ProductQuery : Connection() {
         return queryResult
     }
 
-    private fun checkAndUpdateProductData(response: String, value: QueryResult) {
-        val jsonElement = JsonParser.parseString(response)
-        if (response.contains("status\":\"")) value.status = jsonElement.asJsonObject["status"].asString
-        if (value.status == "1") {
+    private fun checkAndUpdateProductData(response: String) {
+        val jsonElement = jsonElement(response)
+        if (response.contains("status\"")) queryResult.status = jsonElement.asJsonObject["status"].asString
+        if (queryResult.status == "1") {
             val responseBody = jsonElement.asJsonObject["responseBody"]
-            value.numberOfHeaders = responseBody.asJsonObject["fieldsMetadata"].asJsonArray.size()
-            value.fieldsMetadata = responseBody.asJsonObject["fieldsMetadata"].asJsonArray
-            value.numberOfRows = responseBody.asJsonObject["rows"].asJsonArray.size()
-            value.rows = responseBody.asJsonObject["rows"].asJsonArray
+            queryResult.numberOfHeaders = responseBody.asJsonObject["fieldsMetadata"].asJsonArray.size()
+            queryResult.fieldsMetadata = responseBody.asJsonObject["fieldsMetadata"].asJsonArray
+            queryResult.numberOfRows = responseBody.asJsonObject["rows"].asJsonArray.size()
+            queryResult.rows = responseBody.asJsonObject["rows"].asJsonArray
         } else {
-            if (response.contains("statusMessage")) value.statusMessage =
+            if (response.contains("statusMessage")) queryResult.statusMessage =
                 jsonElement.asJsonObject["statusMessage"].asString
         }
     }
 
-    private fun clearQueryResult(value: QueryResult) {
-        value.status = ""
-        value.statusMessage = ""
-        value.fieldsMetadata = null
-        value.numberOfHeaders = 0
-        value.rows = null
-        value.numberOfRows = 0
+    private fun clearQueryResult() {
+        queryResult.status = ""
+        queryResult.statusMessage = ""
+        queryResult.fieldsMetadata = jsonElement()
+        queryResult.numberOfHeaders = 0
+        queryResult.rows = jsonElement()
+        queryResult.numberOfRows = 0
     }
 }

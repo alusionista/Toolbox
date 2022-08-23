@@ -1,7 +1,7 @@
 package br.com.cofermeta.toolbox.network
 
 import android.util.Log
-import br.com.cofermeta.toolbox.data.executeQuery
+import br.com.cofermeta.toolbox.data.EXECUTE_QUERY
 import br.com.cofermeta.toolbox.data.queryTSIUSUBody
 import br.com.cofermeta.toolbox.model.dataclasses.Sankhya
 import com.google.gson.JsonParser
@@ -11,7 +11,7 @@ class AuthTest : Connection() {
     @Test
     fun getUserData(sankhya: Sankhya): Sankhya {
         val response = connect(
-            serviceName = executeQuery,
+            serviceName = EXECUTE_QUERY,
             requestBody = queryTSIUSUBody(sankhya.user),
             jsessionid = sankhya.jsessionid
         )

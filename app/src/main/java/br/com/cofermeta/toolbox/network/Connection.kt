@@ -4,9 +4,9 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
-import br.com.cofermeta.toolbox.data.base
-import br.com.cofermeta.toolbox.data.httpRequestErroRMessage
-import br.com.cofermeta.toolbox.data.port
+import br.com.cofermeta.toolbox.data.BASE
+import br.com.cofermeta.toolbox.data.NO_RESPONSE_MESSAGE
+import br.com.cofermeta.toolbox.data.PORT
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -16,8 +16,8 @@ import java.util.concurrent.TimeoutException
 
 abstract class Connection {
     private fun baseUrl(serviceName: String, jsessionid: String): String {
-        return if (jsessionid.isEmpty()) "$base:$port/mge/service.sbr?serviceName=$serviceName&outputType=json"
-        else "$base:$port/mge/service.sbr?serviceName=$serviceName&mgeSession=$jsessionid&outputType=json"
+        return if (jsessionid.isEmpty()) "$BASE:$PORT/mge/service.sbr?serviceName=$serviceName&outputType=json"
+        else "$BASE:$PORT/mge/service.sbr?serviceName=$serviceName&mgeSession=$jsessionid&outputType=json"
     }
 
     fun isOnline(context: Context): Boolean {
@@ -80,11 +80,11 @@ abstract class Connection {
                     }
                 }
             }
-            Log.d("Responde", response.toString())
+            Log.d("Response", response.toString())
             return response.toString()
         } catch (e: Exception) {
             Log.d("Exception", e.printStackTrace().toString())
-            return httpRequestErroRMessage
+            return NO_RESPONSE_MESSAGE
         }
 
     }

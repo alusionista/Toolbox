@@ -6,14 +6,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import br.com.cofermeta.toolbox.data.*
 import br.com.cofermeta.toolbox.sankhya
+import br.com.cofermeta.toolbox.viewmodels.QueryViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -21,49 +23,41 @@ import kotlinx.coroutines.launch
 fun BottomBar(
     navController: NavController,
     scope: CoroutineScope,
-    state: ScaffoldState
+    state: ScaffoldState,
+    queryViewModel: QueryViewModel = viewModel()
 ) {
-
-    val showDialog = remember { mutableStateOf(false) }
-
-    if (showDialog.value) ScannerDialog( onShowDialog = { showDialog.value = it })
+    suspend fun openOrCloseDrawer() = if (state.drawerState.isClosed) state.drawerState.open() else state.drawerState.close()
+    val showDialog by queryViewModel.showScanner.observeAsState(false)
+    if (showDialog) ScannerDialog()
 
     BottomAppBar(
-        elevation = 0.dp,
+        elevation = 1.dp,
         backgroundColor = Color.Transparent,
         contentColor = MaterialTheme.colors.onSurface,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp)
     ) {
-        BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Rounded.FilterList, FILTROS)
-        },
+        BottomNavigationItem(
+            icon = { Icon(imageVector = Icons.Rounded.FilterList, FILTROS) },
             label = { Text(text = FILTROS) },
             selected = false,
             unselectedContentColor = MaterialTheme.colors.onSurface,
-            onClick = {
-                scope.launch { if(state.drawerState.isClosed) state.drawerState.open() else state.drawerState.close() }
-            }
+            onClick = { scope.launch { openOrCloseDrawer() } }
         )
-        BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Rounded.QrCodeScanner, SCANNER)
-        },
+        BottomNavigationItem(
+            icon = { Icon(imageVector = Icons.Rounded.QrCodeScanner, SCANNER) },
             label = { Text(text = SCANNER) },
             selected = false,
             unselectedContentColor = MaterialTheme.colors.onSurface,
-                    onClick = {
-                        showDialog.value = true
-            })
-        BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Default.Person, USUARIO)
-        },
-            label = {
-                Text(text = sankhya.firstName.ifEmpty { USUARIO })
-                    },
+            onClick = { queryViewModel.onShowScannerChange(true) })
+
+        BottomNavigationItem(
+            icon = { Icon(imageVector = Icons.Default.Person, USUARIO) },
+            label = { Text(text = sankhya.firstName.ifEmpty { USUARIO }) },
             selected = false,
             unselectedContentColor = MaterialTheme.colors.onSurface,
-            onClick = {
-            navController.navigate("login_ui")
-            })
+            onClick = { navController.navigate("login_ui") })
 
     }
 

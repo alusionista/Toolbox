@@ -1,7 +1,7 @@
 package br.com.cofermeta.toolbox.network
 
-import br.com.cofermeta.toolbox.data.base
-import br.com.cofermeta.toolbox.data.port
+import br.com.cofermeta.toolbox.data.BASE
+import br.com.cofermeta.toolbox.data.PORT
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -13,7 +13,7 @@ class FrameworkAuthTest {
     @Test
     fun testConnection(){
         MainScope().launch(Dispatchers.IO) {
-            assertFalse(InetSocketAddress("$base:$port/", port).isUnresolved)
+            assertFalse(InetSocketAddress("$BASE:$PORT/", PORT).isUnresolved)
             return@launch
         }
     }
