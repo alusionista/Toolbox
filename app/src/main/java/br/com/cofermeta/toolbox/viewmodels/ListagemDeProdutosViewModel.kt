@@ -14,7 +14,7 @@ import br.com.cofermeta.toolbox.model.dataclasses.QueryFields
 import br.com.cofermeta.toolbox.model.dataclasses.QueryResult
 import br.com.cofermeta.toolbox.sankhya
 
-class QueryViewModel : ViewModel() {
+class ListagemDeProdutosViewModel : ViewModel() {
 
     private val auth = Auth()
     private val queryField = QueryFields()

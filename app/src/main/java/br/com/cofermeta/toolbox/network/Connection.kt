@@ -48,8 +48,6 @@ abstract class Connection {
         jsessionid: String = ""
     ): String {
 
-
-
         var response: StringBuilder
         val bytes = requestBody.toByteArray()
         Log.d("requestBody query", requestBody)

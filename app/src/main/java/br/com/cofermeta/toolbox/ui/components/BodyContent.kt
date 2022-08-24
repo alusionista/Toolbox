@@ -16,18 +16,18 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import br.com.cofermeta.toolbox.data.NO_PRODUCT_SELECTED
 import br.com.cofermeta.toolbox.data.ON_LOADING_MESSAGE
-import br.com.cofermeta.toolbox.viewmodels.QueryViewModel
+import br.com.cofermeta.toolbox.viewmodels.ListagemDeProdutosViewModel
 
 @Composable
 fun BodyContent(
     padding: PaddingValues,
-    queryViewModel: QueryViewModel = viewModel()
+    listagemDeProdutosViewModel: ListagemDeProdutosViewModel = viewModel()
 ) {
-    val hasResult by queryViewModel.hasResult.observeAsState(false)
-    val loading by queryViewModel.loading.observeAsState(true)
+    val hasResult by listagemDeProdutosViewModel.hasResult.observeAsState(false)
+    val loading by listagemDeProdutosViewModel.loading.observeAsState(true)
 
     if (hasResult) {
-        val queryResult = queryViewModel.queryResult
+        val queryResult = listagemDeProdutosViewModel.queryResult
         val numberOfRows = if (queryResult.numberOfRows < 100) queryResult.numberOfRows else 100
         Column(
             modifier = Modifier

@@ -12,7 +12,7 @@ import br.com.cofermeta.toolbox.ui.components.*
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
-fun QueryScreen(
+fun ListagemDeProdutosUI(
     navController: NavController,
 ) {
     val state = rememberScaffoldState()

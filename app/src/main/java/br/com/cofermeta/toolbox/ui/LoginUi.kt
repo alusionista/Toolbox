@@ -26,7 +26,7 @@ import br.com.cofermeta.toolbox.ui.theme.white50p
 import br.com.cofermeta.toolbox.viewmodels.LoginViewModel
 
 @Composable
-fun LoginScreen(
+fun LoginUI(
     navController: NavController,
     loginViewModel: LoginViewModel = viewModel()
 ) {

@@ -17,8 +17,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Cancel
-import androidx.compose.material.icons.rounded.FlashOff
-import androidx.compose.material.icons.rounded.FlashOn
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -35,16 +33,16 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import br.com.cofermeta.toolbox.data.DEFAULT_PADDING
 import br.com.cofermeta.toolbox.data.NO_CAMERA_PERMISSION
 import br.com.cofermeta.toolbox.model.BarCodeAnalyser
-import br.com.cofermeta.toolbox.viewmodels.QueryViewModel
+import br.com.cofermeta.toolbox.viewmodels.ListagemDeProdutosViewModel
 import com.google.common.util.concurrent.ListenableFuture
 import java.util.concurrent.Executors
 
 
 @Composable
 fun ScannerDialog(
-    queryViewModel: QueryViewModel = viewModel()
+    listagemDeProdutosViewModel: ListagemDeProdutosViewModel = viewModel()
 ) {
-    Dialog(onDismissRequest = { queryViewModel.onShowScannerChange(false) }) {
+    Dialog(onDismissRequest = { listagemDeProdutosViewModel.onShowScannerChange(false) }) {
         Surface(
             modifier = Modifier
                 .width(550.dp)
@@ -59,7 +57,7 @@ fun ScannerDialog(
 }
 
 @Composable
-fun ScannerHeader(queryViewModel: QueryViewModel = viewModel()) {
+fun ScannerHeader(listagemDeProdutosViewModel: ListagemDeProdutosViewModel = viewModel()) {
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -68,7 +66,7 @@ fun ScannerHeader(queryViewModel: QueryViewModel = viewModel()) {
         verticalAlignment = Alignment.Top
     ) {
         IconButton(
-            onClick = { queryViewModel.onShowScannerChange(false) },
+            onClick = { listagemDeProdutosViewModel.onShowScannerChange(false) },
             enabled = true,
         ) {
             Icon(
@@ -102,10 +100,10 @@ fun ScannerHeader(queryViewModel: QueryViewModel = viewModel()) {
 }
 
 @Composable
-fun CameraPreview(queryViewModel: QueryViewModel = viewModel()) {
+fun CameraPreview(listagemDeProdutosViewModel: ListagemDeProdutosViewModel = viewModel()) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
-    val isDialogOpen by queryViewModel.showScanner.observeAsState()
+    val isDialogOpen by listagemDeProdutosViewModel.showScanner.observeAsState()
     val barCodeVal = remember { mutableStateOf("") }
     var preview: Preview
 
@@ -148,8 +146,8 @@ fun CameraPreview(queryViewModel: QueryViewModel = viewModel()) {
                             barcode.rawValue?.let { barcodeValue ->
                                 barCodeVal.value = barcodeValue
                                 Toast.makeText(context, barcodeValue, Toast.LENGTH_SHORT).show()
-                                queryViewModel.onCodeScanned(context, barcodeValue)
-                                queryViewModel.onShowScannerChange(false)
+                                listagemDeProdutosViewModel.onCodeScanned(context, barcodeValue)
+                                listagemDeProdutosViewModel.onShowScannerChange(false)
                                 camExecutor.shutdown()
                             }
                         }

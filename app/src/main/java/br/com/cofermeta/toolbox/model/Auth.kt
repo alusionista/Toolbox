@@ -16,7 +16,6 @@ class Auth : Connection() {
 
     fun verifyLogin(context: Context, user: String, password: String) {
         clearSankhya()
-
         if (isOnline(context)) {
             sankhya.user = user
             sankhya.password = password

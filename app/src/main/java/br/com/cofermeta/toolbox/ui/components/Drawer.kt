@@ -15,10 +15,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import br.com.cofermeta.toolbox.data.DEFAULT_PADDING
+import br.com.cofermeta.toolbox.data.*
 import br.com.cofermeta.toolbox.sankhya
 import br.com.cofermeta.toolbox.ui.theme.white50p
-import br.com.cofermeta.toolbox.viewmodels.QueryViewModel
+import br.com.cofermeta.toolbox.viewmodels.ListagemDeProdutosViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -27,14 +27,14 @@ import kotlinx.coroutines.launch
 fun Drawer(
     scope: CoroutineScope,
     state: ScaffoldState,
-    queryViewModel: QueryViewModel = viewModel(),
+    listagemDeProdutosViewModel: ListagemDeProdutosViewModel = viewModel(),
 ) {
     val context = LocalContext.current
-    val codemp by queryViewModel.codemp.observeAsState(sankhya.codemp)
-    val codprod by queryViewModel.codprod.observeAsState("")
-    val marca by queryViewModel.marca.observeAsState("")
-    val locprin by queryViewModel.locprin.observeAsState("")
-    val descrprod by queryViewModel.descrprod.observeAsState("")
+    val codemp by listagemDeProdutosViewModel.codemp.observeAsState(sankhya.codemp)
+    val codprod by listagemDeProdutosViewModel.codprod.observeAsState("")
+    val marca by listagemDeProdutosViewModel.marca.observeAsState("")
+    val locprin by listagemDeProdutosViewModel.locprin.observeAsState("")
+    val descrprod by listagemDeProdutosViewModel.descrprod.observeAsState("")
 
     Column(
         modifier = Modifier
@@ -43,7 +43,7 @@ fun Drawer(
             .verticalScroll(rememberScrollState())
     ) {
         Text(
-            text = "Cofermeta Toolbox",
+            text = COFERMETA_TOOLBOX,
             textAlign = TextAlign.Left,
             fontSize = 20.sp,
             lineHeight = 38.sp,
@@ -52,7 +52,7 @@ fun Drawer(
             modifier = Modifier.fillMaxWidth()
         )
         Text(
-            text = "Listagem de Produtos",
+            text = LISTAGEM_DE_PRODUTOS,
             textAlign = TextAlign.Left,
             fontSize = 30.sp,
             lineHeight = 38.sp,
@@ -62,23 +62,23 @@ fun Drawer(
 
         Spacer(modifier = Modifier.height(40.dp))
 
-        TextFieldOutlined("Código do produto", codprod, true) { queryViewModel.onCodigoChange(it) }
+        TextFieldOutlined(COD_PRODUTO, codprod, true) { listagemDeProdutosViewModel.onCodigoChange(it) }
 
-        TextFieldOutlined("Empresa", codemp, true) { queryViewModel.onEmpresaChange(it) }
+        TextFieldOutlined(EMPRESA, codemp, true) { listagemDeProdutosViewModel.onEmpresaChange(it) }
 
-        TextFieldOutlined("Marca", marca) { queryViewModel.onMarcaChange(it) }
+        TextFieldOutlined(MARCA, marca) { listagemDeProdutosViewModel.onMarcaChange(it) }
 
-        TextFieldOutlined("Localização", locprin) { queryViewModel.onLocalChange(it) }
+        TextFieldOutlined(LOCALIZACAO, locprin) { listagemDeProdutosViewModel.onLocalChange(it) }
 
-        TextFieldOutlined("Descrição", descrprod) { queryViewModel.onDescricaoChange(it) }
+        TextFieldOutlined(DESCRICAO, descrprod) { listagemDeProdutosViewModel.onDescricaoChange(it) }
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        SimpleButton(label = "Buscar", onClick = {
+        SimpleButton(label = BUSCAR, onClick = {
             scope.launch {
-                queryViewModel.onLoadingChange(true)
+                listagemDeProdutosViewModel.onLoadingChange(true)
                 state.drawerState.close()
-                queryViewModel.productQuery(context)
+                listagemDeProdutosViewModel.productQuery(context)
             }
         }
         )

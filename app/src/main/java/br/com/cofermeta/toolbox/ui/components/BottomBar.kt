@@ -15,7 +15,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import br.com.cofermeta.toolbox.data.*
 import br.com.cofermeta.toolbox.sankhya
-import br.com.cofermeta.toolbox.viewmodels.QueryViewModel
+import br.com.cofermeta.toolbox.viewmodels.ListagemDeProdutosViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -24,10 +24,10 @@ fun BottomBar(
     navController: NavController,
     scope: CoroutineScope,
     state: ScaffoldState,
-    queryViewModel: QueryViewModel = viewModel()
+    listagemDeProdutosViewModel: ListagemDeProdutosViewModel = viewModel()
 ) {
     suspend fun openOrCloseDrawer() = if (state.drawerState.isClosed) state.drawerState.open() else state.drawerState.close()
-    val showDialog by queryViewModel.showScanner.observeAsState(false)
+    val showDialog by listagemDeProdutosViewModel.showScanner.observeAsState(false)
     if (showDialog) ScannerDialog()
 
     BottomAppBar(
@@ -50,7 +50,7 @@ fun BottomBar(
             label = { Text(text = SCANNER) },
             selected = false,
             unselectedContentColor = MaterialTheme.colors.onSurface,
-            onClick = { queryViewModel.onShowScannerChange(true) })
+            onClick = { listagemDeProdutosViewModel.onShowScannerChange(true) })
 
         BottomNavigationItem(
             icon = { Icon(imageVector = Icons.Default.Person, USUARIO) },

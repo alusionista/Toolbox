@@ -3,7 +3,7 @@ package br.com.cofermeta.toolbox.model
 import br.com.cofermeta.toolbox.data.IMG_PLACEHOLDER
 import com.google.gson.JsonElement
 
-class DataFormating {
+class DataFormatting {
 
     private fun formatData(data: JsonElement) = data.toString().replace("\"", "").trim()
     private fun formatCodprod(codprod: JsonElement) = "#$codprod"

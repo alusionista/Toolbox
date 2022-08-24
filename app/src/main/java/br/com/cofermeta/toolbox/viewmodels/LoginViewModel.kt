@@ -2,6 +2,7 @@ package br.com.cofermeta.toolbox.viewmodels
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.runtime.Composable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

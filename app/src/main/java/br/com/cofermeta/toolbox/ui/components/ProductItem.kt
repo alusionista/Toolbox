@@ -29,7 +29,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import br.com.cofermeta.toolbox.data.DEFAULT_PADDING
-import br.com.cofermeta.toolbox.model.DataFormating
+import br.com.cofermeta.toolbox.model.DataFormatting
 import br.com.cofermeta.toolbox.model.dataclasses.QueryResult
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
@@ -39,7 +39,7 @@ import com.google.gson.JsonElement
 fun ProductItem(
     queryResult: QueryResult,
 ) {
-    val df = DataFormating()
+    val data = DataFormatting()
     val rows = queryResult.rows
     val numberOfRows = if (queryResult.numberOfRows < 100) queryResult.numberOfRows else 100
 
@@ -86,7 +86,7 @@ fun ProductItem(
                     ) {
                         SubcomposeAsyncImage(
                             model = ImageRequest.Builder(LocalContext.current)
-                                .data(df.getEndimagem(i, rows))
+                                .data(data.getEndimagem(i, rows))
                                 .crossfade(true)
                                 .build(),
                             contentDescription = null,
@@ -100,21 +100,21 @@ fun ProductItem(
                         modifier = Modifier.layoutId("detailcolumn")
                     ) {
                         Text(
-                            text = df.getCodprod(i, rows),
+                            text = data.getCodprod(i, rows),
                             fontSize = 22.sp,
                             fontWeight = FontWeight.ExtraBold,
                             color = Color.White,
                             letterSpacing = 0.sp,
                         )
                         Text(
-                            text = df.getMarca(i, rows),
+                            text = data.getMarca(i, rows),
                             fontSize = 18.sp,
                             fontWeight = FontWeight.ExtraBold,
                             color = MaterialTheme.colors.secondaryVariant,
                             letterSpacing = 0.sp,
                         )
                         Text(
-                            text = df.getVlrvenda(i, rows),
+                            text = data.getVlrvenda(i, rows),
                             fontSize = 18.sp,
                             fontWeight = FontWeight.ExtraBold,
                             color = Color.White,
@@ -124,7 +124,7 @@ fun ProductItem(
                 }
                 Text(
                     modifier = Modifier.padding(top = 12.dp),
-                    text = df.getDescrprod(i, rows),
+                    text = data.getDescrprod(i, rows),
                     fontSize = 16.sp,
                     letterSpacing = 0.sp,
                 )
@@ -139,7 +139,8 @@ fun ProductDialog(
     rows: JsonElement,
     onShowDialog: (Boolean) -> Unit
 ) {
-    val df = DataFormating()
+    val data = DataFormatting()
+
     Dialog(onDismissRequest = { onShowDialog(false) }) {
         Surface(
             modifier = Modifier.defaultMinSize(minHeight = 450.dp),
@@ -167,7 +168,7 @@ fun ProductDialog(
                                     textAlign = TextAlign.Center,
                                     maxLines = 1,
                                     fontWeight = FontWeight.ExtraBold,
-                                    text = df.getCodprod(i, rows),
+                                    text = data.getCodprod(i, rows),
                                     color = Color.White,
                                 )
                             }
@@ -204,7 +205,7 @@ fun ProductDialog(
                 ) {
                     SubcomposeAsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
-                            .data(df.getEndimagem(i, rows))
+                            .data(data.getEndimagem(i, rows))
                             .crossfade(true)
                             .build(),
                         contentDescription = null,
@@ -221,29 +222,29 @@ fun ProductDialog(
                             .align(Alignment.Start)
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
-                            DetailData(header = "Marca", row = df.getMarca(i, rows))
+                            DetailData(header = "Marca", row = data.getMarca(i, rows))
                         }
                         Column(modifier = Modifier.weight(1f)) {
-                            DetailData(header = "Preço", row = df.getVlrvenda(i, rows))
+                            DetailData(header = "Preço", row = data.getVlrvenda(i, rows))
                         }
                     }
 
                     Spacer(modifier = Modifier.height(DEFAULT_PADDING))
-                    DetailData(header = "Categoria", row = df.getDescrgrupoprod(i, rows))
+                    DetailData(header = "Categoria", row = data.getDescrgrupoprod(i, rows))
 
                     Spacer(modifier = Modifier.height(DEFAULT_PADDING))
                     DetailData(
-                        header = "Linha ${df.getNulinha(i, rows)}",
-                        row = df.getDescricao_linha(i, rows)
+                        header = "Linha ${data.getNulinha(i, rows)}",
+                        row = data.getDescricao_linha(i, rows)
                     )
 
                     Spacer(modifier = Modifier.height(DEFAULT_PADDING))
-                    DetailData(header = "Descrição", row = df.getDescrprod(i, rows))
+                    DetailData(header = "Descrição", row = data.getDescrprod(i, rows))
 
                     Spacer(modifier = Modifier.height(DEFAULT_PADDING))
-                    if (df.getCusrep(i, rows).contains("$") ||
-                        df.getCusger(i, rows).contains("$") ||
-                        df.getCusvariavel(i, rows).contains("$")
+                    if (data.getCusrep(i, rows).contains("$") ||
+                        data.getCusger(i, rows).contains("$") ||
+                        data.getCusvariavel(i, rows).contains("$")
                     ) {
                         Row(
                             modifier = Modifier
@@ -253,26 +254,26 @@ fun ProductDialog(
                             Column(modifier = Modifier.weight(1f)) {
                                 DetailData(
                                     header = "Custo Reposição",
-                                    row = df.getCusrep(i, rows)
+                                    row = data.getCusrep(i, rows)
                                 )
                             }
                             Column(modifier = Modifier.weight(1f)) {
                                 DetailData(
                                     header = "Custo Gerencial",
-                                    row = df.getCusger(i, rows)
+                                    row = data.getCusger(i, rows)
                                 )
                             }
                             Column(modifier = Modifier.weight(1f)) {
                                 DetailData(
                                     header = "Custo Variável",
-                                    row = df.getCusvariavel(i, rows)
+                                    row = data.getCusvariavel(i, rows)
                                 )
                             }
                         }
                         Spacer(modifier = Modifier.height(DEFAULT_PADDING))
                     }
 
-                    if (df.getEstoque_disponivel(i, rows) > 0F) {
+                    if (data.getEstoque_disponivel(i, rows) > 0F) {
                         Text(
                             text = "Estoque",
                             fontSize = 14.sp,
@@ -287,7 +288,7 @@ fun ProductDialog(
                         ) {
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
-                                    text = "mín. ${df.getEstmin(i, rows)}",
+                                    text = "mín. ${data.getEstmin(i, rows)}",
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.ExtraBold,
                                     color = MaterialTheme.colors.secondaryVariant,
@@ -299,7 +300,7 @@ fun ProductDialog(
                                 horizontalAlignment = Alignment.End
                             ) {
                                 Text(
-                                    text = "máx. ${df.getEstmax(i, rows)}",
+                                    text = "máx. ${data.getEstmax(i, rows)}",
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.ExtraBold,
                                     color = MaterialTheme.colors.secondaryVariant,
@@ -310,8 +311,8 @@ fun ProductDialog(
                         Spacer(modifier = Modifier.height(8.dp))
                         StockBar(
                             statName = "Disponível",
-                            estoqueMin = df.getEstoque_disponivel(i, rows),
-                            estoqueMax = df.getEstmax(i, rows),
+                            estoqueMin = data.getEstoque_disponivel(i, rows),
+                            estoqueMax = data.getEstmax(i, rows),
                             barColor = Color(0xFF12664F)
                         )
                     } else {
@@ -326,26 +327,12 @@ fun ProductDialog(
                             .align(Alignment.Start)
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
-                            DetailData(header = "Peso", row = df.getPesoliq(i, rows))
+                            DetailData(header = "Peso", row = data.getPesoliq(i, rows))
                         }
                         Column(modifier = Modifier.weight(1f)) {
-                            DetailData(header = "Unidade", row = df.getCodvol(i, rows))
+                            DetailData(header = "Unidade", row = data.getCodvol(i, rows))
                         }
 
-
-                    }
-                    Spacer(modifier = Modifier.height(DEFAULT_PADDING))
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .align(Alignment.Start)
-                    ) {
-                        Column(modifier = Modifier.weight(1f)) {
-                            DetailData(header = "NCM", row = df.getNcm(i, rows))
-                        }
-                        Column(modifier = Modifier.weight(1f)) {
-                            DetailData(header = "Origem", row = df.getOrigprod(i, rows))
-                        }
 
                     }
                     Spacer(modifier = Modifier.height(DEFAULT_PADDING))
@@ -355,10 +342,24 @@ fun ProductDialog(
                             .align(Alignment.Start)
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
-                            DetailData(header = "Local Principal", row = df.getLocprin(i, rows))
+                            DetailData(header = "NCM", row = data.getNcm(i, rows))
                         }
                         Column(modifier = Modifier.weight(1f)) {
-                            DetailData(header = "Cód. Local", row = df.getCodlocal(i, rows))
+                            DetailData(header = "Origem", row = data.getOrigprod(i, rows))
+                        }
+
+                    }
+                    Spacer(modifier = Modifier.height(DEFAULT_PADDING))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .align(Alignment.Start)
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            DetailData(header = "Local Principal", row = data.getLocprin(i, rows))
+                        }
+                        Column(modifier = Modifier.weight(1f)) {
+                            DetailData(header = "Cód. Local", row = data.getCodlocal(i, rows))
                         }
 
                     }
@@ -372,30 +373,30 @@ fun ProductDialog(
                         Column(modifier = Modifier.weight(1f)) {
                             DetailData(
                                 header = "Cód. Fornecedor",
-                                row = df.getCodprodforn(i, rows)
+                                row = data.getCodprodforn(i, rows)
                             )
                         }
                         Column(modifier = Modifier.weight(1f)) {
                             DetailData(
                                 header = "Cód. Prod Legado",
-                                row = df.getCodprodleg(i, rows)
+                                row = data.getCodprodleg(i, rows)
                             )
                         }
                     }
 
                     Spacer(modifier = Modifier.height(DEFAULT_PADDING))
                     DetailData(
-                        header = "Fornecedor #${df.getCodparc_forn(i, rows)}",
-                        row = df.getFornecedor(i, rows)
+                        header = "Fornecedor #${data.getCodparc_forn(i, rows)}",
+                        row = data.getFornecedor(i, rows)
                     )
 
                     Spacer(modifier = Modifier.height(DEFAULT_PADDING))
-                    DetailData(header = "Cód. de barras", row = df.getReferencia(i, rows))
+                    DetailData(header = "Cód. de barras", row = data.getReferencia(i, rows))
 
                     Spacer(modifier = Modifier.height(DEFAULT_PADDING))
                     DetailData(
                         header = "Cód. Prod. e-commerce",
-                        row = df.getCodprodecom(i, rows)
+                        row = data.getCodprodecom(i, rows)
                     )
 
                 }
